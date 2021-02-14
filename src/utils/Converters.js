@@ -1,7 +1,7 @@
 class Converters {
 
-  constructor (thename='dummyname') {
-    this.name = thename;
+  constructor () {
+    this.currYear = new Date().getFullYear();
     console.log('** inside Converters constructor');
   }
 
@@ -50,6 +50,22 @@ class Converters {
       return [
         {label: 'zodiac 1', value: 'zodiac1' },
       ];
+    }
+  }
+
+  convCodeToDisplay(convCode) {
+    return ('display version of ' + convCode);
+  }
+
+  getResult(fromValue, convCode) {
+    return 2 * fromValue;
+  }
+
+  getInitFromValue(cvtype) {
+    if (['tojpyear', 'tozodiac'].includes(cvtype)) {
+      return this.currYear.toString();
+    } else {
+      return '1';
     }
   }
 

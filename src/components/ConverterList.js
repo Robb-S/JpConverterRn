@@ -33,7 +33,7 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
    */
   return (
     <View style={styles.converterList}>
-      <Text key={cvtype+'0'} style={styles.smallText}>{cvtype} / {convCodeLocal}</Text>
+      {/* <Text key={cvtype+'0'} style={styles.smallText}>{cvtype} / {convCodeLocal}</Text> */}
       <ScrollView>
         <RadioForm formHorizontal={false} animation={true} style={styles.radioForm} >
           {radioProps.map((obj, i) => {
@@ -69,9 +69,8 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
 
 const styles = StyleSheet.create({
   converterList: {
-    maxHeight: 350,
-    width: '70%',
-    borderWidth: 1,
+    width: '100%',
+    borderWidth: 0,
     borderColor: clr.lighterGrey,
   },
   radioForm: {

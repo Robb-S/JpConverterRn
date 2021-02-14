@@ -15,3 +15,11 @@ export function assignArrayIx (array1, ixpos, value) {
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export function capitalize(ttext) {
+  if (ttext.length>0) {
+    return ttext.charAt(0).toUpperCase() + ttext.slice(1);
+  } else {
+    return '';
+  }
+}

@@ -1,9 +1,12 @@
 import React, {useRef, useState, useEffect} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, 
-  ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions, TextInput,  
+  ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { clr } from '../utils/colors';
-import { catToSnum, cv, snumToBgStyle, getDispName, getCvType, cvCatToCvType } from '../utils/modes';
+import { capitalize } from '../utils/helpers';
+import { cv, getInstructions, getDispName, catToCvType, getBgStyle, 
+  getBgStyle2 } from '../utils/modes';
 import NarrowBtn from './NarrowBtn';
+import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import ConverterList from './ConverterList';
 
@@ -14,67 +17,72 @@ function LoadingScreen() {
     <View style={[styles.container, styles.loading]}><Text>Loading...</Text></View>
   )
 }
-export default function MainScreen({screenNum, currDirection, cvtype, navigation, toggleDrawer,
-  toggleDirection, incrementScreenNum, decrementScreenNum, setMode}) {
+
+export default function MainScreen({cvtype, toggleDirection}) {
 
   const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);
   const [convCode, setConvCode] = useState(null);
-  React.useEffect(() => {
+  const [fromValue, setFromValue] = useState(''); // will base initial value on cvtype
+  React.useEffect(() => { // fetch Converters object on first load
     const gotcvs = new Converters();
     setCvs(gotcvs);
   }, []); 
-  React.useEffect(() => {
+  React.useEffect(() => { // after swipe, change chosen convCode to first on list
     if (cvs && cvtype) {
       setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
       console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
     }
   }, [cvs, cvtype]);
 
-  if (screenNum==null) { return (<LoadingScreen />) }
-  // screenNum is now available
-  const bgStyle=snumToBgStyle(screenNum);
+  React.useEffect(() => { // reset fromValue to current year or 1 when switching conversion code
+    if (cvs && convCode) {
+      setFromValue(cvs.getInitFromValue(cvtype));
+    }
+  }, [cvs, convCode, cvtype]);
+
+  if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
+  // cvtype is now available
+  const bgStyle=getBgStyle(cvtype);
+  const bgStyle2=getBgStyle2(cvtype);
   const setConverter = (newConverter) => { // used by child component ConverterList
     setConvCode(newConverter);
   }
-  const zodiacCvType = cvCatToCvType(cv.ZODIAC, cv.TOJP);
-  const showRadio = (cvtype !== zodiacCvType);
+  const zodiacCvType = catToCvType(cv.ZODIAC, cv.TOJP);
+  const showRadio = (cvtype !== zodiacCvType) && (cvtype !== 'tojpyear');
   const showToggle = (cvtype !== zodiacCvType);
+  
+  const resultValue = cvs.getResult(fromValue, convCode);
+  const resultPanelText = 
+`${fromValue} fromValue / ${cvtype}
+${convCode} is convCode / ${resultValue}`;
+  const instructions = getInstructions(cvtype);
+
   return (
     <View style={[styles.container, bgStyle]}>
-      <Text style={styles.mainText}>
-        {cvtype} {convCode} {Math.round(width)}/{Math.round(height)}
-      </Text>
+      {/* <Text style={styles.statusLine1}>{cvs.convCodeToDisplay(convCode)}</Text> */}
+      <View style={[styles.inputTextArea, bgStyle2]}>
+        <TextInput style={styles.inputTextText}
+          onChangeText={text => setFromValue(text)}
+          value={fromValue}
+        />
+      </View>
+      <Text style={styles.resultPanel}>{resultPanelText}</Text>
+      <Text style={styles.instructionsText}>{instructions}</Text>
+      {showToggle && 
+      <View style={styles.toggleZone}>
+        <Text style={styles.converterHeader}>
+          {capitalize(getDispName(cvtype))}
+        </Text>
+        <TinyBtn 
+          // onPress={() => toggleDirection(screenNum)}
+          onPress={() => toggleDirection()}
+          text={'Switch direction'} />        
+      </View>
+      }
       {showRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
       }
-      <NarrowBtn 
-        onPress={() => navigation.navigate('Help')}
-        text={'Go to Help'} bgColor={clr.lightGrey} color={clr.darkGrey} />
-      {showToggle && 
-      <NarrowBtn 
-        onPress={() => toggleDirection(screenNum)}
-        text={'Toggle direction'} bgColor={clr.lightGrey} color={clr.darkGrey} />
-      }
-      <NarrowBtn 
-        onPress={() => decrementScreenNum()}
-        text={'Backward'} bgColor={clr.lightLgreen} color={clr.darkGrey} />
-      <NarrowBtn 
-        onPress={() => incrementScreenNum()}
-        text={'Forward'} bgColor={clr.lightCyan} color={clr.darkGrey} />
-      <NarrowBtn
-        text="From metric"
-        bgColor={clr.tan} color={clr.darkGrey}
-        onPress={()=>setMode(catToSnum(cv.METRIC), cv.FROMJP)}
-      />
-      <NarrowBtn
-        text="Zodiac"
-        bgColor={clr.brown}
-        onPress={()=>setMode(catToSnum(cv.ZODIAC), cv.TOJP)}
-      />
-      <NarrowBtn 
-        onPress={() => toggleDrawer()}
-        text={'Drawer'} bgColor={clr.darkBlue} color={clr.white} />
     </View>
   )
 }
@@ -84,8 +92,51 @@ const styles = StyleSheet.create({
     //flex: 1,
     height:'100%',
     width:'100%',
-    backgroundColor: clr.red,
+    backgroundColor: clr.medGrey,
     // padding: 10,
+  },
+  statusLine1: {
+    paddingLeft: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    color: clr.white,
+    fontSize: 15,
+  },
+  inputTextArea: {
+    marginTop: 3,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    height: 50,
+  },
+  inputTextText: {
+    fontSize: 20,
+  },
+  resultPanel: {
+    // backgroundColor: clr.white,
+    color: clr.white,
+    paddingTop: 15,
+    paddingLeft: 10,
+    paddingBottom: 6,
+    marginBottom: 12,
+    fontSize: 20,
+    lineHeight: 36,
+    width: '100%',
+    textAlign: 'left',
+  },
+  toggleZone: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  converterHeader: {
+    fontSize: 16,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 20,
+    color: clr.white,
+  },
+  toggleButtonZone: {
+    paddingTop: 0,
   },
   mainText: {
     // backgroundColor: clr.white,
@@ -106,6 +157,14 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     textAlign: 'center',
     marginRight: 5,
+  },
+  instructionsText: {
+    backgroundColor: clr.lightGrey,
+    fontSize: 15,
+    paddingTop: 12,
+    paddingLeft: 10,
+    paddingBottom: 12,
+    marginBottom: 10,
   },
   loading: {
     backgroundColor: clr.black,

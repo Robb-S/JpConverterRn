@@ -27,7 +27,7 @@ const DrSubhead = ({text, topBorder='true'}) => {
 
 const DrawerView = (drawer, navigation, setMode, screenNum, currDirection) => {
   // const cvid = getCvType(screenNum, currDirection);
-  const cvid = 'temporary';
+  // const cvid = 'temporary';
   const goToScreen = (cvCat, dir) => {
     drawer.current.closeDrawer();
     setMode(catToSnum(cvCat), dir);

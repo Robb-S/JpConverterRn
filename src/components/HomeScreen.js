@@ -1,13 +1,14 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
-import { snumToBgStyle, getDispName, getCvType } from '../utils/modes';
+import { getBgStyle, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {toggleArrayIx, assignArrayIx} from '../utils/helpers';
 import DrawerView from './DrawerView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {capitalize} from '../utils/helpers';
 
 /**
  * Shell for MainScreen, drawer and swipe gesture components, with state variables 
@@ -26,9 +27,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = ({navigation}) => {
   const setMainHeaderTitle = (sNum, cDirection) => {
     let currTitle = "JP Converter";
-    if (sNum!==null) {currTitle = getDispName(sNum, cDirection)}
+    if (sNum!==null) {currTitle = getDispName(getCvType(sNum, cDirection))}
     navigation.setOptions({
-      title: currTitle,
+      title: capitalize(currTitle),
     });
   }
   const setDrawerHeaderTitle = () => {
@@ -189,15 +190,12 @@ const HomeScreen = ({navigation}) => {
       renderNavigationView={() => DrawerView(drawer, navigation, setMode, 
         screenNum, currDirection)}
     >
-    <View style={[styles.container, snumToBgStyle(screenNum)]}>
+    <View style={[styles.container, getBgStyle(getCvType(screenNum, currDirection))]}>
     <SwipeGesture gestureStyle={styles.swipeGestureContainer} 
       onSwipePerformed={onSwipePerformed}>
-      <MainScreen screenNum={screenNum} currDirection={currDirection} 
+      <MainScreen 
         cvtype={getCvType(screenNum, currDirection)}
-        navigation={navigation} 
-        toggleDirection={toggleDirection} toggleDrawer={toggleDrawer}
-        incrementScreenNum={incrementScreenNum} decrementScreenNum={decrementScreenNum}
-        setMode={setMode}
+        toggleDirection={toggleDirection} 
         />
     </SwipeGesture>
     </View>
@@ -218,7 +216,8 @@ const styles = StyleSheet.create({
   swipeGestureContainer:{ // padding on left allows swipe from left edge to open drawer    
     height:'100%',
     width:'100%',
-    paddingLeft: 5,
+    paddingLeft: 2,
+    paddingRight: 2,
    },
    horizontal: {
     flexDirection: 'row',
