@@ -62,7 +62,7 @@ export function getBgStyle2(cvtype) {
 
 export function getBgStyles(cvtype) {
   const [screenNum, dirBoolean] = fromCvType(cvtype);
-  if (screenNum==null) return { backgroundColor: clr.black};
+  if (screenNum==null) return [{backgroundColor: clr.black}, {backgroundColor: clr.black}];
   const cvcatID = navOrder[screenNum];
   const bgcol1 = cvcats[cvcatID].backgroundColor1;
   const bgcol2 = cvcats[cvcatID].backgroundColor2;

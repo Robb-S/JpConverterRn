@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
-import { getBgStyle, getDispName, getCvType } from '../utils/modes';
+import { getBgStyle, getBgStyles, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -170,7 +170,8 @@ const HomeScreen = ({navigation}) => {
     }
     await AsyncStorage.setItem('lastPos', JSON.stringify(stLastPos));
   }
-  const bgStyle = getBgStyle(getCvType(screenNum, currDirection));
+  // const bgStyle = getBgStyle(getCvType(screenNum, currDirection));
+  const [bgStyle] = getBgStyles(getCvType(screenNum, currDirection));
 
   /**
    * Drawer - buttons to set MainScreen params (pseudo-nav) or navigate to other components.
