@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
-import { getBgStyle, getBgStyles, getDispName, getCvType } from '../utils/modes';
+import { getBgStyles, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";

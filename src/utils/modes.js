@@ -39,27 +39,10 @@ const fromjpyearInstructions = 'Select Japanese era below, then enter year above
 export function catToSnum(cvcatID) {
   return navOrder.indexOf(cvcatID);
 }
-/**
- * Return style with background color based on screen number.
- */
-export function getBgStyle(cvtype) {
-  const [screenNum, dirBoolean] = fromCvType(cvtype);
-  if (screenNum==null) return { backgroundColor: clr.black};
-  const cvcatID = navOrder[screenNum];
-  const bgcol = cvcats[cvcatID].backgroundColor1;
-  return { backgroundColor: bgcol };
-}
-/**
- * Return style with secondary background color based on screen number.
- */
-export function getBgStyle2(cvtype) {
-  const [screenNum, dirBoolean] = fromCvType(cvtype);
-  if (screenNum==null) return { backgroundColor: clr.black};
-  const cvcatID = navOrder[screenNum];
-  const bgcol = cvcats[cvcatID].backgroundColor2;
-  return { backgroundColor: bgcol };
-}
 
+/**
+ * Return styles with primary and secondary background colors based on screen number.
+ */
 export function getBgStyles(cvtype) {
   const [screenNum, dirBoolean] = fromCvType(cvtype);
   if (screenNum==null) return [{backgroundColor: clr.black}, {backgroundColor: clr.black}];

@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, useWindowDimensions, TextInput,
   ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
-import { cv, getInstructions, getDispName, getBgStyle, getBgStyle2 } from '../utils/modes';
+import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
 // import NarrowBtn from './NarrowBtn';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
@@ -42,8 +42,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype is now available
-  const bgStyle=getBgStyle(cvtype);
-  const bgStyle2 = getBgStyle2(cvtype);
+  const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   const setConverter = (newConverter) => { // used by child component ConverterList
     setConvCode(newConverter);
   }
