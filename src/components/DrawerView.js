@@ -37,32 +37,32 @@ const DrawerView = (drawer, navigation, setMode, screenNum, currDirection) => {
       <DrSubhead text={'Measurements'} topBorder={false} />
       <DrButton text={'To metric'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.METRIC, cv.TOJP)} }
+        onPress={() => { goToScreen(cv.METRIC, cv.TOJPVAL)} }
       />
       <DrButton text={'From metric'} 
         iconName={'calculator'}    
-        onPress={() => { goToScreen(cv.METRIC, cv.FROMJP)} }
+        onPress={() => { goToScreen(cv.METRIC, cv.FROMJPVAL)} }
       />
       <DrButton text={'To Japanese measures'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.JPMEASURE, cv.TOJP)} }
+        onPress={() => { goToScreen(cv.JPMEASURE, cv.TOJPVAL)} }
       />
       <DrButton text={'From Japanese measures'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.JPMEASURE, cv.FROMJP)} }
+        onPress={() => { goToScreen(cv.JPMEASURE, cv.FROMJPVAL)} }
       />
       <DrSubhead text={'Calendar'} />
       <DrButton text={'To Japanese years'} 
         iconName={'calendar-month'}
-        onPress={() => { goToScreen(cv.JPYEAR, cv.TOJP)} }
+        onPress={() => { goToScreen(cv.JPYEAR, cv.TOJPVAL)} }
       />
       <DrButton text={'From Japanese years'} 
         iconName={'calendar-month'}
-        onPress={() => { goToScreen(cv.JPYEAR, cv.FROMJP)} }
+        onPress={() => { goToScreen(cv.JPYEAR, cv.FROMJPVAL)} }
       />
       <DrButton text={'Zodiac years'} 
         iconName={'rabbit'}
-        onPress={() => { goToScreen(cv.ZODIAC, cv.TOJP)} }
+        onPress={() => { goToScreen(cv.ZODIAC, cv.TOJPVAL)} }
       />
       <DrSubhead text={"More"} />
       <DrButton text={"Help"}

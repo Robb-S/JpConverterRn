@@ -21,8 +21,8 @@ export const cv = {
   FROMJPYEAR: 'fromjpyear',
   ZODIAC: 'zodiac',
   TOZODIAC: 'tozodiac',
-  TOJP: true,
-  FROMJP: false,
+  TOJPVAL: true,
+  FROMJPVAL: false,
   TOJPID: 'tojp',
   FROMJPID: 'fromjp',
 }
@@ -96,19 +96,19 @@ export function catToCvType(cat, dirBoolean) {
 function fromCvType(cvtype) {
   switch (cvtype) {
     case cv.TOMETRIC:
-      return [catToSnum(cv.METRIC), cv.TOJP];
+      return [catToSnum(cv.METRIC), cv.TOJPVAL];
     case cv.FROMMETRIC:
-      return [catToSnum(cv.METRIC), cv.FROMJP];
+      return [catToSnum(cv.METRIC), cv.FROMJPVAL];
     case cv.TOJPMEASURE:
-      return [catToSnum(cv.JPMEASURE), cv.TOJP];
+      return [catToSnum(cv.JPMEASURE), cv.TOJPVAL];
     case cv.FROMJPMEASURE:
-      return [catToSnum(cv.JPMEASURE), cv.FROMJP];
+      return [catToSnum(cv.JPMEASURE), cv.FROMJPVAL];
     case cv.TOJPYEAR:
-      return [catToSnum(cv.JPYEAR), cv.TOJP];
+      return [catToSnum(cv.JPYEAR), cv.TOJPVAL];
     case cv.FROMJPYEAR:
-      return [catToSnum(cv.JPYEAR), cv.FROMJP];
+      return [catToSnum(cv.JPYEAR), cv.FROMJPVAL];
     case cv.TOZODIAC:
-      return [catToSnum(cv.ZODIAC), cv.TOJP];
+      return [catToSnum(cv.ZODIAC), cv.TOJPVAL];
     default:
       return [null, null];
   }
