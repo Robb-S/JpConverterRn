@@ -17,6 +17,7 @@ export function sleep(ms) {
 }
 
 export function capitalize(ttext) {
+  if (ttext==null) return '';
   if (ttext.length>0) {
     return ttext.charAt(0).toUpperCase() + ttext.slice(1);
   } else {

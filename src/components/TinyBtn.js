@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: clr.white,
+    borderColor: clr.lightGrey,
     borderWidth: 1,
   },
   tinyBtnText: {

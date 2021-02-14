@@ -170,6 +170,7 @@ const HomeScreen = ({navigation}) => {
     }
     await AsyncStorage.setItem('lastPos', JSON.stringify(stLastPos));
   }
+  const bgStyle = getBgStyle(getCvType(screenNum, currDirection));
 
   /**
    * Drawer - buttons to set MainScreen params (pseudo-nav) or navigate to other components.
@@ -190,7 +191,7 @@ const HomeScreen = ({navigation}) => {
       renderNavigationView={() => DrawerView(drawer, navigation, setMode, 
         screenNum, currDirection)}
     >
-    <View style={[styles.container, getBgStyle(getCvType(screenNum, currDirection))]}>
+    <View style={[styles.container, bgStyle]}>
     <SwipeGesture gestureStyle={styles.swipeGestureContainer} 
       onSwipePerformed={onSwipePerformed}>
       <MainScreen 

@@ -3,9 +3,8 @@ import { Text, StyleSheet, View, useWindowDimensions, TextInput,
   ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
-import { cv, getInstructions, getDispName, catToCvType, getBgStyle, 
-  getBgStyle2 } from '../utils/modes';
-import NarrowBtn from './NarrowBtn';
+import { cv, getInstructions, getDispName, getBgStyle, getBgStyle2 } from '../utils/modes';
+// import NarrowBtn from './NarrowBtn';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import ConverterList from './ConverterList';
@@ -44,13 +43,12 @@ export default function MainScreen({cvtype, toggleDirection}) {
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype is now available
   const bgStyle=getBgStyle(cvtype);
-  const bgStyle2=getBgStyle2(cvtype);
+  const bgStyle2 = getBgStyle2(cvtype);
   const setConverter = (newConverter) => { // used by child component ConverterList
     setConvCode(newConverter);
   }
-  const zodiacCvType = catToCvType(cv.ZODIAC, cv.TOJP);
-  const showRadio = (cvtype !== zodiacCvType) && (cvtype !== 'tojpyear');
-  const showToggle = (cvtype !== zodiacCvType);
+  const showRadio = (!([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)));
+  const showToggle = (cvtype !== cv.TOZODIAC);
   
   const resultValue = cvs.getResult(fromValue, convCode);
   const resultPanelText = 
@@ -60,7 +58,6 @@ ${convCode} is convCode / ${resultValue}`;
 
   return (
     <View style={[styles.container, bgStyle]}>
-      {/* <Text style={styles.statusLine1}>{cvs.convCodeToDisplay(convCode)}</Text> */}
       <View style={[styles.inputTextArea, bgStyle2]}>
         <TextInput style={styles.inputTextText}
           onChangeText={text => setFromValue(text)}
@@ -71,13 +68,8 @@ ${convCode} is convCode / ${resultValue}`;
       <Text style={styles.instructionsText}>{instructions}</Text>
       {showToggle && 
       <View style={styles.toggleZone}>
-        <Text style={styles.converterHeader}>
-          {capitalize(getDispName(cvtype))}
-        </Text>
-        <TinyBtn 
-          // onPress={() => toggleDirection(screenNum)}
-          onPress={() => toggleDirection()}
-          text={'Switch direction'} />        
+        <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
+        <TinyBtn onPress={() => toggleDirection()} text={'Switch direction'} />        
       </View>
       }
       {showRadio &&
@@ -93,27 +85,18 @@ const styles = StyleSheet.create({
     height:'100%',
     width:'100%',
     backgroundColor: clr.medGrey,
-    // padding: 10,
-  },
-  statusLine1: {
-    paddingLeft: 10,
-    paddingBottom: 10,
-    paddingTop: 10,
-    color: clr.white,
-    fontSize: 15,
   },
   inputTextArea: {
     marginTop: 3,
     paddingLeft: 10,
     paddingBottom: 10,
     paddingTop: 10,
-    height: 50,
+    // height: 50,
   },
   inputTextText: {
     fontSize: 20,
   },
   resultPanel: {
-    // backgroundColor: clr.white,
     color: clr.white,
     paddingTop: 15,
     paddingLeft: 10,

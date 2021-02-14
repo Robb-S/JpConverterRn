@@ -1,17 +1,17 @@
 /**
  * A collection of helper functions and data for handling navigation and display
  * of various conversion categories and types.
- * conversion categories:  ['metric', 'jpmeasure', 'jpyear', 'zodiac']
+ * conversion categories: ['metric', 'jpmeasure', 'jpyear', 'zodiac']
  * conversion types: ['tometric', 'frommetric', .... 'tozodiac']
  */
 import { clr } from './colors';
 
 /* determine order of display for various conversion categories */
 const navOrder = ["metric", "jpmeasure", "jpyear", "zodiac"];
-const defaultInstructions = 'Choose conversion units below, then enter amount to convert above.';
+const defaultInstructions = 'Select conversion units below, then enter amount above.';
 const zodiacInstructions = 'Enter international year above.';
 const tojpyearInstructions = 'Enter year (1688-present) above.';
-const fromjpyearInstructions = 'Choose Japanese era below, then enter year above.';
+const fromjpyearInstructions = 'Select Japanese era below, then enter year above.';
 /**
  * Get screen number from ID of conversion category.
  */
@@ -39,6 +39,15 @@ export function getBgStyle2(cvtype) {
   return { backgroundColor: bgcol };
 }
 
+export function getBgStyles(cvtype) {
+  const [screenNum, dirBoolean] = fromCvType(cvtype);
+  if (screenNum==null) return { backgroundColor: clr.black};
+  const cvcatID = navOrder[screenNum];
+  const bgcol1 = cvcats[cvcatID].backgroundColor;
+  const bgcol2 = cvcats[cvcatID].backgroundColor2;
+  return [{ backgroundColor: bgcol1 },{ backgroundColor: bgcol2 }];
+}
+
 export function getInstructions(cvtype) {
   const [screenNum, dirBoolean] = fromCvType(cvtype);
   if (screenNum==null) return null;
@@ -53,6 +62,7 @@ export function getInstructions(cvtype) {
  */
 export function getDispName(cvtype) {
   const [screenNum, dirBoolean] = fromCvType(cvtype);
+  if (screenNum==null) return null;
   const dirID = dirBoolean ? 'tojp' : 'fromjp'; // dirID used in object, from boolean
   const cat = navOrder[screenNum]; // conversion category used in object, from screenNum
   const dname = cvcats[cat][dirID].dname;
@@ -83,9 +93,16 @@ export function catToCvType(cat, dirBoolean) {
  */
 export const cv = {
   METRIC: 'metric',
+  TOMETRIC: 'tometric',
+  FROMMETRIC: 'frommetric',
   JPMEASURE: 'jpmeasure',
+  TOJPMEASURE: 'tojpmeasure',
+  FROMJPMEASURE: 'fromjpmeasure',
   JPYEAR: 'jpyear',
+  TOJPYEAR: 'tojpyear',
+  FROMJPYEAR: 'fromjpyear',
   ZODIAC: 'zodiac',
+  TOZODIAC: 'tozodiac',
   TOJP: true,
   FROMJP: false,
 }
