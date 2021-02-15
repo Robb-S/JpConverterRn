@@ -11,3 +11,15 @@ web-build/
 
 # macOS
 .DS_Store
+
+yarn.lock
+.eslint.json
+src/components/ConverterList1.js
+src/components/ConverterList2.js
+src/components/ConverterList3.js
+src/components/MyToolbar.js
+src/components/Toolbar.js
+src/utils/swipe-gesture/*
+assets/ic_drawer.png
+assets/ic_launcher.png
+
