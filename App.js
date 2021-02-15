@@ -10,7 +10,6 @@ const Stack = createStackNavigator();
 const soptions = { 
   headerStyle: {
     backgroundColor: clr.lighterGrey,
-    // height: 80, 
   },
 };
 

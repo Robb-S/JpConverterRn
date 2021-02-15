@@ -7,7 +7,7 @@
 import { clr } from './colors';
 
 /**
- * string constants to catch misspellings
+ * string constants to avoid misspellings
  */
 export const cv = {
   METRIC: 'metric',
@@ -30,7 +30,7 @@ export const cv = {
 /* determine order of display for various conversion categories */
 const navOrder = [cv.METRIC, cv.JPMEASURE, cv.JPYEAR, cv.ZODIAC];
 const defaultInstructions = 'Select conversion units below, then enter amount above.';
-const zodiacInstructions = 'Enter international year above.';
+const zodiacInstructions = 'Enter year above.';
 const tojpyearInstructions = 'Enter year (1688-present) above.';
 const fromjpyearInstructions = 'Select Japanese era below, then enter year above.';
 /**
@@ -84,7 +84,7 @@ export function getCvType(screenNum, dirBoolean) {
   return cvtype;
 }
 /**
- * Return conversion type ID (e.g. "tojpmeasure') from cvtype and direction
+ * Return conversion type ID (e.g. "tojpmeasure') from category and direction
  */
 export function catToCvType(cat, dirBoolean) {
   if (cat==null) return null;

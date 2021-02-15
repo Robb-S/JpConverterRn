@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
-import { getBgStyles, getDispName, getCvType } from '../utils/modes';
+import { cv, getBgStyles, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -67,6 +67,7 @@ const HomeScreen = ({navigation}) => {
   const [screenNum, setScreenNum] = React.useState(null);
   const [dirArray, setDirArray] = React.useState([true, true, true, true]);
   const [currDirection, setCurrDirection] = React.useState(null);
+  const showToggle = (getCvType(screenNum, currDirection) !== cv.TOZODIAC);
 
   /**
    * Add arrow button in header to increment screen number.  This must be placed after the
@@ -76,7 +77,7 @@ const HomeScreen = ({navigation}) => {
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.horizontal}>
-          {(screenNum!==3) && (!isDrawerOpen) &&
+          {(showToggle) && (!isDrawerOpen) &&
             <Icon name='arrow-up-down-bold-outline' size={28} color={clr.medGrey}
               style={styles.iconPadRight} onPress={toggleDirection} />
           }

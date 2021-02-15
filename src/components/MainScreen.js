@@ -17,6 +17,47 @@ function LoadingScreen() {
   )
 }
 
+const stylesZ = StyleSheet.create({
+  zodiacZone: {
+    flexDirection: 'row',
+    marginTop: 10,
+    justifyContent: 'space-evenly',
+  },
+  zodiacPart: {
+    paddingTop: 0,
+  },
+  zodiac1: {
+    fontSize: 100,
+    textAlign: 'center',
+    color: clr.yellow,
+  },
+  zodiac2: {
+    fontSize: 100,
+    textAlign: 'center',
+    color: clr.yellow,
+  },
+  zodiacCaption: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: clr.white,
+  },
+});
+
+function ZodiacKanjiScreen({kanji1, kanji2}) {
+  return (
+    <View style={stylesZ.zodiacZone}>
+      <View style={stylesZ.zodiacPart}>
+        <Text style={stylesZ.zodiac1}>{kanji1}</Text>
+        <Text style={stylesZ.zodiacCaption}>{'zodiac kanji'}</Text>   
+      </View>
+      <View style={stylesZ.zodiacPart}>
+        <Text style={stylesZ.zodiac2}>{kanji2}</Text>
+        <Text style={stylesZ.zodiacCaption}>{'animal kanji'}</Text>   
+      </View>
+    </View>
+  )
+}
+
 export default function MainScreen({cvtype, toggleDirection}) {
 
   const {width, height} = useWindowDimensions();
@@ -48,7 +89,10 @@ export default function MainScreen({cvtype, toggleDirection}) {
   }
   const showRadio = (!([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)));
   const showToggle = (cvtype !== cv.TOZODIAC);
-  
+  const showZodiac = (cvtype === cv.TOZODIAC);
+  const kanji1 = '兔';
+  const kanji2 = '兎';
+
   const resultValue = cvs.getResult(fromValue, convCode);
   const resultPanelText = 
 `${fromValue} fromValue / ${cvtype}
@@ -74,6 +118,11 @@ ${convCode} is convCode / ${resultValue}`;
       {showRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
       }
+
+      {showZodiac &&
+      <ZodiacKanjiScreen kanji1={kanji1} kanji2={kanji2} />
+      }
+
     </View>
   )
 }
@@ -119,6 +168,26 @@ const styles = StyleSheet.create({
   },
   toggleButtonZone: {
     paddingTop: 0,
+  },
+  zodiacZone: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  zodiacPart: {
+    flex: 1,
+  },
+  zodiac1: {
+    fontSize: 100,
+    color: clr.white,
+  },
+  zodiac2: {
+    fontSize: 100,
+    color: clr.white,
+  },
+  zodiacCaption: {
+    fontSize: 14,
+    color: clr.white,
+    textAlign: 'center',
   },
   mainText: {
     // backgroundColor: clr.white,
