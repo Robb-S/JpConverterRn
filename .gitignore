@@ -20,6 +20,7 @@ src/components/ConverterList3.js
 src/components/MyToolbar.js
 src/components/Toolbar.js
 src/utils/swipe-gesture/*
+src/wk/*
 assets/ic_drawer.png
 assets/ic_launcher.png
 
