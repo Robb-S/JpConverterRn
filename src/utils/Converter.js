@@ -1,5 +1,5 @@
 import {cv} from './modes';
-const temperatureConverters = ['f2c', 'c2f'];
+const tempConvCodes = ['c2f', 'f2c'];
 /**
  * One converter object contains conversion rate, labels, etc. to perform one type of 
  * conversion and report results.
@@ -18,7 +18,7 @@ class Converter {
     this.convFactor = convFactor;            // eg 1.60934
     this.sigDigits = sigDigits;              // eg 2 (digits after decimal point)
     this.convType = convType;                // eg "tometric" / "frommetric" / "tojpmeasure" / "fromjpmeasure"
-    if (temperatureConverters.includes(this.convCode)) this.unitSpacer = ''; // space before unit name, none if degree sign        
+    if (tempConvCodes.includes(this.convCode)) this.unitSpacer = ''; // space before unit name, none if degree sign        
     else this.unitSpacer = ' ';
     this.unitKanji = unitKanji;
   }
@@ -27,8 +27,8 @@ class Converter {
    * Return conversion result as floating point.  Mostly used internally.
    */
   getAmt2Float(amt1) { 
-    if (this.convCode==="f2c") { return ((( amt1 - 32.0) * 5.0) / 9.0); }
-    else if (this.convCode==="c2f") {return ((( amt1 * 9.0) / 5.0) + 32.0); }
+    if (this.convCode==='f2c') { return ((( amt1 - 32.0) * 5.0) / 9.0); }
+    else if (this.convCode==='c2f') {return ((( amt1 * 9.0) / 5.0) + 32.0); }
     else { return (amt1 * this.convFactor); }
   }              
   /**

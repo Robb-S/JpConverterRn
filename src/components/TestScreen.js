@@ -4,6 +4,7 @@ import SwipeGesture from '../utils/swipe-gesture2'
 import { clr } from '../utils/colors';
 import NarrowBtn from './NarrowBtn';
 import Converter from '../utils/Converter';
+import Converters from '../utils/Converters';
 
 const TestScreen = ({navigation}) => {
 
@@ -17,11 +18,15 @@ const TestScreen = ({navigation}) => {
   const conv3 = new Converter(...tuple3);
   const conv4 = new Converter(...tuple4);
   const conv5 = new Converter(...tuple5);
-  const testVal1 = conv4.getEquationArray(4);
-  const testVal2 = conv2.getEquationString(32);
-  const testVal3 = conv3.getEquationString(12);
-  const testVal4 = conv4.getEquationString(21);  
-  const testVal5 = conv5.getEquationString(4);
+
+  const cvs = new Converters();
+  const testVal1 = cvs.isTooCold('c2f', -274) ? 'true' : 'false';
+
+  // const testVal1 = conv4.getEquationArray(4);
+  const testVal2 = cvs.getEquationArray('c2f', 32);
+  const testVal3 = cvs.getEquationString('km2mi', 1);
+  const testVal4 = cvs.getEquationString('ft2m', 42);
+  const testVal5 = cvs.getEquationString('c2f', 24);
 
   const onSwipePerformed = (action) => {    
     if (action==='left') {navigation.goBack()}
@@ -33,9 +38,9 @@ const TestScreen = ({navigation}) => {
       onSwipePerformed={onSwipePerformed}>
         <View style={styles.innerView}>
           <Text style={styles.mainText}>Test area</Text>
-          <Text style={styles.mainText}>{testVal1[0]}</Text>
-          <Text style={styles.mainText}>{testVal1[1]}</Text>
-          <Text style={styles.mainText}>{testVal3}</Text>
+          <Text style={styles.mainText}>{testVal1}</Text>
+          <Text style={styles.mainText}>{testVal2[0]}</Text>
+          <Text style={styles.mainText}>{testVal2[1]}</Text>
           <Text style={styles.mainText}>{testVal4}</Text>
           <Text style={styles.mainText}>{testVal5}</Text>
         </View>

@@ -93,11 +93,15 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const kanji1 = '兔';
   const kanji2 = '兎';
   const maxKeyboardLength = 15;
+  const eq = cvs.getEquationArray(convCode, fromValue);
 
   const resultValue = cvs.getResult(fromValue, convCode);
   const resultPanelText = 
 `${fromValue} fromValue / ${cvtype}
 ${convCode} is convCode / ${resultValue}`;
+  const resultPanelText2 = 
+`${eq[0]}
+${eq[1]}`;
   const instructions = getInstructions(cvtype);
 
   return (
@@ -111,7 +115,7 @@ ${convCode} is convCode / ${resultValue}`;
           returnKeyType={'done'}
         />
       </View>
-      <Text style={styles.resultPanel}>{resultPanelText}</Text>
+      <Text style={styles.resultPanel}>{resultPanelText2}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
       {showToggle && 
       <View style={styles.toggleZone}>
