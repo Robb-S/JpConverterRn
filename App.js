@@ -7,18 +7,21 @@ import { clr } from './src/utils/colors';
 
 const Stack = createStackNavigator();
 
-const soptions = { 
+const soptions = {
   headerStyle: {
     backgroundColor: clr.lighterGrey,
+  },
+  headerTitleStyle: {
+    marginLeft: -20,
   },
 };
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home" >
         <Stack.Screen name="Home" component={HomeScreen}  options={soptions} />
-        <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Help" component={HelpScreen}  options={soptions} />
       </Stack.Navigator>
     </NavigationContainer>
   );
