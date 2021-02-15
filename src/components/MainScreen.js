@@ -92,6 +92,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showZodiac = (cvtype === cv.TOZODIAC);
   const kanji1 = '兔';
   const kanji2 = '兎';
+  const maxKeyboardLength = 15;
 
   const resultValue = cvs.getResult(fromValue, convCode);
   const resultPanelText = 
@@ -105,6 +106,9 @@ ${convCode} is convCode / ${resultValue}`;
         <TextInput style={styles.inputTextText}
           onChangeText={text => setFromValue(text)}
           value={fromValue}
+          keyboardType={'numeric'}
+          maxLength={maxKeyboardLength}
+          returnKeyType={'done'}
         />
       </View>
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
@@ -168,26 +172,6 @@ const styles = StyleSheet.create({
   },
   toggleButtonZone: {
     paddingTop: 0,
-  },
-  zodiacZone: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  zodiacPart: {
-    flex: 1,
-  },
-  zodiac1: {
-    fontSize: 100,
-    color: clr.white,
-  },
-  zodiac2: {
-    fontSize: 100,
-    color: clr.white,
-  },
-  zodiacCaption: {
-    fontSize: 14,
-    color: clr.white,
-    textAlign: 'center',
   },
   mainText: {
     // backgroundColor: clr.white,
