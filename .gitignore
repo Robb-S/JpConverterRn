@@ -11,3 +11,8 @@ web-build/
 
 # macOS
 .DS_Store
+newtemp/
+.eslintrc.json
+.gitignore
+package.json
+yarn.lock
