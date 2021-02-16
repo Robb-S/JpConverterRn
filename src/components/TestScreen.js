@@ -31,6 +31,9 @@ const TestScreen = ({navigation}) => {
   const onSwipePerformed = (action) => {    
     if (action==='left') {navigation.goBack()}
   }
+  
+  const onearray = cvs.convTypeToConvCodes('tometric'); 
+  console.log(onearray);
 
   return (
     <View style={styles.container} >

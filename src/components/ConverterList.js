@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 
   'react-native-simple-radio-button';
 import { clr } from '../utils/colors';
@@ -27,43 +27,39 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
   }
 
   /** 
-   * Use cvtype for key values in text and RadioForm to force a rerendering when cvtype changes,
-   * due to swiping screen or toggling direction.  (Otherwise it won't reset chosen 
+   * Use cvtype for key value in RadioForm to force a rerendering when cvtype changes,
+   * due to swiping screen or toggling direction. (Otherwise maybe it won't reset chosen 
    * position to top radio button.)
    */
   return (
     <ScrollView style={styles.converterList}>
-      {/* <Text key={cvtype+'0'} style={styles.smallText}>{cvtype} / {convCodeLocal}</Text> */}
-      {/* <ScrollView> */}
-        <RadioForm formHorizontal={false} animation={true} style={styles.radioForm} >
-          {radioProps.map((obj, i) => {
-            return (
-              <RadioButton labelHorizontal={true} key={i} >
-                {/*  You can set RadioButtonLabel before RadioButtonInput */}
-                <RadioButtonInput
-                  obj={obj}
-                  index={i}
-                  isSelected={radioIndex === i}
-                  onPress={onPressProc}
-                  buttonInnerColor={clr.lightGrey}
-                  buttonOuterColor={radioIndex === i ? clr.black : clr.darkGrey}
-                  buttonSize={14}
-                  buttonStyle={{marginTop: 4, marginBottom: 6}}
-                  buttonWrapStyle={{marginRight: 10, marginLeft: 10}}
-                />
-                <RadioButtonLabel
-                  obj={obj}
-                  index={i}
-                  onPress={onPressProc}
-                  labelStyle={{fontWeight: 'bold', color: clr.lighterGrey}}
-                  labelWrapStyle={{marginTop: -3}}
-                />
-              </RadioButton>
-            )
-          })}
-        </RadioForm>
-      </ScrollView>
-    // </View>
+      <RadioForm animation={true} style={styles.radioForm} key={cvtype}>
+        {radioProps.map((obj, i) => {
+          return (
+            <RadioButton labelHorizontal={true} key={i} >
+              <RadioButtonInput
+                obj={obj}
+                index={i}
+                isSelected={radioIndex===i}
+                onPress={onPressProc}
+                buttonInnerColor={clr.lightGrey}
+                buttonOuterColor={radioIndex === i ? clr.black : clr.darkGrey}
+                buttonSize={14}
+                buttonStyle={{marginTop: 4, marginBottom: 5}}
+                buttonWrapStyle={{marginRight: 10, marginLeft: 10}}
+              />
+              <RadioButtonLabel
+                obj={obj}
+                index={i}
+                onPress={onPressProc}
+                labelStyle={{fontWeight: 'bold', color: clr.lighterGrey}}
+                labelWrapStyle={{marginTop: -3}}
+              />
+            </RadioButton>
+          )
+        })}
+      </RadioForm>
+    </ScrollView>
   )
 }
 
@@ -74,18 +70,7 @@ const styles = StyleSheet.create({
     borderColor: clr.lighterGrey,
   },
   radioForm: {
-    paddingTop: 5,
-    paddingBottom: 5,
-  },
-  smallText: {
-    // display: 'none',
-    backgroundColor: clr.darkGrey,
-    color: clr.white,
-    padding: 10,
-    fontSize: 11,
-    width: '100%',
-    marginBottom: 2,
-    textAlign: 'center',
-    marginRight: 5,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 });

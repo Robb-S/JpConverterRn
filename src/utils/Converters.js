@@ -70,9 +70,9 @@ class Converters {
     if (this.validConvTypes.includes(convTuple[7])) { // make sure convType is valid and not misspelled
       this.convDict[convTuple[0]] = new Converter(...convTuple)  // use convCode as index, overwrite if it already exists
       this.clearConvTypeDicts();  // will recalculate these when necessary
-    } else { // TODO raise error?
+    } else {
       console.log('** invalid converter type: ' + convTuple[7]);
-      alert ('invalid converter type ' + convTuple[7]);
+      // alert ('invalid converter type ' + convTuple[7]);
     }
     // console.log('**loading one converter.');
   }  
@@ -88,6 +88,50 @@ class Converters {
     if ((convCode === "c2f") && (amt1<this.minimumCentigrade)) return true;
     if ((convCode == "f2c") && (amt1<this.minimumFahrenheit)) return true;
     return false;
+  }
+  /**
+   * Make both convType dictionaries at the same time. They are used to populate UI radio buttons.
+   * convTypeToConvCodesDict - key is convType, each value is array of convCode strings.
+   * convTypeToConvInfoDict - key is convType, value is array of [convCode, conv display] tuples
+   */
+  makeConvTypeToConvDicts() {
+    this.clearConvTypeDicts();
+    for (const [theCode, oneConverter] of Object.entries(this.convDict)) {
+      const theType = oneConverter.getConvType();
+      const theDisplay = oneConverter.getConvDisplay();
+      const theTuple = [theCode, theDisplay];
+      if (this.convTypeToConvCodesDict.hasOwnProperty(theType)) {
+        this.convTypeToConvCodesDict[theType].push(theCode);
+      } else {
+        this.convTypeToConvCodesDict[theType] = [theCode];
+      }
+      if (this.convTypeToConvInfoDict.hasOwnProperty(theType)) {
+        this.convTypeToConvInfoDict[theType].push(theTuple);
+      } else {
+        this.convTypeToConvInfoDict[theType] = [theTuple];
+      }
+    }
+  }
+  /**
+   * Return array of convCodes for a particular convType (e.g. "tometric").
+   * If dictionary is empty, call method to create it.
+   */
+  convTypeToConvCodes(convType) {
+    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
+    if ((this.convTypeToConvCodesDict.hasOwnProperty(convType))) {
+      return this.convTypeToConvCodesDict[convType];
+    } else {return []; }
+  }
+
+    /**
+   * Return array of convInfo tuples for a particular convType.
+   * If dictionary is empty, call method to create it.
+   */
+  convTypeToConvInfo(convType) {
+    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
+    if ((this.convTypeToConvInfoDict.hasOwnProperty(convType))) {
+      return this.convTypeToConvInfoDict[convType];
+    } else {return []; }
   }
 
   getMinAmt(convCode) {
@@ -123,49 +167,18 @@ class Converters {
     return radioProps[0].value;
   }
 
+  /**
+   * Returns array of objects {label: convDisplayText, value: convCode} to make radio buttons.
+   */
   convTypeToRadioProps(convType) {
-    if (['tometric'].includes(convType)) {
-      return [
-        {label: '°F to °C', value: 'f2c' },
-        {label: 'miles to kilometers', value: 'mi2km' },
-        {label: 'feet to meters', value: 'ft2m' },
-        {label: 'inches to centimeters"', value: 'in2cm' },
-        {label: 'square feet to square meters', value: 'sqft2sqm' },
-        {label: 'pounds to kilograms', value: 'lb2kg' },
-        {label: 'fluid ounces to milliliters', value: 'oz2ml' },    
-      ];
-    } else if (['frommetric'].includes(convType)) {
-      return [
-        {label: '°C to °F', value: 'c2f' },
-        {label: 'kilometers to miles', value: 'km2mi' },
-        {label: 'meters to feet', value: 'm2ft' },
-        {label: 'centimeters to inches', value: 'cm2in' },     
-        {label: 'square meters to square feet', value: 'sqm2sqft' },
-        {label: 'kilograms to pounds', value: 'kg2lb' },
-        {label: 'milliliters to fluid ounces', value: 'ml2oz' },
-      ];
-    } else if (['tojpmeasure'].includes(convType)) {
-      return [
-        {label: 'square meters to tsubo', value: 'sqm2tsubo' },
-        {label: 'jpmeasure 1', value: 'jpmeasure1' },
-        {label: 'jpmeasure 2', value: 'jpmeasure2' },
-        {label: 'jpmeasure 3', value: 'jpmeasure3' },
-        {label: 'jpmeasure 4', value: 'jpmeasure4' },
-        {label: 'jpmeasure 5', value: 'jpmeasure5' },
-        {label: 'jpmeasure 6', value: 'jpmeasure6' },
-        {label: 'jpmeasure 7', value: 'jpmeasure7' },
-        {label: 'jpmeasure 8', value: 'jpmeasure8' },
-        {label: 'jpmeasure 9', value: 'jpmeasure9' },
-        {label: 'jpmeasure 10', value: 'jpmeasure10' },
-      ];
-    } else if (['fromjpmeasure'].includes(convType)) {
-      return [
-        {label: 'tsubo to square meters', value: 'tsubo2sqm' },
-        {label: 'jpmeasure 1', value: 'jpmeasure1' },
-        {label: 'jpmeasure 2', value: 'jpmeasure2' },
-        {label: 'jpmeasure 4', value: 'jpmeasure4' },
-        {label: 'jpmeasure 5', value: 'jpmeasure5' },
-      ];
+    if (['tometric', 'frommetric', 'tojpmeasure', 'fromjpmeasure'].includes(convType)) {
+      const rpArray = [];
+      const cInfoTupleArray = this.convTypeToConvInfo(convType);
+      for (const [convCode, convDesc] of cInfoTupleArray) {
+        const oneRadioPropObj = {label: convDesc, value: convCode};
+        rpArray.push(oneRadioPropObj);
+      }
+      return rpArray;
     } else if (['tojpyear', 'fromjpyear'].includes(convType)) {
       return [
         {label: 'jpyears 1', value: 'jpyears1' },
@@ -200,20 +213,20 @@ class Converters {
     }
   }
 
-  convTypeToConvCodes(convType) {
-    // console.log('convTypeToConvCodes for ' + convType);
-    if (['tometric', 'frommetric'].includes(convType)) {
-      return ['metric1', 'metric2 ','metric3 ','metricmetric4',
-      'metric5', 'metric6','metric7'];
-    } else if (['tojpmeasure', 'fromjpmeasure', 'tozodiac'].includes(convType)) {
-      return ['converter B1', 'converter B2','converter B3',
-      'converter converter B4','converter B5', 'converterB6', 'converterB7'];
-    } else {
-      return ['jyears B1', 'jyears B2','jyears B3',
-      'jyears jyears B4','jyears B5', 'jyears B7', 'jyears B7',
-      'jyears jyears C4','jyears C5', 'jyears C6', 'jyears C7'];
-    }
-  }
+  // convTypeToConvCodes(convType) {
+  //   // console.log('convTypeToConvCodes for ' + convType);
+  //   if (['tometric', 'frommetric'].includes(convType)) {
+  //     return ['metric1', 'metric2 ','metric3 ','metricmetric4',
+  //     'metric5', 'metric6','metric7'];
+  //   } else if (['tojpmeasure', 'fromjpmeasure', 'tozodiac'].includes(convType)) {
+  //     return ['converter B1', 'converter B2','converter B3',
+  //     'converter converter B4','converter B5', 'converterB6', 'converterB7'];
+  //   } else {
+  //     return ['jyears B1', 'jyears B2','jyears B3',
+  //     'jyears jyears B4','jyears B5', 'jyears B7', 'jyears B7',
+  //     'jyears jyears C4','jyears C5', 'jyears C6', 'jyears C7'];
+  //   }
+  // }
 }
 
 export default Converters;

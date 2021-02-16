@@ -1,17 +1,15 @@
 import React, {useState} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, TextInput,  
-  ScrollView, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions, TextInput } from 'react-native';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
 import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
-// import NarrowBtn from './NarrowBtn';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import ConverterList from './ConverterList';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
+// import NarrowBtn from './NarrowBtn';
 // import { Formik } from "formik"; 
 // import * as Yup from "yup";
-
 // import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function LoadingScreen() {
@@ -20,51 +18,9 @@ function LoadingScreen() {
   )
 }
 
-const stylesZ = StyleSheet.create({
-  zodiacZone: {
-    flexDirection: 'row',
-    marginTop: 10,
-    justifyContent: 'space-evenly',
-  },
-  zodiacPart: {
-    paddingTop: 0,
-  },
-  zodiac1: {
-    fontSize: 100,
-    textAlign: 'center',
-    color: clr.yellow,
-  },
-  zodiac2: {
-    fontSize: 100,
-    textAlign: 'center',
-    color: clr.yellow,
-  },
-  zodiacCaption: {
-    fontSize: 14,
-    textAlign: 'center',
-    color: clr.white,
-  },
-});
-
-function ZodiacKanjiScreen2({kanji1, kanji2}) {
-  console.log('calling kscreen2: ' + kanji1);
-  return (
-    <View style={stylesZ.zodiacZone}>
-      <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac1}>{kanji1}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'zodiac kanji'}</Text>   
-      </View>
-      <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac2}>{kanji2}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'animal kanji'}</Text>   
-      </View>
-    </View>
-  )
-}
 
 export default function MainScreen({cvtype, toggleDirection}) {
-
-  const {width, height} = useWindowDimensions();
+  // const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);
   const [convCode, setConvCode] = useState(null);
   const [fromValue, setFromValue] = useState(''); // will base initial value on cvtype
@@ -111,9 +67,7 @@ ${eq[1]} `;
   const onChangeTextProc = (text) => {
     let isValid = true;
     if (isNaN(text) && (text!=='-')) isValid=false; // initial minus sign is okay
-    if (isValid) { 
-      setFromValue(text); 
-    }
+    if (isValid) { setFromValue(text); }
   }
 
   return (
@@ -171,10 +125,10 @@ const styles = StyleSheet.create({
   },
   resultPanel: {
     color: clr.white,
-    paddingTop: 15,
+    paddingTop: 13,
     paddingLeft: 10,
     paddingBottom: 6,
-    marginBottom: 10,
+    marginBottom: 8,
     fontSize: 26,
     lineHeight: 38,
     width: '100%',
