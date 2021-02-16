@@ -100,8 +100,8 @@ export default function MainScreen({cvtype, toggleDirection}) {
 `${fromValue} fromValue / ${cvtype}
 ${convCode} is convCode / ${resultValue}`;
   const resultPanelText2 = 
-`${eq[0]}
-${eq[1]}`;
+`${eq[0]} 
+${eq[1]} `;
   const instructions = getInstructions(cvtype);
 
   return (
@@ -117,7 +117,7 @@ ${eq[1]}`;
       </View>
       <Text style={styles.resultPanel}>{resultPanelText2}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
-      
+
       {showToggle && 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
@@ -162,9 +162,9 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingLeft: 10,
     paddingBottom: 6,
-    marginBottom: 12,
-    fontSize: 20,
-    lineHeight: 36,
+    marginBottom: 10,
+    fontSize: 26,
+    lineHeight: 38,
     width: '100%',
     textAlign: 'left',
   },

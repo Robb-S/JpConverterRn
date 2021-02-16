@@ -13,7 +13,7 @@ const soptions = {
     backgroundColor: clr.lighterGrey,
   },
   headerTitleStyle: {
-    marginLeft: -20,
+    marginLeft: -28,
   },
 };
 
