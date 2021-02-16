@@ -140,12 +140,12 @@ const cvcats = {
     backgroundColor2: clr.lighterIndigo,
     tojp: {
       cvtype: cv.TOJPMEASURE,
-      dname: "to Japanese measures",
+      dname: "to Jp measures",
       instructions: defaultInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPMEASURE,
-      dname: "from Japanese measures",
+      dname: "from Jp measures",
       instructions: defaultInstructions,
     },
   },
@@ -155,12 +155,12 @@ const cvcats = {
     backgroundColor2: clr.lighterDeepOrange,
     tojp: {
       cvtype: cv.TOJPYEAR,
-      dname: "to Japanese years",
+      dname: "to Jp years",
       instructions: tojpyearInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPYEAR,
-      dname: "from Japanese years",
+      dname: "from Jp years",
       instructions: fromjpyearInstructions,
     },
   },

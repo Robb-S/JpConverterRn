@@ -117,12 +117,17 @@ ${eq[1]}`;
       </View>
       <Text style={styles.resultPanel}>{resultPanelText2}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
+      
       {showToggle && 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
-        <TinyBtn onPress={() => toggleDirection()} text={'Switch direction'} />        
+        <View style={styles.toggleButtonZone} >
+          <TinyBtn onPress={() => toggleDirection()} 
+            text={'Switch direction'} color={clr.lightBlue} />        
+        </View>  
       </View>
       }
+
       {showRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
       }
@@ -165,6 +170,7 @@ const styles = StyleSheet.create({
   },
   toggleZone: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   converterHeader: {
@@ -175,7 +181,8 @@ const styles = StyleSheet.create({
     color: clr.white,
   },
   toggleButtonZone: {
-    paddingTop: 0,
+    paddingRight: 10,
+    paddingTop: 1,
   },
   mainText: {
     // backgroundColor: clr.white,

@@ -135,8 +135,14 @@ class Converters {
         {label: 'square meters to tsubo', value: 'sqm2tsubo' },
         {label: 'jpmeasure 1', value: 'jpmeasure1' },
         {label: 'jpmeasure 2', value: 'jpmeasure2' },
+        {label: 'jpmeasure 3', value: 'jpmeasure3' },
         {label: 'jpmeasure 4', value: 'jpmeasure4' },
         {label: 'jpmeasure 5', value: 'jpmeasure5' },
+        {label: 'jpmeasure 6', value: 'jpmeasure6' },
+        {label: 'jpmeasure 7', value: 'jpmeasure7' },
+        {label: 'jpmeasure 8', value: 'jpmeasure8' },
+        {label: 'jpmeasure 9', value: 'jpmeasure9' },
+        {label: 'jpmeasure 10', value: 'jpmeasure10' },
       ];
     } else if (['fromjpmeasure'].includes(convType)) {
       return [

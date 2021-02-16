@@ -32,9 +32,9 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
    * position to top radio button.)
    */
   return (
-    <View style={styles.converterList}>
+    <ScrollView style={styles.converterList}>
       {/* <Text key={cvtype+'0'} style={styles.smallText}>{cvtype} / {convCodeLocal}</Text> */}
-      <ScrollView>
+      {/* <ScrollView> */}
         <RadioForm formHorizontal={false} animation={true} style={styles.radioForm} >
           {radioProps.map((obj, i) => {
             return (
@@ -63,7 +63,7 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
           })}
         </RadioForm>
       </ScrollView>
-    </View>
+    // </View>
   )
 }
 
