@@ -8,6 +8,9 @@ import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import ConverterList from './ConverterList';
+import ZodiacKanjiScreen from './ZodiacKanjiScreen';
+// import { Formik } from "formik"; 
+// import * as Yup from "yup";
 
 // import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -43,7 +46,8 @@ const stylesZ = StyleSheet.create({
   },
 });
 
-function ZodiacKanjiScreen({kanji1, kanji2}) {
+function ZodiacKanjiScreen2({kanji1, kanji2}) {
+  console.log('calling kscreen2: ' + kanji1);
   return (
     <View style={stylesZ.zodiacZone}>
       <View style={stylesZ.zodiacPart}>
@@ -82,7 +86,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
   }, [cvs, convCode, cvtype]);
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
-  // cvtype is now available
+  // cvtype (conversion type, e.g. 'frommetric'), is now available
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   const setConverter = (newConverter) => { // used by child component ConverterList
     setConvCode(newConverter);
@@ -92,7 +96,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showZodiac = (cvtype === cv.TOZODIAC);
   const kanji1 = '兔';
   const kanji2 = '兎';
-  const maxKeyboardLength = 15;
+  const maxKeyboardLength = 12;
   const eq = cvs.getEquationArray(convCode, fromValue);
 
   const resultValue = cvs.getResult(fromValue, convCode);
@@ -104,11 +108,19 @@ ${convCode} is convCode / ${resultValue}`;
 ${eq[1]} `;
   const instructions = getInstructions(cvtype);
 
+  const onChangeTextProc = (text) => {
+    let isValid = true;
+    if (isNaN(text) && (text!=='-')) isValid=false; // initial minus sign is okay
+    if (isValid) { 
+      setFromValue(text); 
+    }
+  }
+
   return (
     <View style={[styles.container, bgStyle]}>
       <View style={[styles.inputTextArea, bgStyle2]}>
         <TextInput style={styles.inputTextText}
-          onChangeText={text => setFromValue(text)}
+          onChangeText={onChangeTextProc}
           value={fromValue}
           keyboardType={'numeric'}
           maxLength={maxKeyboardLength}

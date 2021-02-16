@@ -90,6 +90,12 @@ class Converters {
     return false;
   }
 
+  getMinAmt(convCode) {
+    if (convCode==='c2f') {return this.minimumCentigrade;}
+    else if (convCode==='f2c') {return this.minimumFahrenheit;}
+    else {return 0;}
+  }
+
   getEquationString(convCode, amt1, eqstring=" = ") {
     let result = '';
     try {result = this.convDict[convCode].getEquationString(amt1, eqstring);} 
@@ -98,8 +104,16 @@ class Converters {
   }
 
   getEquationArray(convCode, amt1, eqstring="= ") {
+    const amt1Num = (amt1==='-') ? 0 : amt1;
     let result = ['', ''];
-    try {result = this.convDict[convCode].getEquationArray(amt1, eqstring);} 
+    try {
+      result = this.convDict[convCode].getEquationArray(amt1Num, eqstring);
+      if (isNaN(amt1Num)) {
+        result[1] = 'is not a number';
+      } else if (amt1Num<this.getMinAmt(convCode)) {        
+        result[1] = this.isTooCold(convCode, amt1Num) ? 'is below absolute zero':'is out of range';      
+      }
+    } 
     catch (error) {}
     return result;
   }
