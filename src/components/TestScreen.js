@@ -5,15 +5,22 @@ import { clr } from '../utils/colors';
 import NarrowBtn from './NarrowBtn';
 import Converter from '../utils/Converter';
 import Converters from '../utils/Converters';
+import YearConverters from '../utils/YearConverters';
 
 const TestScreen = ({navigation}) => {
 
+
+  const yrs = new YearConverters();
+  const testVal1 = yrs.getNowYear();
+  const testVal2 = typeof(testVal1);
+  const testVal3 = yrs.getZodEName('2021');
+  const testVal4 = yrs.getZodJName(2021);
+  const testVal5 = yrs.getZodEquationStr('2022');
+
   const cvs = new Converters();
-  const testVal1 = cvs.getUnitKanji('ml2sh');
-  const testVal2 = cvs.getAmt2String('c2f', 32);
-  const testVal3 = cvs.getAmt2Float('km2mi', '1');
-  const testVal4 = cvs.getAmt1StringUnits('ft2m', 1);
-  const testVal5 = cvs.getAmt1StringUnits('ft2m', 12);
+  // const testVal3 = cvs.getAmt2Float('km2mi', '1');
+  // const testVal4 = cvs.getAmt1StringUnits('ft2m', 1);
+  // const testVal5 = cvs.getAmt1StringUnits('ft2m', 12);
 
   const onSwipePerformed = (action) => {    
     if (action==='left') {navigation.goTo('Home')}
