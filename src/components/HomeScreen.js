@@ -82,7 +82,7 @@ const HomeScreen = ({navigation}) => {
   // direction array will remember last conversion direction for each conversion type
   const [screenNum, setScreenNum] = React.useState(null);
   const [dirArray, setDirArray] = React.useState([true, true, true, true]);
-  const [currDirection, setCurrDirection] = React.useState(null);
+  const [currDirection, setCurrDirection] = React.useState(true);
   const showToggle = (getCvType(screenNum, currDirection) !== cv.TOZODIAC);
 
   /**

@@ -44,7 +44,7 @@ export function catToSnum(cvcatID) {
  * Return styles with primary and secondary background colors based on screen number.
  */
 export function getBgStyles(cvtype) {
-  const [screenNum, dirBoolean] = fromCvType(cvtype);
+  const [screenNum, dirBoolean] = fromCvType(cvtype); // direction not used
   if (screenNum==null) return [{backgroundColor: clr.black}, {backgroundColor: clr.black}];
   const cvcatID = navOrder[screenNum];
   const bgcol1 = cvcats[cvcatID].backgroundColor1;
@@ -78,6 +78,7 @@ export function getDispName(cvtype) {
  */
 export function getCvType(screenNum, dirBoolean) {
   if (screenNum==null) return null;
+  if (dirBoolean===null) return null;
   const dirID = dirBoolean ? cv.TOJPID : cv.FROMJPID; // dirID used in object
   const cat = navOrder[screenNum];
   const cvtype = cvcats[cat][dirID].cvtype;
@@ -89,7 +90,7 @@ export function getCvType(screenNum, dirBoolean) {
 export function catToCvType(cat, dirBoolean) {
   if (cat==null) return null;
   const dirID = dirBoolean ? cv.TOJPID : cv.FROMJPID; // dirID used in object
-  const cvType = cvcats[cat][dirId].cvtype;
+  const cvType = cvcats[cat][dirID].cvtype;
   return cvType;
 }
 
