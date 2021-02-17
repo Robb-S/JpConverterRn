@@ -7,6 +7,7 @@ import { clr } from '../utils/colors';
 export default function ConverterList({cvtype, cvs, setConverter})  {
   const radioProps = cvs.convTypeToRadioProps(cvtype);
   const initialConvCode = cvs.getFirstConvCodeFromConvType(cvtype);
+  console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
   const initialRadioIx = 0;
   const [convCodeLocal, setConvCodeLocal] = useState(initialConvCode);
   const [radioIndex, setRadioIndex] = useState(initialRadioIx);
