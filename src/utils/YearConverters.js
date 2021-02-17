@@ -1,4 +1,5 @@
 import {cv} from './modes';
+import {decodeHtmlCharCodes} from './helpers';
 /**
  * Container for era objects, zodiac objects
  * prop: yDict (eraCode: OneEra), eraCodeAllList (alpha sorted), 
@@ -11,7 +12,6 @@ class YearConverters {
     this.nowYear = new Date().getFullYear();
     this.minYear = 100000;          // set this later
     this.modernEraStart = 1868      // beginning of Meiji era
-    // this.htmlparse = HTMLParser();
     // this.loadJYears()               // load data and prepare indexes
     this.zToYearsDict = {};         // this will be set up only after it's requested
     this.loadZYears();
@@ -40,20 +40,51 @@ class YearConverters {
   getZodEName(theyear) { return (this.zFromYearDict[theyear%12].getEName()); }
   getZodJName(theyear) { return (this.zFromYearDict[theyear%12].getJName()); }
   getZodJZName(theyear) { return (this.zFromYearDict[theyear%12].getJZName()); }
-  getZodEquationStr(theyear) {
+  getZodEquationString(theyear) {
     if (isNaN(theyear) || theyear<1) return theyear;
     const oneZod = this.zFromYearDict[theyear%12];
     return `${theyear} is year of the ${oneZod.getEName()}`;
   }
-  getZodEquationArr(theyear) {
-    if (isNaN(theyear) || theyear>1) return [theyear,''];
+  getZodEquationArray(theyear) {
+    if (isNaN(theyear) || theyear<1) return [theyear,''];
     const oneZod = this.zFromYearDict[theyear%12];
     return [`${theyear}`, `is year of the ${oneZod.getEName()}`];
   }
 }
 
 /**
- * Each object stores info for one type of zodiac year.
+ * era object: eraCode (simple name), eName (name with macrons), jName (kanji), 
+ * startYear, endYear, numYears (calculated)
+ */
+export class OneEra { // TODO: don't export, use locally only
+  constructor (eraCode, eName, jName, startYear, endYear) {
+    this.eraCode = eraCode;
+    this.eName = eName;
+    this.jName = jName;
+    this.startYear = startYear;
+    this.endYear = endYear;
+    if (this.endYear === 0) {this.numYears = 0;}  // used for current era
+    else {this.numYears = this.endYear - this.startYear + 1;}
+  }
+  isIYearInEra(iYear) {
+    if (this.endYear===0) {return iYear>=this.startYear;}
+    else {return ((iYear>=this.startYear) && (iYear<=this.endYear));}
+  }
+  iYearToEraYear(iYear) {
+    if (this.isIYearInEra(iYear)) {return iYear-this.startYear+1;}
+    else {return 0;}
+  }
+  getEraCode() {return this.eraCode;}
+  getEName() {return decodeHtmlCharCodes(this.eName);}
+  getENameRaw() {return this.eName};
+  getJName() { return this.jName; }
+  getStartYear() {return this.startYear;}
+  getEndYear() {return this.endYear;}
+  getNumYears() { return this.numYears;}
+}
+
+/**
+ * Each ZodiacYear object stores info for one type of zodiac year.
  */
 class ZodiacYear {
   constructor (yearMod, eName, jName, jZName) {

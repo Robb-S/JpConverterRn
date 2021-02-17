@@ -2,17 +2,17 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { clr } from '../utils/colors';
 
-export default function ZodiacKanjiScreen({kanji1, kanji2}) {
-  // console.log('calling kscreen: ' + kanji1);
+export default function ZodiacKanjiScreen({kanjiJ, kanjiJZ, 
+  caption1='animal kanji', caption2='zodiac kanji'}) {
   return (
     <View style={stylesZ.zodiacZone}>
       <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac1}>{kanji1}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'Zodiac kanji'}</Text>   
+        <Text style={stylesZ.zodiac1}>{kanjiJ}</Text>
+        <Text style={stylesZ.zodiacCaption}>{caption1}</Text>   
       </View>
       <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac2}>{kanji2}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'Animal kanji'}</Text>   
+        <Text style={stylesZ.zodiac2}>{kanjiJZ}</Text>
+        <Text style={stylesZ.zodiacCaption}>{caption2}</Text>   
       </View>
     </View>
   )

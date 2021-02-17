@@ -31,7 +31,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
     setCvs(gotcvs);
     setYc(gotyc);
   }, []); 
-  React.useEffect(() => { // after swipe, change chosen convCode to first on list
+  React.useEffect(() => { // after swipe, change chosen CONVCODE to first on list
     if (cvs && cvtype) {
       if (isNumericConv(cvtype)) {
         setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
@@ -42,9 +42,9 @@ export default function MainScreen({cvtype, toggleDirection}) {
     }
   }, [cvs, cvtype]);
 
-  React.useEffect(() => { // reset fromValue to current year or 1 when switching conversion code
-    if (cvs && yc && convCode) {
-      console.log('setting init fromValue ', convCode, cvtype);
+  React.useEffect(() => { // reset FROMVALUE to current year or 1 when switching conversion code
+    if (cvs && yc && cvtype) {
+      console.log('setting init fromValue ', cvtype);
       if (isNumericConv(cvtype)) {setFromValue('1');}
       else if ([cv.TOJPYEAR, cv.TOZODIAC].includes(cvtype)) {setFromValue(yc.getNowYear().toString());}
       else {setFromValue('');}
@@ -61,10 +61,21 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showRadio = (!([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)));
   const showToggle = (cvtype !== cv.TOZODIAC);
   const showZodiac = (cvtype === cv.TOZODIAC);
-  const kanji1 = '兔';
-  const kanji2 = '兎';
   const maxInputTextLength = 12;
-  const eq = cvs.getEquationArray(convCode, fromValue);
+  let eq, kanjiJ, kanjiJZ, caption1, caption2;
+  if (cvtype===cv.TOZODIAC) {
+    eq = yc.getZodEquationArray(fromValue);
+    kanjiJ = yc.getZodJName(fromValue);
+    kanjiJZ = yc.getZodJZName(fromValue);
+    const eName = yc.getZodEName(fromValue);
+    caption1 = eName;
+    caption2 = eName + ' zodiac sign';
+  } else if (isNumericConv(cvtype)) {
+    eq = cvs.getEquationArray(convCode, fromValue);
+  } else {
+    eq = ['jpyear is ', 'pending'];
+  }
+
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
 
   const instructions = getInstructions(cvtype);
@@ -104,7 +115,8 @@ export default function MainScreen({cvtype, toggleDirection}) {
       }
 
       {showZodiac &&
-      <ZodiacKanjiScreen kanji1={kanji1} kanji2={kanji2} />
+      <ZodiacKanjiScreen kanjiJ={kanjiJ} kanjiJZ={kanjiJZ} caption1={caption1} 
+        caption2={caption2} />
       }
 
     </View>
