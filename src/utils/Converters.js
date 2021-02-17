@@ -24,6 +24,12 @@ class Converters {
     this.convTypeToConvInfoDict = {}; // key = convType, value = list of (convCode, convDisplay) tuples
   }
   /**
+   * Returns true if valid conversion type
+   */
+  isValidConvType(convType) {
+    return this.validConvTypes.includes(convType);
+  }
+  /**
    * Return true for temperature conversions 'f2c' or 'c2f'.
    */
   isTempConv(convCode) {return this.tempConvCodes.includes(convCode);}
@@ -165,7 +171,11 @@ class Converters {
   }
 
   getFirstConvCodeFromConvType(convType) { // temp uses radioProps
+    // console.log('** getFirstConvCodeFromConvType');
     const radioProps = this.convTypeToRadioProps(convType);
+    // console.log('** called convTypeToRadioProps');
+    // console.log('convType: ' + convType);
+    // console.log(radioProps);
     return radioProps[0].value;
   }
 
@@ -187,7 +197,7 @@ class Converters {
       {label: 'jpyears 8', value: 'jpyears8' },   
       ];
     }
-    if (['tozodiac'].includes(convType)) { // TODO: REMOVE
+    if (['tozodiac', 'dummy'].includes(convType)) { // TODO: REMOVE
       return [
         {label: 'zodiac 1', value: 'zodiac1' },
       ];

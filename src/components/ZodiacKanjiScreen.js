@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { clr } from '../utils/colors';
 
 export default function ZodiacKanjiScreen({kanji1, kanji2}) {
-  console.log('calling kscreen: ' + kanji1);
+  // console.log('calling kscreen: ' + kanji1);
   return (
     <View style={stylesZ.zodiacZone}>
       <View style={stylesZ.zodiacPart}>

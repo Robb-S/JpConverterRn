@@ -5,6 +5,7 @@ import { capitalize } from '../utils/helpers';
 import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
+import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
 // import NarrowBtn from './NarrowBtn';
@@ -21,27 +22,38 @@ function LoadingScreen() {
 export default function MainScreen({cvtype, toggleDirection}) {
   // const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);
+  const [yc, setYc] = useState(null);
   const [convCode, setConvCode] = useState(null);
   const [fromValue, setFromValue] = useState(''); // will base initial value on cvtype
-  React.useEffect(() => { // fetch Converters object on first load
+  React.useEffect(() => { // fetch Converters objects on first load
     const gotcvs = new Converters();
+    const gotyc = new YearConverters();
     setCvs(gotcvs);
+    setYc(gotyc);
   }, []); 
   React.useEffect(() => { // after swipe, change chosen convCode to first on list
     if (cvs && cvtype) {
-      setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
-      console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+      if (isNumericConv(cvtype)) {
+        setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
+        console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+      } else {
+        setConvCode(null); 
+      }
     }
   }, [cvs, cvtype]);
 
   React.useEffect(() => { // reset fromValue to current year or 1 when switching conversion code
-    if (cvs && convCode) {
-      setFromValue(cvs.getInitFromValue(cvtype));
+    if (cvs && yc && convCode) {
+      console.log('setting init fromValue ', convCode, cvtype);
+      if (isNumericConv(cvtype)) {setFromValue('1');}
+      else if ([cv.TOJPYEAR, cv.TOZODIAC].includes(cvtype)) {setFromValue(yc.getNowYear().toString());}
+      else {setFromValue('');}
     }
-  }, [cvs, convCode, cvtype]);
+  }, [cvs, yc, convCode, cvtype]);
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype (conversion type, e.g. 'frommetric'), is now available
+  const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   const setConverter = (newConverter) => { // used by child component ConverterList
     setConvCode(newConverter);
@@ -53,10 +65,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const kanji2 = '兎';
   const maxInputTextLength = 12;
   const eq = cvs.getEquationArray(convCode, fromValue);
-  const resultPanelText2 = 
-`${eq[0]} 
-${eq[1]} `;
-  const resultPanelText3 = `${eq[0]} \n${eq[1]} `;
+  const resultPanelText = `${eq[0]} \n${eq[1]} `;
 
   const instructions = getInstructions(cvtype);
 
@@ -77,7 +86,7 @@ ${eq[1]} `;
           returnKeyType={'done'}
         />
       </View>
-      <Text style={styles.resultPanel}>{resultPanelText2}</Text>
+      <Text style={styles.resultPanel}>{resultPanelText}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
 
       {showToggle && 
