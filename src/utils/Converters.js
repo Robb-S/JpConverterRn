@@ -13,6 +13,9 @@ class Converters {
     this.convDict = {}; // key = convCode, value = converter object
     this.clearConvTypeDicts(); // set these to empty dicts
     this.validConvTypes = ['frommetric', 'tometric', 'fromjpmeasure', 'tojpmeasure'];
+    this.tempConvCodes = ['c2f', 'f2c']; // these can use negative numbers
+    this.minimumCentigrade = -274;
+    this.minimumFahrenheit = -460;
     this.loadBaseConverters();
     this.currYear = new Date().getFullYear(); // TEMPORARY TODO: remove this line
   }
@@ -20,11 +23,196 @@ class Converters {
     this.convTypeToConvCodesDict = {}; // key = convType, value = list of convCodes
     this.convTypeToConvInfoDict = {}; // key = convType, value = list of (convCode, convDisplay) tuples
   }
+  /**
+   * Return true for temperature conversions 'f2c' or 'c2f'.
+   */
+  isTempConv(convCode) {return this.tempConvCodes.includes(convCode);}
+  /**
+   * Is the given temperature below absolute zero?
+   */
+  isTooCold(convCode, amt1) {
+    if (!(this.isTempConv(convCode))) return false;
+    if ((convCode === "c2f") && (amt1<this.minimumCentigrade)) return true;
+    if ((convCode == "f2c") && (amt1<this.minimumFahrenheit)) return true;
+    return false;
+  }
+  /**
+   * Make both convType dictionaries at the same time. They are used to populate UI radio buttons.
+   * convTypeToConvCodesDict - key is convType, each value is array of convCode strings.
+   * convTypeToConvInfoDict - key is convType, value is array of [convCode, conv display] tuples
+   */
+  makeConvTypeToConvDicts() {
+    this.clearConvTypeDicts();
+    for (const [theCode, oneConverter] of Object.entries(this.convDict)) {
+      const theType = oneConverter.getConvType();
+      const theDisplay = oneConverter.getConvDisplay();
+      const theTuple = [theCode, theDisplay];
+      if (this.convTypeToConvCodesDict.hasOwnProperty(theType)) {
+        this.convTypeToConvCodesDict[theType].push(theCode);
+      } else {
+        this.convTypeToConvCodesDict[theType] = [theCode];
+      }
+      if (this.convTypeToConvInfoDict.hasOwnProperty(theType)) {
+        this.convTypeToConvInfoDict[theType].push(theTuple);
+      } else {
+        this.convTypeToConvInfoDict[theType] = [theTuple];
+      }
+    }
+  }
+  /**
+   * Return array of convCodes for a particular convType (e.g. "tometric").
+   * If dictionary is empty, call method to create it.
+   */
+  convTypeToConvCodes(convType) {
+    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
+    if ((this.convTypeToConvCodesDict.hasOwnProperty(convType))) {
+      return this.convTypeToConvCodesDict[convType];
+    } else {return []; }
+  }
+
+  /**
+   * Return array of convInfo tuples for a particular convType.
+   * If dictionary is empty, call method to create it.
+   */
+  convTypeToConvInfo(convType) {
+    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
+    if ((this.convTypeToConvInfoDict.hasOwnProperty(convType))) {
+      return this.convTypeToConvInfoDict[convType];
+    } else {return []; }
+  }
+
+  /**
+   * Get total count of all converters currently available.
+   */
+  numberOfConvertersTotal() {
+    return Object.keys(this.convDict).length;
+  }
+  /**
+   * Find number of converters for one type, return maximum of those values.
+   */
+  maxConvertersPerType() {
+    const numConvertersByType = [];
+    for (const oneType of this.validConvTypes) {
+      numConvertersByType.push(this.convTypeToConvCodes(oneType).length);
+    }
+    return Math.max(...numConvertersByType);
+  }
+
+  /**
+   * Determine minimum allowed value for amt1 based on convType
+   */
+  getMinAmt(convCode) {
+    if (convCode==='c2f') {return this.minimumCentigrade;}
+    else if (convCode==='f2c') {return this.minimumFahrenheit;}
+    else {return 0;}
+  }
+
+  /**
+   * Pass along to Converter component, then adjust second line of return equation with 
+   * warnings when there are problems.
+   */
+  getEquationArray(convCode, amt1, eqstring="= ") {
+    const amt1Num = (amt1==='-') ? 0 : amt1;
+    let result = ['', ''];
+    try {
+      result = this.convDict[convCode].getEquationArray(amt1Num, eqstring);
+      if (isNaN(amt1Num)) {
+        result[1] = 'is not a number';
+      } else if (amt1Num<this.getMinAmt(convCode)) {        
+        result[1] = this.isTooCold(convCode, amt1Num) ? 'is below absolute zero':'is out of range';      
+      }
+    } 
+    catch (error) {}
+    return result;
+  }
+
+  // simple pass-through routines next
+  getEquationString(convCode, amt1, eqstring=" = ") {
+    let result = '';
+    try {result = this.convDict[convCode].getEquationString(amt1, eqstring);} 
+    catch (error) {}
+    return result;
+  }
+  getAmt2StringUnits(convCode, amt1) {
+    let result = '';
+    try {result = this.convDict[convCode].getAmt2StringUnits(amt1);} 
+    catch (error) {}
+    return result;
+  }
+  getAmt2String(convCode, amt1) {
+    let result = '';
+    try {result = this.convDict[convCode].getAmt2String(amt1);} 
+    catch (error) {}
+    return result;
+  }
+  getAmt2Float(convCode, amt1) {
+    let result = '';
+    try {result = this.convDict[convCode].getAmt2Float(amt1);} 
+    catch (error) {}
+    return result;
+  }
+  getAmt1StringUnits(convCode, amt1) {
+    let result = '';
+    try {result = this.convDict[convCode].getAmt1StringUnits(amt1);} 
+    catch (error) {}
+    return result;
+  }
+  getUnitKanji(convCode) {
+    let result = '';
+    try {result = this.convDict[convCode].getUnitKanji();} 
+    catch (error) {}
+    return result;
+  }
+
+  getFirstConvCodeFromConvType(convType) { // temp uses radioProps
+    const radioProps = this.convTypeToRadioProps(convType);
+    return radioProps[0].value;
+  }
+
+  /**
+   * Returns array of objects {label: convDisplayText, value: convCode} to make radio buttons.
+   * Simply converts array of arrays provided by convTypeToConvInfo to array of objects 
+   * needed by react-native-simple-radio-button API.
+   */
+  convTypeToRadioProps(convType) {
+    if (['tojpyear', 'fromjpyear'].includes(convType)) { // TODO: REMOVE
+    return [
+      {label: 'jpyears 1', value: 'jpyears1' },
+      {label: 'jpyears 2', value: 'jpyears2' },
+      {label: 'jpyears 3', value: 'jpyears3' },
+      {label: 'jpyears 4', value: 'jpyears4' },
+      {label: 'jpyears 5', value: 'jpyears5' },       
+      {label: 'jpyears 6', value: 'jpyears6' },   
+      {label: 'jpyears 7', value: 'jpyears7' },   
+      {label: 'jpyears 8', value: 'jpyears8' },   
+      ];
+    }
+    if (['tozodiac'].includes(convType)) { // TODO: REMOVE
+      return [
+        {label: 'zodiac 1', value: 'zodiac1' },
+      ];
+    }
+    const rpArray = [];
+    if (this.validConvTypes.includes(convType)) {
+      const cInfoTupleArray = this.convTypeToConvInfo(convType);
+      for (const [convCode, convDesc] of cInfoTupleArray) {
+        const oneRadioPropObj = {label: convDesc, value: convCode};
+        rpArray.push(oneRadioPropObj);
+      }
+    }
+    return rpArray;
+  }
+
+  getInitFromValue(cvtype) { // TODO: remove
+    if (['tojpyear', 'tozodiac'].includes(cvtype)) {
+      return this.currYear.toString();
+    } else {
+      return '1';
+    }
+  }
+
   loadBaseConverters() { // this can alternatively be done from external file
-    console.log('*** loadBaseConverters'); 
-    this.tempConvCodes = ['c2f', 'f2c']; // these can use negative numbers
-    this.minimumCentigrade = -274;
-    this.minimumFahrenheit = -460;
+    // console.log('*** loadBaseConverters'); 
     const convTuples = [
       ["c2f", "°C to °F", "°C", "", "°F", 0.0, 1, "frommetric"],
       ["km2mi", "kilometers to miles", "kilometers", "kilometer", "miles", 0.621371, 2, "frommetric"],
@@ -76,157 +264,7 @@ class Converters {
     }
     // console.log('**loading one converter.');
   }  
-  /**
-   * Return true for temperature conversions 'f2c' or 'c2f'.
-   */
-  isTempConv(convCode) {return this.tempConvCodes.includes(convCode);}
-  /**
-   * Is the given temperature below absolute zero?
-   */
-  isTooCold(convCode, amt1) {
-    if (!(this.isTempConv(convCode))) return false;
-    if ((convCode === "c2f") && (amt1<this.minimumCentigrade)) return true;
-    if ((convCode == "f2c") && (amt1<this.minimumFahrenheit)) return true;
-    return false;
-  }
-  /**
-   * Make both convType dictionaries at the same time. They are used to populate UI radio buttons.
-   * convTypeToConvCodesDict - key is convType, each value is array of convCode strings.
-   * convTypeToConvInfoDict - key is convType, value is array of [convCode, conv display] tuples
-   */
-  makeConvTypeToConvDicts() {
-    this.clearConvTypeDicts();
-    for (const [theCode, oneConverter] of Object.entries(this.convDict)) {
-      const theType = oneConverter.getConvType();
-      const theDisplay = oneConverter.getConvDisplay();
-      const theTuple = [theCode, theDisplay];
-      if (this.convTypeToConvCodesDict.hasOwnProperty(theType)) {
-        this.convTypeToConvCodesDict[theType].push(theCode);
-      } else {
-        this.convTypeToConvCodesDict[theType] = [theCode];
-      }
-      if (this.convTypeToConvInfoDict.hasOwnProperty(theType)) {
-        this.convTypeToConvInfoDict[theType].push(theTuple);
-      } else {
-        this.convTypeToConvInfoDict[theType] = [theTuple];
-      }
-    }
-  }
-  /**
-   * Return array of convCodes for a particular convType (e.g. "tometric").
-   * If dictionary is empty, call method to create it.
-   */
-  convTypeToConvCodes(convType) {
-    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
-    if ((this.convTypeToConvCodesDict.hasOwnProperty(convType))) {
-      return this.convTypeToConvCodesDict[convType];
-    } else {return []; }
-  }
 
-    /**
-   * Return array of convInfo tuples for a particular convType.
-   * If dictionary is empty, call method to create it.
-   */
-  convTypeToConvInfo(convType) {
-    if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
-    if ((this.convTypeToConvInfoDict.hasOwnProperty(convType))) {
-      return this.convTypeToConvInfoDict[convType];
-    } else {return []; }
-  }
-
-  getMinAmt(convCode) {
-    if (convCode==='c2f') {return this.minimumCentigrade;}
-    else if (convCode==='f2c') {return this.minimumFahrenheit;}
-    else {return 0;}
-  }
-
-  getEquationString(convCode, amt1, eqstring=" = ") {
-    let result = '';
-    try {result = this.convDict[convCode].getEquationString(amt1, eqstring);} 
-    catch (error) {}
-    return result;
-  }
-
-  getEquationArray(convCode, amt1, eqstring="= ") {
-    const amt1Num = (amt1==='-') ? 0 : amt1;
-    let result = ['', ''];
-    try {
-      result = this.convDict[convCode].getEquationArray(amt1Num, eqstring);
-      if (isNaN(amt1Num)) {
-        result[1] = 'is not a number';
-      } else if (amt1Num<this.getMinAmt(convCode)) {        
-        result[1] = this.isTooCold(convCode, amt1Num) ? 'is below absolute zero':'is out of range';      
-      }
-    } 
-    catch (error) {}
-    return result;
-  }
-
-  getFirstConvCodeFromConvType(convType) { // temp uses radioProps
-    const radioProps = this.convTypeToRadioProps(convType);
-    return radioProps[0].value;
-  }
-
-  /**
-   * Returns array of objects {label: convDisplayText, value: convCode} to make radio buttons.
-   */
-  convTypeToRadioProps(convType) {
-    if (['tometric', 'frommetric', 'tojpmeasure', 'fromjpmeasure'].includes(convType)) {
-      const rpArray = [];
-      const cInfoTupleArray = this.convTypeToConvInfo(convType);
-      for (const [convCode, convDesc] of cInfoTupleArray) {
-        const oneRadioPropObj = {label: convDesc, value: convCode};
-        rpArray.push(oneRadioPropObj);
-      }
-      return rpArray;
-    } else if (['tojpyear', 'fromjpyear'].includes(convType)) {
-      return [
-        {label: 'jpyears 1', value: 'jpyears1' },
-        {label: 'jpyears 2', value: 'jpyears2' },
-        {label: 'jpyears 3', value: 'jpyears3' },
-        {label: 'jpyears 4', value: 'jpyears4' },
-        {label: 'jpyears 5', value: 'jpyears5' },       
-        {label: 'jpyears 6', value: 'jpyears6' },   
-        {label: 'jpyears 7', value: 'jpyears7' },   
-        {label: 'jpyears 8', value: 'jpyears8' },   
-      ];
-    } else {
-      return [
-        {label: 'zodiac 1', value: 'zodiac1' },
-      ];
-    }
-  }
-
-  convCodeToDisplay(convCode) {
-    return ('display version of ' + convCode);
-  }
-
-  getResult(fromValue, convCode) {
-    return 2 * fromValue;
-  }
-
-  getInitFromValue(cvtype) {
-    if (['tojpyear', 'tozodiac'].includes(cvtype)) {
-      return this.currYear.toString();
-    } else {
-      return '1';
-    }
-  }
-
-  // convTypeToConvCodes(convType) {
-  //   // console.log('convTypeToConvCodes for ' + convType);
-  //   if (['tometric', 'frommetric'].includes(convType)) {
-  //     return ['metric1', 'metric2 ','metric3 ','metricmetric4',
-  //     'metric5', 'metric6','metric7'];
-  //   } else if (['tojpmeasure', 'fromjpmeasure', 'tozodiac'].includes(convType)) {
-  //     return ['converter B1', 'converter B2','converter B3',
-  //     'converter converter B4','converter B5', 'converterB6', 'converterB7'];
-  //   } else {
-  //     return ['jyears B1', 'jyears B2','jyears B3',
-  //     'jyears jyears B4','jyears B5', 'jyears B7', 'jyears B7',
-  //     'jyears jyears C4','jyears C5', 'jyears C6', 'jyears C7'];
-  //   }
-  // }
 }
 
 export default Converters;

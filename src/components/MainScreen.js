@@ -18,7 +18,6 @@ function LoadingScreen() {
   )
 }
 
-
 export default function MainScreen({cvtype, toggleDirection}) {
   // const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);
@@ -52,16 +51,13 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showZodiac = (cvtype === cv.TOZODIAC);
   const kanji1 = '兔';
   const kanji2 = '兎';
-  const maxKeyboardLength = 12;
+  const maxInputTextLength = 12;
   const eq = cvs.getEquationArray(convCode, fromValue);
-
-  const resultValue = cvs.getResult(fromValue, convCode);
-  const resultPanelText = 
-`${fromValue} fromValue / ${cvtype}
-${convCode} is convCode / ${resultValue}`;
   const resultPanelText2 = 
 `${eq[0]} 
 ${eq[1]} `;
+  const resultPanelText3 = `${eq[0]} \n${eq[1]} `;
+
   const instructions = getInstructions(cvtype);
 
   const onChangeTextProc = (text) => {
@@ -77,7 +73,7 @@ ${eq[1]} `;
           onChangeText={onChangeTextProc}
           value={fromValue}
           keyboardType={'numeric'}
-          maxLength={maxKeyboardLength}
+          maxLength={maxInputTextLength}
           returnKeyType={'done'}
         />
       </View>
