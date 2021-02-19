@@ -81,6 +81,12 @@ class YearConverters {
   getStartYear(eraCode) {return this.yDict[eraCode].getStartYear();}
   getEndYear(eraCode) {return this.yDict[eraCode].getEndYear();}
   getNumYears(eraCode) {return this.yDict[eraCode].getNumYears();}
+  getHint(eraCode) {
+    if (eraCode==null) return ('');
+    const numYears = (eraCode===this.getNowEra()) ? 
+      (this.getNowYear() - this.getStartYear(eraCode) + 1) : this.getNumYears(eraCode);
+    return '(1-' + numYears + ')';
+  }
 
   /**
    * Return list of tuples for display in radio buttons: [eraCode, jName]
@@ -100,8 +106,9 @@ class YearConverters {
    * Returns array of objects {label: displayText, value: eraCode} to make radio buttons.
    * Simply converts array of arrays provided by getEraNamesPlusCodes to array of objects 
    * needed by react-native-simple-radio-button API.
+   * @param string eraType 'modern' or 'all'
    */
-  convTypeToRadioProps(eraType) {
+  eraTypeToRadioProps(eraType) {
     const rpArray = [];
     const eraNamesTupleArray = this.getEraNamesPlusCodes(eraType);
     for (const [desc, eraCode] of eraNamesTupleArray) {

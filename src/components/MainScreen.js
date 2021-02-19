@@ -37,6 +37,8 @@ export default function MainScreen({cvtype, toggleDirection}) {
       if (isNumericConv(cvtype)) {
         setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
         console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+      } else if (cvtype===cv.FROMJPYEAR) {
+        setConvCode(yc.getNowEra()); 
       } else {
         setConvCode(null); 
       }
@@ -73,14 +75,16 @@ export default function MainScreen({cvtype, toggleDirection}) {
     maxInputTextLength = 4;
   } else if (isNumericConv(cvtype)) {
     eq = cvs.getEquationArray(convCode, fromValue);
+    eq[0] = eq[0] + ' ' + convCode;
     maxInputTextLength = 12;
   } else if (cvtype===cv.TOJPYEAR) {
     eq = ['tojpyear is ', 'pending'];
     maxInputTextLength = 4;
   } else if (cvtype===cv.FROMJPYEAR) {
     eq = ['fromjpyear is ', 'pending'];
+    eq[0] = 'Fromjpyear ' + convCode;
     maxInputTextLength = 2;
-    hint = '(1 to present)'; // get from yc object
+    hint = yc.getHint(convCode);
   }
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
@@ -120,7 +124,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
       }
 
       {showEraRadio &&
-      <EraList cvtype={cvtype} cvs={cvs} yc={yc} setConverter={setConverter} />
+      <EraList cvtype={cvtype} yc={yc} setConverter={setConverter} />
       }
 
       {showZodiac &&
