@@ -81,13 +81,17 @@ class YearConverters {
   getStartYear(eraCode) {return this.yDict[eraCode].getStartYear();}
   getEndYear(eraCode) {return this.yDict[eraCode].getEndYear();}
   getNumYears(eraCode) {return this.yDict[eraCode].getNumYears();}
+  /**
+   * Return '(1-xx)' hint for input text box.  Calculate current era year if current era.
+   * Return '' for bad eraCode, because eraCode setting in MainScreen is async so it might
+   * lag, and momentarily be set to convCode from another screen.
+   */
   getHint(eraCode) {
-    if (eraCode==null) return ('');
+    if (!this.eraCodeAllListSorted.includes(eraCode)) return ('');
     const numYears = (eraCode===this.getNowEra()) ? 
       (this.getNowYear() - this.getStartYear(eraCode) + 1) : this.getNumYears(eraCode);
     return '(1-' + numYears + ')';
   }
-
   /**
    * Return list of tuples for display in radio buttons: [eraCode, jName]
    * @param string eraType 'modern' or 'all'
