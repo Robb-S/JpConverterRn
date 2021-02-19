@@ -7,6 +7,7 @@ import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
+import EraList from './EraList';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
 // import NarrowBtn from './NarrowBtn';
 // import { Formik } from "formik"; 
@@ -55,14 +56,13 @@ export default function MainScreen({cvtype, toggleDirection}) {
   // cvtype (conversion type, e.g. 'frommetric'), is now available
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
-  const setConverter = (newConverter) => { // used by child component ConverterList
-    setConvCode(newConverter);
-  }
-  const showRadio = (!([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)));
-  const showToggle = (cvtype !== cv.TOZODIAC);
-  const showZodiac = (cvtype === cv.TOZODIAC);
-  const maxInputTextLength = 12;
-  let eq, kanjiJ, kanjiJZ, caption1, caption2;
+  const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
+  const showConvRadio = (!([cv.TOZODIAC, cv.TOJPYEAR, cv.FROMJPYEAR].includes(cvtype)));
+  const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
+  const showToggle = (cvtype !== cv.TOZODIAC);                          // conditional rendering
+  const showZodiac = (cvtype === cv.TOZODIAC);                          // conditional rendering  
+  let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
+  hint = '';
   if (cvtype===cv.TOZODIAC) {
     eq = yc.getZodEquationArray(fromValue);
     kanjiJ = yc.getZodJName(fromValue);
@@ -70,16 +70,20 @@ export default function MainScreen({cvtype, toggleDirection}) {
     const eName = yc.getZodEName(fromValue);
     caption1 = eName;
     caption2 = eName + ' zodiac sign';
+    maxInputTextLength = 4;
   } else if (isNumericConv(cvtype)) {
     eq = cvs.getEquationArray(convCode, fromValue);
-  } else {
-    eq = ['jpyear is ', 'pending'];
+    maxInputTextLength = 12;
+  } else if (cvtype===cv.TOJPYEAR) {
+    eq = ['tojpyear is ', 'pending'];
+    maxInputTextLength = 4;
+  } else if (cvtype===cv.FROMJPYEAR) {
+    eq = ['fromjpyear is ', 'pending'];
+    maxInputTextLength = 2;
+    hint = '(1 to present)'; // get from yc object
   }
-
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
-
   const instructions = getInstructions(cvtype);
-
   const onChangeTextProc = (text) => {
     let isValid = true;
     if (isNaN(text) && (text!=='-')) isValid=false; // initial minus sign is okay
@@ -95,6 +99,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
           keyboardType={'numeric'}
           maxLength={maxInputTextLength}
           returnKeyType={'done'}
+          placeholder={hint}
         />
       </View>
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
@@ -110,8 +115,12 @@ export default function MainScreen({cvtype, toggleDirection}) {
       </View>
       }
 
-      {showRadio &&
+      {showConvRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
+      }
+
+      {showEraRadio &&
+      <EraList cvtype={cvtype} cvs={cvs} yc={yc} setConverter={setConverter} />
       }
 
       {showZodiac &&

@@ -3,9 +3,10 @@ import { StyleSheet, ScrollView } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 
   'react-native-simple-radio-button';
 import { clr } from '../utils/colors';
+import { cv } from '../utils/modes';
 
-export default function ConverterList({cvtype, cvs, setConverter})  {
-  const radioProps = cvs.convTypeToRadioProps(cvtype);
+export default function EraList({cvtype, cvs, yc, setConverter})  {
+  const radioProps = yc.convTypeToRadioProps('modern');
   const initialConvCode = cvs.getFirstConvCodeFromConvType(cvtype);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
   const initialRadioIx = 0;

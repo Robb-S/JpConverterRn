@@ -29,10 +29,10 @@ export const cv = {
 
 /* determine order of display for various conversion categories */
 const navOrder = [cv.METRIC, cv.JPMEASURE, cv.JPYEAR, cv.ZODIAC];
-const defaultInstructions = 'Select conversion units below, then enter amount above.';
+const defaultInstructions = 'Select units below, then enter amount above.';
 const zodiacInstructions = 'Enter year above.';
 const tojpyearInstructions = 'Enter year (1688-present) above.';
-const fromjpyearInstructions = 'Select Japanese era below, then enter year above.';
+const fromjpyearInstructions = 'Select era below, then enter year above.';
 /**
  * Get screen number from ID of conversion category.
  */

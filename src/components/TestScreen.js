@@ -8,29 +8,18 @@ import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
 import {OneEra} from '../utils/YearConverters';
 
-/*
-("reiwa", "Reiwa", "令和", 2019, 0),
-("heisei", "Heisei", "平成", 1989, 2019),	
-("showa", "Sh&#333;wa", "昭和", 1926, 1989),
-("taisho", "Taish&#333;", "大正", 1912, 1926),
-("meiji", "Meiji", "明治", 1868, 1912),
-("keio", "Kei&#333;", "慶応", 1865, 1868),
-("genji", "Genji", "元治", 1864, 1865),
-("bunkyu", "Bunky&#363;", "文久", 1861, 1864),
-*/
-
-
-
 const TestScreen = ({navigation}) => {
-
+  let testVal1, testVal2, testVal3, testVal4, testVal5;
   const yrs = new YearConverters();
   const era = new OneEra("showa", "Sh&#333;wa", "昭和", 1926, 1989);
+  const radioProps = yrs.convTypeToRadioProps('modern');
+  console.log(radioProps);
 
-  const testVal1 = era.getEraCode();
-  const testVal2 = typeof(testVal1);
-  const testVal3 = era.getEName();
-  const testVal4 = era.getJName();
-  const testVal5 = era.iYearToEraYear(1984);
+  testVal1 = '1) ' + radioProps.length;
+  testVal2 = '2) ' + yrs.getMinYear();
+  testVal3 = '3) ' + 'dummy'
+  testVal4 = '4) ' + radioProps[0].label;
+  testVal5 = '5) ' + yrs.getMaxYear();
 
   const cvs = new Converters();
   // const testVal3 = cvs.getAmt2Float('km2mi', '1');

@@ -27,7 +27,7 @@ const soptions = {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Test" >
+      <Stack.Navigator initialRouteName="Home" >
         <Stack.Screen name="Home" component={HomeScreen}  options={soptions} />
         <Stack.Screen name="Help" component={HelpScreen}  options={soptions} />
         <Stack.Screen name="Test" component={TestScreen}  options={soptions} />
