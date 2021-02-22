@@ -73,6 +73,7 @@ class YearConverters {
 
   getNowYear() {return this.nowYear; }
   getNowEra() {return this.nowEraCode;}
+  isNowEra(eraCode) {return this.nowEraCode===eraCode};
   getMinYear() { return this.minYear; }
   getMaxYear() { return this.maxYear; }
   getEName(eraCode) {return this.yDict[eraCode].getEName(); }
@@ -81,14 +82,15 @@ class YearConverters {
   getStartYear(eraCode) {return this.yDict[eraCode].getStartYear();}
   getEndYear(eraCode) {return this.yDict[eraCode].getEndYear();}
   getNumYears(eraCode) {return this.yDict[eraCode].getNumYears();}
+  isValidEraCode(eraCode) {return this.eraCodeAllListSorted.includes(eraCode);}
   /**
    * Return '(1-xx)' hint for input text box.  Calculate current era year if current era.
    * Return '' for bad eraCode, because eraCode setting in MainScreen is async so it might
    * lag, and momentarily be set to convCode from another screen.
    */
   getHint(eraCode) {
-    if (!this.eraCodeAllListSorted.includes(eraCode)) return ('');
-    const numYears = (eraCode===this.getNowEra()) ? 
+    if (!this.isValidEraCode(eraCode)) return ('');
+    const numYears = (this.isNowEra(eraCode)) ? 
       (this.getNowYear() - this.getStartYear(eraCode) + 1) : this.getNumYears(eraCode);
     return '(1-' + numYears + ')';
   }
@@ -104,6 +106,40 @@ class YearConverters {
       theEras.push(oneTuple)
     }
     return theEras;
+  }
+  /**
+   * Return international year, or 0 if out of range, or -1 if bad eraCode.
+   * jYear parameter could be a string, so parse it.
+   */
+  jYearToIYear(eraCode, jYear) {
+    if (!this.isValidEraCode(eraCode)) {return (-1);} // eraCode not found    
+    const maxJYear = this.isNowEra(eraCode) ? 99 : this.yDict[eraCode].getNumYears(); // 99 if now era
+    if (jYear>=1 && jYear<=maxJYear) {
+      console.log('typeof:')
+      console.log(typeof(this.yDict[eraCode].getStartYear()))
+      console.log(typeof(jYear));
+      return this.yDict[eraCode].getStartYear() + parseInt(jYear) - 1; 
+    }
+    else {return 0;}
+  }
+
+  /**
+   * Return string tuple for display.
+   */
+  jYearToIYearEq(eraCode, jYear) {
+    let eq=['', ''];
+    if (isNaN(jYear) || parseInt(jYear)===0) { // nothing entered yet
+      eq[0] = capitalize(eraCode) + ' era';
+      eq[1] = '(please enter year above)';
+    } else {
+      const iYear = this.jYearToIYear(eraCode, jYear);
+      if (iYear>-1) { // eraCode not found if -1, so leave it blank
+        const iYearDisp = (iYear==0) ? 'not a valid date' : iYear.toString();
+        eq[0] = capitalize(eraCode) + ' ' + jYear;
+        eq[1] = 'is ' + iYearDisp;
+      }
+    }
+    return eq;
   }
 
   /**
@@ -204,5 +240,14 @@ class ZodiacYear {
   getJName() { return this.jName; }
   getJZName() { return this.jZName; }
  }
+
+ function capitalize(ttext) {
+  if (ttext==null) return '';
+  if (ttext.length>0) {
+    return ttext.charAt(0).toUpperCase() + ttext.slice(1);
+  } else {
+    return '';
+  }
+}
 
 export default YearConverters;

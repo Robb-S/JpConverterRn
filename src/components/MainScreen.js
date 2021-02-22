@@ -64,27 +64,30 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showToggle = (cvtype !== cv.TOZODIAC);                          // conditional rendering
   const showZodiac = (cvtype === cv.TOZODIAC);                          // conditional rendering  
   let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
+  eq = ['',''];
   hint = '';
+  const fromInt = parseInt(fromValue);
   if (cvtype===cv.TOZODIAC) {
-    eq = yc.getZodEquationArray(fromValue);
-    kanjiJ = yc.getZodJName(fromValue);
-    kanjiJZ = yc.getZodJZName(fromValue);
-    const eName = yc.getZodEName(fromValue);
+    eq = yc.getZodEquationArray(fromInt);
+    kanjiJ = yc.getZodJName(fromInt);
+    kanjiJZ = yc.getZodJZName(fromInt);
+    const eName = yc.getZodEName(fromInt);
     caption1 = eName;
     caption2 = eName + ' zodiac sign';
     maxInputTextLength = 4;
   } else if (isNumericConv(cvtype)) {
-    eq = cvs.getEquationArray(convCode, fromValue);
-    eq[0] = eq[0] + ' ' + convCode;
+    eq = cvs.getEquationArray(convCode, fromInt);
+    // eq[0] = eq[0] + ' ' + convCode;
     maxInputTextLength = 12;
   } else if (cvtype===cv.TOJPYEAR) {
     eq = ['tojpyear is ', 'pending'];
     maxInputTextLength = 4;
   } else if (cvtype===cv.FROMJPYEAR) {
-    eq = ['fromjpyear is ', 'pending'];
-    eq[0] = 'Fromjpyear ' + convCode;
     maxInputTextLength = 2;
-    hint = yc.getHint(convCode);
+    if (yc.isValidEraCode(convCode)) {
+      hint = yc.getHint(convCode);
+      eq = yc.jYearToIYearEq(convCode, fromInt);
+    }
   }
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
