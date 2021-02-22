@@ -1,3 +1,24 @@
+/**
+ * The HomeScreen component provides a shell for MainScreen, drawer and swipe gesture components, 
+ * and it handles async storage to keep track of most recently used conversion types.
+ * 
+ * HomeScreen handles navigation/manipulation of the conversion categories and directions 
+ * that are displayed in MainScreen.  Two state variables - screenNum and currDirection,
+ * determine which conversion category and direction of conversion (to/from Japanese measures)
+ * will be displayed by the MainScreen component.
+ * 
+ * Swiping left or right switches from one conversion category to the next, and toggling 
+ * switches conversion direction.  Pairs of category/direction can also be set from buttons 
+ * in the drawer.  
+ * 
+ * UseState uses the dirArray variable to remember the most recent conversion
+ * direction for each conversion category, and stores all last-position data to async storage.
+ * 
+ * ScreenNum correlates with conversion category (e.g. "metric"), and together with direction
+ * ("tojp" or "fromjp") these determine the conversion type (e.g. "tometric"), which is passed
+ * down to the MainScreen component.
+ */
+
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
@@ -10,21 +31,11 @@ import DrawerView from './DrawerView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {capitalize} from '../utils/helpers';
 
-/**
- * Shell for MainScreen, drawer and swipe gesture components, with state variables 
- * to keep track of MainScreen content.
- * 
- * HomeScreen handles navigation/manipulation of the conversion categories and directions 
- * that are displayed in MainScreen.  Two state variables - screenNum and currDirection,
- * determine which conversion category and direction of conversion (to/from Japanese measures)
- * will be displayed by the MainScreen component.
- * 
- * Swiping left or right switches from one conversion category to the next, and toggling 
- * switches conversion direction.  Pairs of category/direction can also be set from buttons 
- * in the drawer.  UseState uses the dirArray variable to remember the most recent conversion
- * direction for each conversion category, and stores all last-position data to async storage.
- */
+
 const HomeScreen = ({navigation}) => {
+  /**
+   * Set header title to match current conversion type, or generic app name as default 
+   */
   const setMainHeaderTitle = (sNum, cDirection) => {
     let currTitle = "JP Converter";
     if (sNum!==null) {currTitle = getDispName(getCvType(sNum, cDirection))}
@@ -32,6 +43,9 @@ const HomeScreen = ({navigation}) => {
       title: capitalize(currTitle),
     });
   }
+  /**
+   * Set header title to generic app name when the drawer is open.
+   */
   const setDrawerHeaderTitle = () => {
     const drawerTitle = "JP Converter";
     navigation.setOptions({
@@ -53,8 +67,10 @@ const HomeScreen = ({navigation}) => {
     else drawer.current.openDrawer();
   }
   const drawer = useRef(null);
-
-  React.useEffect(() => { // add hamburger button to toggle drawer
+  /**
+   * Add hamburger icon to left side of header, to open and close drawer.
+   */
+  React.useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <Icon name='menu' size={32} onPress={toggleDrawer} />
@@ -66,12 +82,13 @@ const HomeScreen = ({navigation}) => {
   // direction array will remember last conversion direction for each conversion type
   const [screenNum, setScreenNum] = React.useState(null);
   const [dirArray, setDirArray] = React.useState([true, true, true, true]);
-  const [currDirection, setCurrDirection] = React.useState(null);
+  const [currDirection, setCurrDirection] = React.useState(true);
   const showToggle = (getCvType(screenNum, currDirection) !== cv.TOZODIAC);
 
   /**
    * Add arrow button in header to increment screen number.  This must be placed after the
-   * screenNum useState() statement in order to update properly.
+   * screenNum useState() statement in order to update properly.  Also add toggle direction 
+   * button in header, but hide it when it's not appropriate.
    */
   React.useEffect(() => {
     navigation.setOptions({
@@ -90,13 +107,21 @@ const HomeScreen = ({navigation}) => {
     });
   }, [navigation, screenNum, currDirection, isDrawerOpen]); 
 
-  const onSwipePerformed = (action) => { // switch to new conversion screen by swiping
+  /**
+   * Switch to new conversion screen by swiping. 
+   */
+  const onSwipePerformed = (action) => {
     if (action==='left') incrementScreenNum();
     if (action==='right') decrementScreenNum();
   }
   const minScrNum = 0; 
   const maxScrNum = 3;
-  const incrementScreenNum = () => { // display next screen/category. simulate modulo function.
+  /**
+   * Change screen number to display next screen (next conversion type) in sequence after swiping.
+   * Loop back to beginning after reaching the end.  (This looping is not possible using ordinary 
+   * React Native tab navigation.)  Using simulated modulo function for clearer code.
+   */
+  const incrementScreenNum = () => { 
     const newScreenNum = (screenNum===maxScrNum) ? minScrNum : screenNum+1;
     const newCurrDirection = dirArray[newScreenNum];
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
@@ -109,7 +134,7 @@ const HomeScreen = ({navigation}) => {
     setMainHeaderTitle(newScreenNum, newCurrDirection);
   }
   /**
-   * Set new conversion type and direction, store to state and async storage
+   * Set new conversion type and direction, store to state and async storage, from drawer buttons.
    */
   const setMode = (newScreenNum, newCurrDirection) => { // new conv type and direction from drawer
     const newDirArray = assignArrayIx(dirArray, newScreenNum, newCurrDirection);
@@ -117,7 +142,7 @@ const HomeScreen = ({navigation}) => {
     setMainHeaderTitle(newScreenNum, newCurrDirection);
   }
   /**
-   * Keep conversion type but change direction, store to state and async storage
+   * Keep conversion type but toggle direction, store to state and async storage.
    */
   const toggleDirection = async function () { // // switch conversion direction only
     const newDirArray = toggleArrayIx(dirArray, screenNum);
@@ -176,12 +201,12 @@ const HomeScreen = ({navigation}) => {
 
   /**
    * Drawer - buttons to set MainScreen params (pseudo-nav) or navigate to other components.
-   * View - lies underneath SwipeGesture to pick up swipe gestures from a narrow band along 
-   *   the left edge, in order to open the drawer with a swipe instead of swiping the 
-   *   whole screen.
+   * View - lies underneath SwipeGesture to pick up different, edge swipe gestures to open drawer.
+   *   A narrow band along the left edge is exposed, and when this is swiped it will open
+   *   the drawer rather than shift the whole screen as described below.
    * SwipeGesture - handles leftward and rightward swipes to change conversion category.  
-   *   Swipe behavior was fine-tuned to set a threshold level of positional delta before swiping.
-   * MainScreen - shows main conversion screen, depending on position params.
+   *   Swipe behavior was fine-tuned by setting a threshold level of positional delta.
+   * MainScreen - shows main conversion screen, depending on conversion-type param.
    */
   return (
     <DrawerLayoutAndroid

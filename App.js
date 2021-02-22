@@ -1,3 +1,7 @@
+/**
+ * The App component is just a shell to provide the Stack Navigator housing the rest of the 
+ * app.
+ */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,10 +17,13 @@ const soptions = {
     backgroundColor: clr.lighterGrey,
   },
   headerTitleStyle: {
-    marginLeft: -20,
+    marginLeft: -28,
   },
 };
-
+/** 
+ * Shell for navigator skeleton.  All conversion functionality and navigation are
+ * provided by the Home screen component. 
+ */
 export default function App() {
   return (
     <NavigationContainer>

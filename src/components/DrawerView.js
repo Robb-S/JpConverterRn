@@ -72,6 +72,13 @@ const DrawerView = (drawer, navigation, setMode, screenNum, currDirection) => {
           navigation.navigate('Help');
         }}
       />
+      <DrButton text={"Test"}
+        iconName={'cow'}
+        onPress={() => {
+          drawer.current.closeDrawer();
+          navigation.navigate('Test');
+        }}
+      />
     </ScrollView>
   )
 }

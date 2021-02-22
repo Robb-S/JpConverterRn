@@ -53,7 +53,7 @@ class Converter {
   getAmt1StringUnits(amt1) {
     const hasKanji = (this.unitKanji.length>0 && this.convType===cv.FROMJPMEASURE);
     const kpart = hasKanji ? ' (' + this.unitKanji + ')' : '';
-    const units = (amt1===1) ? this.unit1single : this.unit1;
+    const units = this.getCorrectUnits(amt1);
     return amt1.toString() + this.unitSpacer + units + kpart;
   }
   /**
@@ -69,6 +69,10 @@ class Converter {
     const line1 = this.getAmt1StringUnits(amt1);
     const line2 = eqstring + this.getAmt2StringUnits(amt1);
     return [line1, line2];
+  }
+  getCorrectUnits(amt1) { // '1' gets singular, but '1.0' gets plural
+    if ((amt1==='1') || (amt1===1)) { return this.unit1single; }
+    else {return this.unit1;}
   }
 
   // get properties next

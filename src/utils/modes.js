@@ -29,10 +29,10 @@ export const cv = {
 
 /* determine order of display for various conversion categories */
 const navOrder = [cv.METRIC, cv.JPMEASURE, cv.JPYEAR, cv.ZODIAC];
-const defaultInstructions = 'Select conversion units below, then enter amount above.';
+const defaultInstructions = 'Select units below, then enter amount above.';
 const zodiacInstructions = 'Enter year above.';
 const tojpyearInstructions = 'Enter year (1688-present) above.';
-const fromjpyearInstructions = 'Select Japanese era below, then enter year above.';
+const fromjpyearInstructions = 'Select era below, then enter year above.';
 /**
  * Get screen number from ID of conversion category.
  */
@@ -44,7 +44,7 @@ export function catToSnum(cvcatID) {
  * Return styles with primary and secondary background colors based on screen number.
  */
 export function getBgStyles(cvtype) {
-  const [screenNum, dirBoolean] = fromCvType(cvtype);
+  const [screenNum, dirBoolean] = fromCvType(cvtype); // direction not used
   if (screenNum==null) return [{backgroundColor: clr.black}, {backgroundColor: clr.black}];
   const cvcatID = navOrder[screenNum];
   const bgcol1 = cvcats[cvcatID].backgroundColor1;
@@ -78,6 +78,7 @@ export function getDispName(cvtype) {
  */
 export function getCvType(screenNum, dirBoolean) {
   if (screenNum==null) return null;
+  if (dirBoolean===null) return null;
   const dirID = dirBoolean ? cv.TOJPID : cv.FROMJPID; // dirID used in object
   const cat = navOrder[screenNum];
   const cvtype = cvcats[cat][dirID].cvtype;
@@ -89,7 +90,7 @@ export function getCvType(screenNum, dirBoolean) {
 export function catToCvType(cat, dirBoolean) {
   if (cat==null) return null;
   const dirID = dirBoolean ? cv.TOJPID : cv.FROMJPID; // dirID used in object
-  const cvType = cvcats[cat][dirId].cvtype;
+  const cvType = cvcats[cat][dirID].cvtype;
   return cvType;
 }
 
@@ -140,12 +141,12 @@ const cvcats = {
     backgroundColor2: clr.lighterIndigo,
     tojp: {
       cvtype: cv.TOJPMEASURE,
-      dname: "to Japanese measures",
+      dname: "to Jp measures",
       instructions: defaultInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPMEASURE,
-      dname: "from Japanese measures",
+      dname: "from Jp measures",
       instructions: defaultInstructions,
     },
   },
@@ -155,12 +156,12 @@ const cvcats = {
     backgroundColor2: clr.lighterDeepOrange,
     tojp: {
       cvtype: cv.TOJPYEAR,
-      dname: "to Japanese years",
+      dname: "to Jp years",
       instructions: tojpyearInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPYEAR,
-      dname: "from Japanese years",
+      dname: "from Jp years",
       instructions: fromjpyearInstructions,
     },
   },

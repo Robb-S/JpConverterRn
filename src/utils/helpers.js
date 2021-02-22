@@ -24,3 +24,8 @@ export function capitalize(ttext) {
     return '';
   }
 }
+
+export function decodeHtmlCharCodes(str) {
+  return str.replace(/(&#(\d+);)/g, (match, capture, charCode) => 
+  String.fromCharCode(charCode));
+}

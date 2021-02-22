@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, TextInput,  
-  ScrollView, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions, TextInput } from 'react-native';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
 import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
-// import NarrowBtn from './NarrowBtn';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
+import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
-
+import EraList from './EraList';
+import ZodiacKanjiScreen from './ZodiacKanjiScreen';
+// import NarrowBtn from './NarrowBtn';
+// import { Formik } from "formik"; 
+// import * as Yup from "yup";
 // import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function LoadingScreen() {
@@ -17,118 +20,119 @@ function LoadingScreen() {
   )
 }
 
-const stylesZ = StyleSheet.create({
-  zodiacZone: {
-    flexDirection: 'row',
-    marginTop: 10,
-    justifyContent: 'space-evenly',
-  },
-  zodiacPart: {
-    paddingTop: 0,
-  },
-  zodiac1: {
-    fontSize: 100,
-    textAlign: 'center',
-    color: clr.yellow,
-  },
-  zodiac2: {
-    fontSize: 100,
-    textAlign: 'center',
-    color: clr.yellow,
-  },
-  zodiacCaption: {
-    fontSize: 14,
-    textAlign: 'center',
-    color: clr.white,
-  },
-});
-
-function ZodiacKanjiScreen({kanji1, kanji2}) {
-  return (
-    <View style={stylesZ.zodiacZone}>
-      <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac1}>{kanji1}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'zodiac kanji'}</Text>   
-      </View>
-      <View style={stylesZ.zodiacPart}>
-        <Text style={stylesZ.zodiac2}>{kanji2}</Text>
-        <Text style={stylesZ.zodiacCaption}>{'animal kanji'}</Text>   
-      </View>
-    </View>
-  )
-}
-
 export default function MainScreen({cvtype, toggleDirection}) {
-
-  const {width, height} = useWindowDimensions();
+  // const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);
+  const [yc, setYc] = useState(null);
   const [convCode, setConvCode] = useState(null);
   const [fromValue, setFromValue] = useState(''); // will base initial value on cvtype
-  React.useEffect(() => { // fetch Converters object on first load
+  React.useEffect(() => { // fetch Converters objects on first load
     const gotcvs = new Converters();
+    const gotyc = new YearConverters();
     setCvs(gotcvs);
+    setYc(gotyc);
   }, []); 
-  React.useEffect(() => { // after swipe, change chosen convCode to first on list
+  React.useEffect(() => { // after swipe, change chosen CONVCODE to first on list
     if (cvs && cvtype) {
-      setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
-      console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+      if (isNumericConv(cvtype)) {
+        setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
+        console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+      } else if (cvtype===cv.FROMJPYEAR) {
+        setConvCode(yc.getNowEra()); 
+      } else {
+        setConvCode(null); 
+      }
     }
   }, [cvs, cvtype]);
 
-  React.useEffect(() => { // reset fromValue to current year or 1 when switching conversion code
-    if (cvs && convCode) {
-      setFromValue(cvs.getInitFromValue(cvtype));
+  React.useEffect(() => { // reset FROMVALUE to current year or 1 when switching conversion code
+    if (cvs && yc && cvtype) {
+      console.log('setting init fromValue ', cvtype);
+      if (isNumericConv(cvtype)) {setFromValue('1');}
+      else if ([cv.TOJPYEAR, cv.TOZODIAC].includes(cvtype)) {setFromValue(yc.getNowYear().toString());}
+      else {setFromValue('');}
     }
-  }, [cvs, convCode, cvtype]);
+  }, [cvs, yc, convCode, cvtype]);
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
-  // cvtype is now available
+  // cvtype (conversion type, e.g. 'frommetric'), is now available
+  const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
-  const setConverter = (newConverter) => { // used by child component ConverterList
-    setConvCode(newConverter);
+  const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
+  const showConvRadio = (!([cv.TOZODIAC, cv.TOJPYEAR, cv.FROMJPYEAR].includes(cvtype)));
+  const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
+  const showToggle = (cvtype !== cv.TOZODIAC);                          // conditional rendering
+  const showZodiac = (cvtype === cv.TOZODIAC);                          // conditional rendering  
+  let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
+  eq = ['',''];
+  hint = '';
+  const fromInt = parseInt(fromValue);
+  if (cvtype===cv.TOZODIAC) {
+    eq = yc.getZodEquationArray(fromInt);
+    kanjiJ = yc.getZodJName(fromInt);
+    kanjiJZ = yc.getZodJZName(fromInt);
+    const eName = yc.getZodEName(fromInt);
+    caption1 = eName;
+    caption2 = eName + ' zodiac sign';
+    maxInputTextLength = 4;
+  } else if (isNumericConv(cvtype)) {
+    eq = cvs.getEquationArray(convCode, fromInt);
+    // eq[0] = eq[0] + ' ' + convCode;
+    maxInputTextLength = 12;
+  } else if (cvtype===cv.TOJPYEAR) {
+    eq = ['tojpyear is ', 'pending'];
+    maxInputTextLength = 4;
+  } else if (cvtype===cv.FROMJPYEAR) {
+    maxInputTextLength = 2;
+    if (yc.isValidEraCode(convCode)) {
+      hint = yc.getHint(convCode);
+      eq = yc.jYearToIYearEq(convCode, fromInt);
+    }
   }
-  const showRadio = (!([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)));
-  const showToggle = (cvtype !== cv.TOZODIAC);
-  const showZodiac = (cvtype === cv.TOZODIAC);
-  const kanji1 = '兔';
-  const kanji2 = '兎';
-  const maxKeyboardLength = 15;
-  const eq = cvs.getEquationArray(convCode, fromValue);
-
-  const resultValue = cvs.getResult(fromValue, convCode);
-  const resultPanelText = 
-`${fromValue} fromValue / ${cvtype}
-${convCode} is convCode / ${resultValue}`;
-  const resultPanelText2 = 
-`${eq[0]}
-${eq[1]}`;
+  const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
+  const onChangeTextProc = (text) => {
+    let isValid = true;
+    if (isNaN(text) && (text!=='-')) isValid=false; // initial minus sign is okay
+    if (isValid) { setFromValue(text); }
+  }
 
   return (
     <View style={[styles.container, bgStyle]}>
       <View style={[styles.inputTextArea, bgStyle2]}>
         <TextInput style={styles.inputTextText}
-          onChangeText={text => setFromValue(text)}
+          onChangeText={onChangeTextProc}
           value={fromValue}
           keyboardType={'numeric'}
-          maxLength={maxKeyboardLength}
+          maxLength={maxInputTextLength}
           returnKeyType={'done'}
+          placeholder={hint}
         />
       </View>
-      <Text style={styles.resultPanel}>{resultPanelText2}</Text>
+      <Text style={styles.resultPanel}>{resultPanelText}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
+
       {showToggle && 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
-        <TinyBtn onPress={() => toggleDirection()} text={'Switch direction'} />        
+        <View style={styles.toggleButtonZone} >
+          <TinyBtn onPress={() => toggleDirection()} 
+            text={'Switch direction'} color={clr.lightBlue} />        
+        </View>  
       </View>
       }
-      {showRadio &&
+
+      {showConvRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
       }
 
+      {showEraRadio &&
+      <EraList cvtype={cvtype} yc={yc} setConverter={setConverter} />
+      }
+
       {showZodiac &&
-      <ZodiacKanjiScreen kanji1={kanji1} kanji2={kanji2} />
+      <ZodiacKanjiScreen kanjiJ={kanjiJ} kanjiJZ={kanjiJZ} caption1={caption1} 
+        caption2={caption2} />
       }
 
     </View>
@@ -154,17 +158,18 @@ const styles = StyleSheet.create({
   },
   resultPanel: {
     color: clr.white,
-    paddingTop: 15,
+    paddingTop: 13,
     paddingLeft: 10,
     paddingBottom: 6,
-    marginBottom: 12,
-    fontSize: 20,
-    lineHeight: 36,
+    marginBottom: 8,
+    fontSize: 26,
+    lineHeight: 38,
     width: '100%',
     textAlign: 'left',
   },
   toggleZone: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   converterHeader: {
@@ -175,7 +180,8 @@ const styles = StyleSheet.create({
     color: clr.white,
   },
   toggleButtonZone: {
-    paddingTop: 0,
+    paddingRight: 10,
+    paddingTop: 1,
   },
   mainText: {
     // backgroundColor: clr.white,

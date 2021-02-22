@@ -3,12 +3,14 @@ import { StyleSheet, ScrollView } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 
   'react-native-simple-radio-button';
 import { clr } from '../utils/colors';
+import { cv } from '../utils/modes';
 
-export default function ConverterList({cvtype, cvs, setConverter})  {
-  const radioProps = cvs.convTypeToRadioProps(cvtype);
-  const initialConvCode = cvs.getFirstConvCodeFromConvType(cvtype);
+export default function EraList({cvtype, yc, setConverter})  {
+  const radioProps = yc.eraTypeToRadioProps('modern');
+  const initialConvCode = yc.getNowEra();
+  console.log('initialConvCode: ' + initialConvCode);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
-  const initialRadioIx = 0;
+  const initialRadioIx = 0;   // TODO find index for reiwa?
   const [convCodeLocal, setConvCodeLocal] = useState(initialConvCode);
   const [radioIndex, setRadioIndex] = useState(initialRadioIx);
 
