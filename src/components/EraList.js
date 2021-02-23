@@ -6,9 +6,9 @@ import { clr } from '../utils/colors';
 import { cv } from '../utils/modes';
 
 export default function EraList({cvtype, yc, setConverter})  {
-  const radioProps = yc.eraTypeToRadioProps('modern');
+  const radioProps = yc.eraTypeToRadioProps('all');
   const initialConvCode = yc.getNowEra();
-  console.log('initialConvCode: ' + initialConvCode);
+  // console.log('initialConvCode: ' + initialConvCode);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
   const initialRadioIx = 0;   // TODO find index for reiwa?
   const [convCodeLocal, setConvCodeLocal] = useState(initialConvCode);

@@ -16,8 +16,12 @@ class YearConverters {
     this.zToYearsDict = {};         // this will be set up only after it's requested
     this.loadZYears();
   }
-  loadJYears() { //TODO: finish
-    this.yDict = {}
+  /**
+   * Load JYears data initially.  This can be extended further back into historical eras, and it can be
+   * adapted to load from an external file.
+   */
+  loadJYears() {
+    this.yDict = {} // this will hold all the OneEra objects, indexed by eraCode
     this.jYearTuples = [         // utf-8 and html encoding
       ["reiwa", "Reiwa", "令和", 2019, 0],
       ["heisei", "Heisei", "平成", 1989, 2019],
@@ -50,17 +54,17 @@ class YearConverters {
       ["genroku", "Genroku", "延享", 1688, 1704],
     ] // (source: http://www.meijigakuin.ac.jp/~watson/ref/nengo-utf8.html and Nelson)
     this.nowEraCode = '';
-    const startYears = this.jYearTuples.map((jYearTuple) => {return jYearTuple[3];})
-    this.minYear = Math.min(...startYears);
-    let tempEraCodeAllList = [];
-    let tempEraCodeModernList = [];
+    const startYears = this.jYearTuples.map((jYearTuple) => {return jYearTuple[3];}) // get all starting years
+    this.minYear = Math.min(...startYears); // find the minimum (earliest) starting year in use
+    let tempEraCodeAllList = [];            // include historical years
+    let tempEraCodeModernList = [];         // just since Meiji restoration
     for (const jYearTuple of this.jYearTuples) {
       const oneEraObject = new OneEra(...jYearTuple); // tuple items are parameters to instantiate OneEra object
       const oneEraCode = oneEraObject.getEraCode();
       this.yDict[oneEraCode] = oneEraObject; // use eraCode as index
       if (oneEraObject.getEndYear()===0) { this.nowEraCode = oneEraCode; } // set the current era
       tempEraCodeAllList.push(oneEraCode);
-      if (oneEraObject.getStartYear()>= this.modernEraStart) {
+      if (oneEraObject.getStartYear()>= this.modernEraStart) {  // include startyears for sorting
         tempEraCodeModernList.push([oneEraCode, oneEraObject.getStartYear()]);
       }
     }
@@ -95,7 +99,8 @@ class YearConverters {
     return '(1-' + numYears + ')';
   }
   /**
-   * Return list of tuples for display in radio buttons: [eraCode, jName]
+   * Return list of tuples for display in radio buttons: [eraCode, dispName]
+   * dispName is romaji name (with macrons) followed by kanji
    * @param string eraType 'modern' or 'all'
    */
   getEraNamesPlusCodes(eraType) {
@@ -107,43 +112,9 @@ class YearConverters {
     }
     return theEras;
   }
-  /**
-   * Return international year, or 0 if out of range, or -1 if bad eraCode.
-   * jYear parameter could be a string, so parse it.
-   */
-  jYearToIYear(eraCode, jYear) {
-    if (!this.isValidEraCode(eraCode)) {return (-1);} // eraCode not found    
-    const maxJYear = this.isNowEra(eraCode) ? 99 : this.yDict[eraCode].getNumYears(); // 99 if now era
-    if (jYear>=1 && jYear<=maxJYear) {
-      console.log('typeof:')
-      console.log(typeof(this.yDict[eraCode].getStartYear()))
-      console.log(typeof(jYear));
-      return this.yDict[eraCode].getStartYear() + parseInt(jYear) - 1; 
-    }
-    else {return 0;}
-  }
 
   /**
-   * Return string tuple for display.
-   */
-  jYearToIYearEq(eraCode, jYear) {
-    let eq=['', ''];
-    if (isNaN(jYear) || parseInt(jYear)===0) { // nothing entered yet
-      eq[0] = capitalize(eraCode) + ' era';
-      eq[1] = '(please enter year above)';
-    } else {
-      const iYear = this.jYearToIYear(eraCode, jYear);
-      if (iYear>-1) { // eraCode not found if -1, so leave it blank
-        const iYearDisp = (iYear==0) ? 'not a valid date' : iYear.toString();
-        eq[0] = capitalize(eraCode) + ' ' + jYear;
-        eq[1] = 'is ' + iYearDisp;
-      }
-    }
-    return eq;
-  }
-
-  /**
-   * Returns array of objects {label: displayText, value: eraCode} to make radio buttons.
+   * Return array of objects {label: displayText, value: eraCode} to make radio buttons.
    * Simply converts array of arrays provided by getEraNamesPlusCodes to array of objects 
    * needed by react-native-simple-radio-button API.
    * @param string eraType 'modern' or 'all'
@@ -156,6 +127,37 @@ class YearConverters {
       rpArray.push(oneRadioPropObj);
     }
     return rpArray;
+  }
+
+  /**
+   * Return international year, or 0 if out of range, or -1 if bad eraCode.
+   * jYear parameter could be a string, so parse it.
+   */
+  jYearToIYear(eraCode, jYear) {
+    if (!this.isValidEraCode(eraCode)) {return (-1);} // eraCode not found    
+    const maxJYear = this.isNowEra(eraCode) ? 99 : this.yDict[eraCode].getNumYears(); // 99 if now era
+    if (jYear>=1 && jYear<=maxJYear) {
+      return this.yDict[eraCode].getStartYear() + parseInt(jYear) - 1; 
+    }
+    else {return 0;}
+  }
+  /**
+   * Return string tuple for display.
+   */
+  jYearToIYearEq(eraCode, jYear) {
+    let eq=['', ''];
+    if (isNaN(jYear) || parseInt(jYear)===0) { // nothing entered yet
+      eq[0] = capitalize(eraCode) + ' era';
+      eq[1] = '(please enter year above)';
+    } else {
+      const iYear = this.jYearToIYear(eraCode, jYear);
+      if (iYear>-1) {
+        const iYearDisp = (iYear==0) ? 'not a valid date' : iYear.toString();
+        eq[0] = capitalize(eraCode) + ' ' + jYear;
+        eq[1] = 'is ' + iYearDisp;
+      } // else eraCode not found if -1, so just leave it blank
+    }
+    return eq;
   }
 
   loadZYears() {
