@@ -22,11 +22,11 @@ function LoadingScreen() {
 
 export default function MainScreen({cvtype, toggleDirection}) {
   // const {width, height} = useWindowDimensions();
-  const [cvs, setCvs] = useState(null);
-  const [yc, setYc] = useState(null);
-  const [convCode, setConvCode] = useState(null);
-  const [fromValue, setFromValue] = useState(''); // will base initial value on cvtype
-  React.useEffect(() => { // fetch Converters objects on first load
+  const [cvs, setCvs] = useState(null);   // measure converter object
+  const [yc, setYc] = useState(null);     // year converter object
+  const [convCode, setConvCode] = useState(null);   // chosen conversion code (e.g. "mi2km")
+  const [fromValue, setFromValue] = useState('');   // will base initial value on cvtype
+  React.useEffect(() => { // create and fetch Converters objects on first load
     const gotcvs = new Converters();
     const gotyc = new YearConverters();
     setCvs(gotcvs);
@@ -38,7 +38,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
         setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
         console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
       } else if (cvtype===cv.FROMJPYEAR) {
-        setConvCode(yc.getNowEra()); 
+        // setConvCode(yc.getNowEra()); 
       } else {
         setConvCode(null); 
       }
@@ -50,19 +50,21 @@ export default function MainScreen({cvtype, toggleDirection}) {
       console.log('setting init fromValue ', cvtype);
       if (isNumericConv(cvtype)) {setFromValue('1');}
       else if ([cv.TOJPYEAR, cv.TOZODIAC].includes(cvtype)) {setFromValue(yc.getNowYear().toString());}
-      else {setFromValue('');}
+      else {setFromValue('');} // blank for FROMJPYEAR, so hint is visible
     }
   }, [cvs, yc, convCode, cvtype]);
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype (conversion type, e.g. 'frommetric'), is now available
+  const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
+  // const setTheEraType = (newEraType) => { setEraType(newEraType); } // used by child component
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
-  const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
+  // showXxx variables control conditional rendering
   const showConvRadio = (!([cv.TOZODIAC, cv.TOJPYEAR, cv.FROMJPYEAR].includes(cvtype)));
   const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
-  const showToggle = (cvtype !== cv.TOZODIAC);                          // conditional rendering
-  const showZodiac = (cvtype === cv.TOZODIAC);                          // conditional rendering  
+  const showToggle = (cvtype !== cv.TOZODIAC);
+  const showZodiac = ([cv.TOZODIAC].includes(cvtype));
   let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
   eq = ['',''];
   hint = '';
@@ -80,7 +82,6 @@ export default function MainScreen({cvtype, toggleDirection}) {
       }
     } else if (isNumericConv(cvtype)) {
       eq = cvs.getEquationArray(convCode, fromInt);
-      // eq[0] = eq[0] + ' ' + convCode;
       maxInputTextLength = 12;
     } else if (cvtype===cv.TOJPYEAR) {
       eq = yc.iYearToJYearEq(fromInt);

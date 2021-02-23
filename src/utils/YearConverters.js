@@ -140,7 +140,7 @@ class YearConverters {
     const jYears2 = []; // fill this with tuple(s) of (eName, jName, eraYear)
     if ((iYear<this.minYear) || (iYear>this.maxYear+1)) {return jYears2} // return blank if out of range
     for (const [eraCode, oneEra] of Object.entries(this.yDict)) {      
-      console.log( 'iYear for ' + oneEra.getEraCode());
+      // console.log( 'iYear for ' + oneEra.getEraCode());
       if (oneEra.isIYearInEra(iYear)) {
         jYears1.push([oneEra.getStartYear(), eraCode]);
       }
@@ -150,7 +150,7 @@ class YearConverters {
       jYears2.push([this.yDict[eraCode].getEName(), this.yDict[eraCode].getJName(), 
         this.yDict[eraCode].iYearToEraYear(iYear)]); 
     }
-    console.log(jYears2);
+    // console.log(jYears2);
     return jYears2;
   }
 
