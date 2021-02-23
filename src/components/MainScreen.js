@@ -66,29 +66,33 @@ export default function MainScreen({cvtype, toggleDirection}) {
   let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
   eq = ['',''];
   hint = '';
-  const fromInt = parseInt(fromValue);
-  if (cvtype===cv.TOZODIAC) {
-    eq = yc.getZodEquationArray(fromInt);
-    kanjiJ = yc.getZodJName(fromInt);
-    kanjiJZ = yc.getZodJZName(fromInt);
-    const eName = yc.getZodEName(fromInt);
-    caption1 = eName;
-    caption2 = eName + ' zodiac sign';
-    maxInputTextLength = 4;
-  } else if (isNumericConv(cvtype)) {
-    eq = cvs.getEquationArray(convCode, fromInt);
-    // eq[0] = eq[0] + ' ' + convCode;
-    maxInputTextLength = 12;
-  } else if (cvtype===cv.TOJPYEAR) {
-    eq = ['tojpyear is ', 'pending'];
-    maxInputTextLength = 4;
-  } else if (cvtype===cv.FROMJPYEAR) {
-    maxInputTextLength = 2;
-    if (yc.isValidEraCode(convCode)) {
-      hint = yc.getHint(convCode);
-      eq = yc.jYearToIYearEq(convCode, fromInt);
+  const fromInt = isNaN(fromValue) ? 0 : parseInt(fromValue);  // make it zero if fromValue is blank
+    if (cvtype===cv.TOZODIAC) {
+      console.log('fromInt: ' + fromInt);
+      if (!isNaN(fromInt)) { // because async setting of fromValue may lag behind display
+        eq = yc.getZodEquationArray(fromInt);
+        kanjiJ = yc.getZodJName(fromInt);
+        kanjiJZ = yc.getZodJZName(fromInt);
+        const eName = yc.getZodEName(fromInt);
+        caption1 = eName;
+        caption2 = eName + ' zodiac sign';
+        maxInputTextLength = 4;
+      }
+    } else if (isNumericConv(cvtype)) {
+      eq = cvs.getEquationArray(convCode, fromInt);
+      // eq[0] = eq[0] + ' ' + convCode;
+      maxInputTextLength = 12;
+    } else if (cvtype===cv.TOJPYEAR) {
+      eq = yc.iYearToJYearEq(fromInt);
+      maxInputTextLength = 4;
+    } else if (cvtype===cv.FROMJPYEAR) {
+      maxInputTextLength = 2;
+      if (yc.isValidEraCode(convCode)) {
+        hint = yc.getHint(convCode);
+        eq = yc.jYearToIYearEq(convCode, fromInt);
+      }
     }
-  }
+  // }
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
   const onChangeTextProc = (text) => {

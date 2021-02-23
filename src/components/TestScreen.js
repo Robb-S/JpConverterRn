@@ -10,16 +10,19 @@ import {OneEra} from '../utils/YearConverters';
 
 const TestScreen = ({navigation}) => {
   let testVal1, testVal2, testVal3, testVal4, testVal5;
-  const yrs = new YearConverters();
+  const yc = new YearConverters();
   const era = new OneEra("showa", "Sh&#333;wa", "昭和", 1926, 1989);
-  const radioProps = yrs.convTypeToRadioProps('modern');
-  console.log(radioProps);
+  const radioProps = yc.eraTypeToRadioProps('modern');
+  // console.log(radioProps);
+  const dummy2 = yc.iYearToJYearEq('2199');
 
   testVal1 = '1) ' + radioProps.length;
-  testVal2 = '2) ' + yrs.getMinYear();
+  testVal2 = '2) ' + yc.getMinYear();
   testVal3 = '3) ' + 'dummy'
-  testVal4 = '4) ' + radioProps[0].label;
-  testVal5 = '5) ' + yrs.getMaxYear();
+  // testVal4 = '4) ' + radioProps[0].label;
+  // testVal5 = '5) ' + yc.getMaxYear();
+  testVal4 = '4) ' + dummy2[0];
+  testVal5 = '5) ' + dummy2[1];
 
   const cvs = new Converters();
   // const testVal3 = cvs.getAmt2Float('km2mi', '1');

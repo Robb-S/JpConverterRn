@@ -1,5 +1,6 @@
 import {cv} from './modes';
 import {decodeHtmlCharCodes} from './helpers';
+import { eq } from 'react-native-reanimated';
 /**
  * Container for era objects, zodiac objects
  * prop: yDict (eraCode: OneEra), eraCodeAllList (alpha sorted), 
@@ -129,6 +130,52 @@ class YearConverters {
     return rpArray;
   }
 
+  /** 
+   * Convert from International year, return list with 0, 1, or 2 tuples of [eName, jName, eraYear].
+   * (Transition years such as 2019 will be in two different eras.)
+   */
+  iYearToJYear(iYear) {
+    // console.log('** iYearToJYear ' + iYear + ' **');
+    const jYears1 = []; // fill with tuple(s) of (startYear, eraCode) for matching era(s), then sort it
+    const jYears2 = []; // fill this with tuple(s) of (eName, jName, eraYear)
+    if ((iYear<this.minYear) || (iYear>this.maxYear+1)) {return jYears2} // return blank if out of range
+    for (const [eraCode, oneEra] of Object.entries(this.yDict)) {      
+      console.log( 'iYear for ' + oneEra.getEraCode());
+      if (oneEra.isIYearInEra(iYear)) {
+        jYears1.push([oneEra.getStartYear(), eraCode]);
+      }
+    }
+    jYears1.sort(function(a, b){return a[0]-b[0]});   // sort in order by start year
+    for (const [startYear, eraCode] of jYears1) {
+      jYears2.push([this.yDict[eraCode].getEName(), this.yDict[eraCode].getJName(), 
+        this.yDict[eraCode].iYearToEraYear(iYear)]); 
+    }
+    console.log(jYears2);
+    return jYears2;
+  }
+
+   /** 
+   * Converting from International year, return two-line display (array of two strings) 
+   * showing Japanese era year or years. 
+   */
+  iYearToJYearEq(iYear) {
+    const jYears = this.iYearToJYear(iYear); // get array of 0, 1 or 2 tuples
+    let eq = ['',''];
+    if (jYears.length===0) { // out of range
+       eq = [ iYear.toString() , ''];
+     } else if (jYears.length===1) { // one era to display
+       const [eName1, jName1, jYear1] = jYears[0];
+       eq[0] = iYear.toString() + ' is';
+       eq[1] = eName1 + ' ' + jName1 + ' ' + jYear1;
+     } else { // length===2, so it spans two eras
+      const [eName1, jName1, jYear1] = jYears[0];
+      const [eName2, jName2, jYear2] = jYears[1];
+      eq[0] = iYear.toString() + ' is ' +  eName1 + ' ' + jName1 + ' ' + jYear1;
+      eq[1] = 'and ' +  eName2 + ' ' + jName2 + ' ' + jYear2;
+     }
+    return eq;
+  }
+
   /**
    * Return international year, or 0 if out of range, or -1 if bad eraCode.
    * jYear parameter could be a string, so parse it.
@@ -146,20 +193,24 @@ class YearConverters {
    */
   jYearToIYearEq(eraCode, jYear) {
     let eq=['', ''];
+    const dispEName = capitalize(this.getEName(eraCode)); 
     if (isNaN(jYear) || parseInt(jYear)===0) { // nothing entered yet
-      eq[0] = capitalize(eraCode) + ' era';
+      eq[0] = dispEName + ' era';
       eq[1] = '(please enter year above)';
     } else {
       const iYear = this.jYearToIYear(eraCode, jYear);
       if (iYear>-1) {
         const iYearDisp = (iYear==0) ? 'not a valid date' : iYear.toString();
-        eq[0] = capitalize(eraCode) + ' ' + jYear;
+        eq[0] = dispEName + ' ' + jYear;
         eq[1] = 'is ' + iYearDisp;
       } // else eraCode not found if -1, so just leave it blank
     }
     return eq;
   }
 
+  /** 
+   * Load collection of new ZodiacEra objects into dictionary
+   */
   loadZYears() {
     this.zFromYearDict = {};   // look up years (mod 12) to get zodiac data
     const zodTuples = [ // yearmod (mod 12), eName, jName (animal), jName (kanji for zodiac sign)
