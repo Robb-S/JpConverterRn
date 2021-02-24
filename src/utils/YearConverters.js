@@ -90,6 +90,11 @@ class YearConverters {
   getEndYear(eraCode) {return this.yDict[eraCode].getEndYear();}
   getNumYears(eraCode) {return this.yDict[eraCode].getNumYears();}
   isValidEraCode(eraCode) {return this.eraCodeAllListSorted.includes(eraCode);}
+  isValidIYear(iYear) { 
+    if (isNaN(iYear)) {return false;}
+    const iiYear = parseInt(iYear);
+    return ( (iiYear>=this.getMinYear() ) && (iiYear<=this.getMaxYear()) );
+  }
   /**
    * Return '(1-xx)' hint for input text box.  Calculate current era year if current era.
    * Return '' for bad eraCode, because eraCode setting in MainScreen is async so it might
@@ -124,6 +129,7 @@ class YearConverters {
    * @param string eraType 'modern' or 'all'
    */
   eraTypeToRadioProps(eraType) {
+    // console.log('** inside eraTypeToRadioProps ', eraType);
     const rpArray = [];
     let nowPos = null;
     let arrayPos = -1; // increment array position within loop

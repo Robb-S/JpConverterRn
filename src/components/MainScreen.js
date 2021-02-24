@@ -64,36 +64,44 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const showConvRadio = (!([cv.TOZODIAC, cv.TOJPYEAR, cv.FROMJPYEAR].includes(cvtype)));
   const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
   const showToggle = (cvtype !== cv.TOZODIAC);
-  const showZodiac = ([cv.TOZODIAC].includes(cvtype));
+  const showZodiac = ([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype));
   let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
   eq = ['',''];
   hint = '';
   const fromInt = isNaN(fromValue) ? 0 : parseInt(fromValue);  // make it zero if fromValue is blank
-    if (cvtype===cv.TOZODIAC) {
-      console.log('fromInt: ' + fromInt);
-      if (!isNaN(fromInt)) { // because async setting of fromValue may lag behind display
-        eq = yc.getZodEquationArray(fromInt);
-        kanjiJ = yc.getZodJName(fromInt);
-        kanjiJZ = yc.getZodJZName(fromInt);
-        const eName = yc.getZodEName(fromInt);
-        caption1 = eName;
-        caption2 = eName + ' zodiac sign';
-        maxInputTextLength = 4;
-      }
-    } else if (isNumericConv(cvtype)) {
-      eq = cvs.getEquationArray(convCode, fromInt);
-      maxInputTextLength = 12;
-    } else if (cvtype===cv.TOJPYEAR) {
-      eq = yc.iYearToJYearEq(fromInt);
-      maxInputTextLength = 4;
-    } else if (cvtype===cv.FROMJPYEAR) {
-      maxInputTextLength = 2;
-      if (yc.isValidEraCode(convCode)) {
-        hint = yc.getHint(convCode);
-        eq = yc.jYearToIYearEq(convCode, fromInt);
-      }
+  if (cvtype===cv.TOZODIAC) {
+    maxInputTextLength = 4;
+    if (!isNaN(fromInt)) { // because async setting of fromValue may lag behind display
+      console.log('!isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
+      eq = yc.getZodEquationArray(fromInt);
+      kanjiJ = yc.getZodJName(fromInt);
+      kanjiJZ = yc.getZodJZName(fromInt);
+      const eName = yc.getZodEName(fromInt);
+      caption1 = eName;
+      caption2 = eName + ' zodiac sign';
+    } else {
+      console.log('*isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
     }
-  // }
+  } else if (isNumericConv(cvtype)) {
+    maxInputTextLength = 12;
+    eq = cvs.getEquationArray(convCode, fromInt);
+  } else if (cvtype===cv.TOJPYEAR) {
+    maxInputTextLength = 4;
+    if (yc.isValidIYear(fromValue)) { // show nothing unless it's a valid year (post-Meiji)
+      eq = yc.iYearToJYearEq(fromInt);
+      kanjiJ = yc.getZodJName(fromInt);
+      kanjiJZ = yc.getZodJZName(fromInt);
+      const eName = yc.getZodEName(fromInt);
+      caption1 = eName;
+      caption2 = eName + ' zodiac sign';  
+    }
+  } else if (cvtype===cv.FROMJPYEAR) {
+    maxInputTextLength = 2;
+    if (yc.isValidEraCode(convCode)) {
+      hint = yc.getHint(convCode);
+      eq = yc.jYearToIYearEq(convCode, fromInt);
+    }
+  }
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
   const onChangeTextProc = (text) => {
@@ -175,7 +183,10 @@ const styles = StyleSheet.create({
   toggleZone: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 10,
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: clr.lighterGrey,
   },
   converterHeader: {
     fontSize: 16,

@@ -11,6 +11,7 @@ export const clr = {
   grey: '#757575',
   lightGrey: '#bdbdbd',
   lighterGrey: '#e0e0e0',
+  lighterBlueGrey: '#eceff1',
   medGrey: '#888888',
   darkGrey: '#444444',
   green: '#1b5e20',

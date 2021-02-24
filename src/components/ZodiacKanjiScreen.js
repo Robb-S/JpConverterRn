@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { clr } from '../utils/colors';
 
 export default function ZodiacKanjiScreen({kanjiJ, kanjiJZ, 
-  caption1='animal kanji', caption2='zodiac kanji'}) {
+  caption1='', caption2=''}) {
   return (
     <View style={stylesZ.zodiacZone}>
       <View style={stylesZ.zodiacPart}>
@@ -30,12 +30,12 @@ const stylesZ = StyleSheet.create({
   zodiac1: {
     fontSize: 100,
     textAlign: 'center',
-    color: clr.yellow,
+    color: clr.lighterBlueGrey,
   },
   zodiac2: {
     fontSize: 100,
     textAlign: 'center',
-    color: clr.yellow,
+    color: clr.lighterBlueGrey,
   },
   zodiacCaption: {
     fontSize: 14,

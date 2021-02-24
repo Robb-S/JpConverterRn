@@ -24,6 +24,12 @@ const TestScreen = ({navigation}) => {
   testVal4 = '4) ' + dummy2[0];
   testVal5 = '5) ' + dummy2[1];
 
+  testVal1 = '1) is 1442 valid: ' + yc.isValidIYear('1442');
+  testVal2 = '2) is 1687 valid: ' + yc.isValidIYear('1687');
+  testVal3 = '3) is mouse valid: ' + yc.isValidIYear('mouse');
+  testVal4 = '4) minyear is:  ' + yc.getMinYear();
+  testVal5 = '5) is blank valid: ' + yc.isValidIYear('');
+
   const cvs = new Converters();
   // const testVal3 = cvs.getAmt2Float('km2mi', '1');
   // const testVal4 = cvs.getAmt1StringUnits('ft2m', 1);
