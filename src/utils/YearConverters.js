@@ -16,6 +16,8 @@ class YearConverters {
     this.loadJYears()               // load data and prepare indexes
     this.zToYearsDict = {};         // this will be set up only after it's requested
     this.loadZYears();
+    // this.initRadioPosNowEraModern = null;     // used for setting initial position of radio buttons
+    // this.initRadioPosNowEraHistoric = null;
   }
   /**
    * Load JYears data initially.  This can be extended further back into historical eras, and it can be
@@ -115,19 +117,24 @@ class YearConverters {
   }
 
   /**
-   * Return array of objects {label: displayText, value: eraCode} to make radio buttons.
-   * Simply converts array of arrays provided by getEraNamesPlusCodes to array of objects 
-   * needed by react-native-simple-radio-button API.
+   * Return [radioProps, nowPos] tuple - first is array of objects {label: displayText, value: eraCode} 
+   * to make radio buttons. Simply converts array of arrays provided by getEraNamesPlusCodes to
+   * array of objects needed by react-native-simple-radio-button API.
+   * second (nowPos) is position of current era within this array
    * @param string eraType 'modern' or 'all'
    */
   eraTypeToRadioProps(eraType) {
     const rpArray = [];
+    let nowPos = null;
+    let arrayPos = -1; // increment array position within loop
     const eraNamesTupleArray = this.getEraNamesPlusCodes(eraType);
     for (const [desc, eraCode] of eraNamesTupleArray) {
       const oneRadioPropObj = {label: desc, value: eraCode};
       rpArray.push(oneRadioPropObj);
+      arrayPos += 1;
+      if (this.isNowEra(eraCode)) {nowPos=arrayPos;}
     }
-    return rpArray;
+    return [rpArray, nowPos];
   }
 
   /** 

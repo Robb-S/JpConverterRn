@@ -7,14 +7,18 @@ import { cv } from '../utils/modes';
 import NarrowBtn from './NarrowBtn';
 
 export default function EraList({cvtype, yc, setConverter})  {
+  /* 1) get initConvCode (now era); 2) set init eraType to state ('modern'); 3) set convCode to state; 
+  *  4) get starting radio index; 5) set radioIndex to state;
+  */
+  // let initialRadioIx;
   const initialConvCode = yc.getNowEra();
   // console.log('initialConvCode: ' + initialConvCode);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
-  const initialRadioIx = 0;   // TODO find index for reiwa?
   const [eraType, setEraType] = useState('modern'); 
   const [convCodeLocal, setConvCodeLocal] = useState(initialConvCode);
+  const [radioProps, initialRadioIx] = yc.eraTypeToRadioProps(eraType);
   const [radioIndex, setRadioIndex] = useState(initialRadioIx);
-  const radioProps = yc.eraTypeToRadioProps(eraType);
+  // initialRadioIx = 
 
   /**
    * Reset local version of convCode and radio index.  Activated 
@@ -25,7 +29,7 @@ export default function EraList({cvtype, yc, setConverter})  {
     setConverter(initialConvCode); // passed back to calling component
     setRadioIndex(initialRadioIx);
   }, []); 
-  // }, [cvtype]); 
+  // }, [cvtype, initialRadioIx]); 
 
   const onPressProc = (newConvCode, index) => { // value is the chosen convCode
     setRadioIndex(index);
