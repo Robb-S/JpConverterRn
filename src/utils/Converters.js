@@ -179,6 +179,14 @@ class Converters {
     return radioProps[0].value;
   }
 
+  radioIndexToConvCode(convType, radioIndex) {
+    const radioProps = this.convTypeToRadioProps(convType);
+    // console.log('** called convTypeToRadioProps');
+    // console.log('convType: ' + convType);
+    // console.log(radioProps);
+    return radioProps[radioIndex].value;  
+  }
+
   /**
    * Returns array of objects {label: convDisplayText, value: convCode} to make radio buttons.
    * Simply converts array of arrays provided by convTypeToConvInfo to array of objects 

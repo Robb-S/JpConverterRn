@@ -4,7 +4,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from
   'react-native-simple-radio-button';
 import { clr } from '../utils/colors';
 
-export default function ConverterList({cvtype, cvs, setConverter})  {
+export default function ConverterList({cvtype, cvs, setConverter, changeType})  {
   const radioProps = cvs.convTypeToRadioProps(cvtype);
   const initialConvCode = cvs.getFirstConvCodeFromConvType(cvtype);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
@@ -17,8 +17,15 @@ export default function ConverterList({cvtype, cvs, setConverter})  {
    * when changing cvtype externally, by swiping or toggling direction.
    */
   React.useEffect(() => {
-    setConvCodeLocal(initialConvCode);
-    setRadioIndex(initialRadioIx);
+    if (changeType==='toggle') { // keep same radio index, update the convCode      
+      const newConvCode = cvs.radioIndexToConvCode(cvtype, radioIndex);
+      setConvCodeLocal(newConvCode);
+      setConverter(newConvCode);
+      console.log('** toggling action for new convCode ' + newConvCode);
+    } else {
+      setConvCodeLocal(initialConvCode);
+      setRadioIndex(initialRadioIx);
+    }
   }, [cvtype]); 
 
   const onPressProc = (newConvCode, index) => { // value is the chosen convCode

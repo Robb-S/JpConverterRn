@@ -9,45 +9,42 @@ import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
 import EraList from './EraList';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
-// import NarrowBtn from './NarrowBtn';
 // import { Formik } from "formik"; 
 // import * as Yup from "yup";
-// import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function LoadingScreen() {
+function LoadingScreen() { // show this during async loading of last screen used data
   return (
     <View style={[styles.container, styles.loading]}><Text>Loading...</Text></View>
   )
 }
 
-export default function MainScreen({cvtype, toggleDirection}) {
+export default function MainScreen({cvtype, toggleDirection, changeType}) {
   // const {width, height} = useWindowDimensions();
   const [cvs, setCvs] = useState(null);   // measure converter object
   const [yc, setYc] = useState(null);     // year converter object
-  const [convCode, setConvCode] = useState(null);   // chosen conversion code (e.g. "mi2km")
-  const [fromValue, setFromValue] = useState('');   // will base initial value on cvtype
+  const [convCode, setConvCode] = useState(null);   // chosen conversion code (e.g. "mi2km", "heisei")
+  const [fromValue, setFromValue] = useState('');   // inputtext - will base initial value on cvtype
+
   React.useEffect(() => { // create and fetch Converters objects on first load
     const gotcvs = new Converters();
     const gotyc = new YearConverters();
     setCvs(gotcvs);
     setYc(gotyc);
   }, []); 
-  React.useEffect(() => { // after swipe, change chosen CONVCODE to first on list
+  React.useEffect(() => { // after swipe (not toggle), change numeric CONVCODE to first on list
     if (cvs && cvtype) {
       if (isNumericConv(cvtype)) {
-        setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
-        console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
-      } else if (cvtype===cv.FROMJPYEAR) {
-        // setConvCode(yc.getNowEra());  // handled by EraList
-      } else {
-        // setConvCode(null); 
-      }
+        if (changeType!=='toggle') { // if toggling, don't reset to first, stay at same index
+          setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
+          console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+        }
+      } 
     }
   }, [cvs, cvtype]);
 
   React.useEffect(() => { // reset FROMVALUE to current year or 1 when switching conversion code
     if (cvs && yc && cvtype) {
-      console.log('setting init fromValue ', cvtype);
+      // console.log('setting init fromValue ', cvtype);
       if (isNumericConv(cvtype)) {setFromValue('1');}
       else if ([cv.TOJPYEAR, cv.TOZODIAC].includes(cvtype)) {setFromValue(yc.getNowYear().toString());}
       else {setFromValue('');} // blank for FROMJPYEAR, so hint is visible
@@ -69,10 +66,10 @@ export default function MainScreen({cvtype, toggleDirection}) {
   hint = '';
   const fromInt = isNaN(fromValue) ? 0 : parseInt(fromValue);  // make it zero if fromValue is blank
   const fromNum = isNaN(fromValue) ? 0 : parseFloat(fromValue); 
-  if (cvtype===cv.TOZODIAC) {
+  if (cvtype===cv.TOZODIAC) { // any year AD 1-9999
     maxInputTextLength = 4;
-    if (!isNaN(fromInt)) { // because async setting of fromValue may lag behind display
-      console.log('!isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
+    if (!isNaN(fromInt)) { // async setting of fromValue may lag behind display
+      // console.log('!isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
       eq = yc.getZodEquationArray(fromInt);
       kanjiJ = yc.getZodJName(fromInt);
       kanjiJZ = yc.getZodJZName(fromInt);
@@ -80,12 +77,12 @@ export default function MainScreen({cvtype, toggleDirection}) {
       caption1 = eName;
       caption2 = eName + ' zodiac sign';
     } else {
-      console.log('*isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
+      // console.log('*isNaN (' + fromValue + ') fromInt: (' + fromInt + ')');
     }
-  } else if (isNumericConv(cvtype)) {
+  } else if (isNumericConv(cvtype)) { // all numeric conversions
     maxInputTextLength = 12;
     if (!(isNaN(fromNum)||isNaN(fromValue))) { eq = cvs.getEquationArray(convCode, fromValue);}
-  } else if (cvtype===cv.TOJPYEAR) {
+  } else if (cvtype===cv.TOJPYEAR) {  // international year after Meiji restoration
     maxInputTextLength = 4;
     if (yc.isValidIYear(fromValue)) { // show nothing unless it's a valid year (post-Meiji)
       eq = yc.iYearToJYearEq(fromInt);
@@ -95,7 +92,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
       caption1 = eName;
       caption2 = eName + ' zodiac sign';  
     }
-  } else if (cvtype===cv.FROMJPYEAR) {
+  } else if (cvtype===cv.FROMJPYEAR) { // 1- or 2-digit Japanese year
     maxInputTextLength = 2;
     if (yc.isValidEraCode(convCode)) {
       hint = yc.getHint(convCode);
@@ -131,7 +128,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
         />
       </View>
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
-      <Text style={styles.instructionsText}>{instructions}</Text>
+      <Text style={styles.instructionsText}>{instructions} *{changeType}*</Text>
 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
@@ -144,7 +141,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
       </View>
       
       {showConvRadio &&
-      <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
+      <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} changeType={changeType} />
       }
 
       {showEraRadio &&

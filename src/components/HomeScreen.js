@@ -83,6 +83,7 @@ const HomeScreen = ({navigation}) => {
   const [screenNum, setScreenNum] = React.useState(null);
   const [dirArray, setDirArray] = React.useState([true, true, true, true]);
   const [currDirection, setCurrDirection] = React.useState(true);
+  const [changeType, setChangeType] = useState('swipe'); // set new cvtype with 'swipe', 'toggle' or 'menu'
   const showToggle = (getCvType(screenNum, currDirection) !== cv.TOZODIAC);
 
   /**
@@ -126,12 +127,14 @@ const HomeScreen = ({navigation}) => {
     const newCurrDirection = dirArray[newScreenNum];
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
+    setChangeType('swipe');
   }
   const decrementScreenNum = () => { // display previous screen/category
     const newScreenNum = (screenNum===minScrNum) ? maxScrNum : screenNum-1;
     const newCurrDirection = dirArray[newScreenNum];
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
+    setChangeType('swipe');
   }
   /**
    * Set new conversion type and direction, store to state and async storage, from drawer buttons.
@@ -140,6 +143,7 @@ const HomeScreen = ({navigation}) => {
     const newDirArray = assignArrayIx(dirArray, newScreenNum, newCurrDirection);
     updateData(newScreenNum, newDirArray, newCurrDirection);
     setMainHeaderTitle(newScreenNum, newCurrDirection);
+    setChangeType('menu');
   }
   /**
    * Keep conversion type but toggle direction, store to state and async storage.
@@ -149,6 +153,7 @@ const HomeScreen = ({navigation}) => {
     const newCurrDirection = newDirArray[screenNum];
     updateData(screenNum, newDirArray, newCurrDirection); // screenNum is unchanged
     setMainHeaderTitle(screenNum, newCurrDirection);
+    setChangeType('toggle');
   }
   /**
    * Read last-used position and direction from async storage when starting up.
@@ -224,6 +229,7 @@ const HomeScreen = ({navigation}) => {
       <MainScreen 
         cvtype={getCvType(screenNum, currDirection)}
         toggleDirection={toggleDirection} 
+        changeType={changeType}
         />
     </SwipeGesture>
     </View>

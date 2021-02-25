@@ -64,7 +64,6 @@ export default function EraList({cvtype, yc, setConverter})  {
     setConverter(newConvCode); // passed back to calling component
   }
 
-
   const toggleEraType = () => {
     console.log('*** inside toggleEraType ***');
     const newEraType = eraType==='modern' ? 'all' : 'modern';
