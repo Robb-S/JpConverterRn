@@ -34,7 +34,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   React.useEffect(() => { // after swipe (not toggle), change numeric CONVCODE to first on list
     if (cvs && cvtype) {
       if (isNumericConv(cvtype)) {
-        if (changeType!=='toggle') { // if toggling, don't reset to first code, stay at same index
+        if (changeType!=='toggle') { // if toggling, don't reset, stay at same index
           setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
           console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
         }
