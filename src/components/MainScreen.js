@@ -38,9 +38,9 @@ export default function MainScreen({cvtype, toggleDirection}) {
         setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
         console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
       } else if (cvtype===cv.FROMJPYEAR) {
-        // setConvCode(yc.getNowEra()); 
+        // setConvCode(yc.getNowEra());  // handled by EraList
       } else {
-        setConvCode(null); 
+        // setConvCode(null); 
       }
     }
   }, [cvs, cvtype]);
@@ -68,6 +68,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
   eq = ['',''];
   hint = '';
   const fromInt = isNaN(fromValue) ? 0 : parseInt(fromValue);  // make it zero if fromValue is blank
+  const fromNum = isNaN(fromValue) ? 0 : parseFloat(fromValue); 
   if (cvtype===cv.TOZODIAC) {
     maxInputTextLength = 4;
     if (!isNaN(fromInt)) { // because async setting of fromValue may lag behind display
@@ -83,7 +84,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
     }
   } else if (isNumericConv(cvtype)) {
     maxInputTextLength = 12;
-    eq = cvs.getEquationArray(convCode, fromInt);
+    if (!(isNaN(fromNum)||isNaN(fromValue))) { eq = cvs.getEquationArray(convCode, fromValue);}
   } else if (cvtype===cv.TOJPYEAR) {
     maxInputTextLength = 4;
     if (yc.isValidIYear(fromValue)) { // show nothing unless it's a valid year (post-Meiji)
@@ -105,7 +106,15 @@ export default function MainScreen({cvtype, toggleDirection}) {
   const instructions = getInstructions(cvtype);
   const onChangeTextProc = (text) => {
     let isValid = true;
-    if (isNaN(text) && (text!=='-')) isValid=false; // initial minus sign is okay
+    if (isNumericConv(cvtype)) {
+      if (cvs.isTempConv(convCode)) { // temperature conversion
+        if (isNaN(text) && (text!=='-') && (text!=='.')) isValid=false; // initial minus sign, decimal point okay
+      } else { // regular conversion
+        if (isNaN(text) && (text!=='.')) isValid=false; // initial decimal point okay
+      }
+    } else { // years
+      if (!(/^\d+$/.test(text)) && text!=='') isValid=false; // years have to be numbers only
+    }
     if (isValid) { setFromValue(text); }
   }
 
@@ -118,7 +127,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
           keyboardType={'numeric'}
           maxLength={maxInputTextLength}
           returnKeyType={'done'}
-          placeholder={hint}
+          placeholder={hint}          
         />
       </View>
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
