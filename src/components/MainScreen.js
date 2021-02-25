@@ -57,7 +57,6 @@ export default function MainScreen({cvtype, toggleDirection}) {
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype (conversion type, e.g. 'frommetric'), is now available
   const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
-  // const setTheEraType = (newEraType) => { setEraType(newEraType); } // used by child component
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   // showXxx variables control conditional rendering
@@ -125,16 +124,16 @@ export default function MainScreen({cvtype, toggleDirection}) {
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
 
-      {showToggle && 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
+        {showToggle && 
         <View style={styles.toggleButtonZone} >
           <TinyBtn onPress={() => toggleDirection()} 
             text={'Switch direction'} color={clr.lightBlue} />        
-        </View>  
+        </View>
+        }
       </View>
-      }
-
+      
       {showConvRadio &&
       <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} />
       }
@@ -144,8 +143,7 @@ export default function MainScreen({cvtype, toggleDirection}) {
       }
 
       {showZodiac &&
-      <ZodiacKanjiScreen kanjiJ={kanjiJ} kanjiJZ={kanjiJZ} caption1={caption1} 
-        caption2={caption2} />
+      <ZodiacKanjiScreen kanjiJ={kanjiJ} kanjiJZ={kanjiJZ} caption1={caption1} caption2={caption2} />
       }
 
     </View>
@@ -183,7 +181,6 @@ const styles = StyleSheet.create({
   toggleZone: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10,
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: clr.lighterGrey,
@@ -194,6 +191,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 20,
     color: clr.white,
+    paddingBottom: 15,
   },
   toggleButtonZone: {
     paddingRight: 10,

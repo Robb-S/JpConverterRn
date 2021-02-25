@@ -6,6 +6,7 @@ import { clr } from '../utils/colors';
 import { cv } from '../utils/modes';
 import NarrowBtn from './NarrowBtn';
 import TinyBtn from './TinyBtn';
+import {Picker} from '@react-native-picker/picker';
 
 /**
  * Show radio buttons and/or dropdown list for choosing Japanese eras.
@@ -25,6 +26,7 @@ export default function EraList({cvtype, yc, setConverter})  {
   const [convCodeLocal, setConvCodeLocal] = useState(nowEra); // STATE
   const [radioIndex, setRadioIndex] = useState(defaultNowPos); // STATE
   const [stRadioProps, setStRadioProps] = useState(radioProps);
+  const [language, setLanguage] = useState('java');
 
   /**
    * Reset local version of convCode and radio index.  Activated when component is loaded.
@@ -55,6 +57,14 @@ export default function EraList({cvtype, yc, setConverter})  {
     setConverter(newConvCode); // passed back to calling component
   }
 
+  const onDropdownSelect = (newConvCode, itemIndex) => { // value is the chosen eraCode
+    // console.log('** onDropdownSel for picker **');
+    // setRadioIndex(index);
+    setConvCodeLocal(newConvCode);
+    setConverter(newConvCode); // passed back to calling component
+  }
+
+
   const toggleEraType = () => {
     console.log('*** inside toggleEraType ***');
     const newEraType = eraType==='modern' ? 'all' : 'modern';
@@ -68,6 +78,8 @@ export default function EraList({cvtype, yc, setConverter})  {
 
   const toggleText = eraType==='modern' ? 'Show historical eras' : 'Show modern eras';
   const statusText = eraType==='modern' ? 'Modern eras' : 'Historical eras'
+  const showRadioForm = eraType==='modern';
+  const showDropdown = eraType==='all';
   return (
       <ScrollView style={styles.converterList}>
         <View style={styles.toggleZone}>
@@ -77,6 +89,25 @@ export default function EraList({cvtype, yc, setConverter})  {
             text={toggleText} color={clr.lightBlue} />        
           </View>  
         </View>
+
+        { showDropdown && 
+        <View style={styles.pickerView}>
+        <Picker
+          selectedValue={convCodeLocal}
+          mode={'dialog'}
+          style={styles.picker}
+          onValueChange={onDropdownSelect}
+        >
+          {stRadioProps.map((obj, i) => {
+            return (
+              <Picker.Item style={styles.pickerItem} key={i} label={obj['label']} value={obj['value']} />
+            )
+          })}
+        </Picker>
+        </View>
+        }
+
+        { showRadioForm && 
         <RadioForm animation={true} style={styles.radioForm}>
           {stRadioProps.map((obj, i) => {
             return (
@@ -103,6 +134,7 @@ export default function EraList({cvtype, yc, setConverter})  {
             )
           })}
         </RadioForm>
+        }
       </ScrollView>
   )
 }
@@ -128,6 +160,31 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingLeft: 10,
     paddingRight: 20,
+    color: clr.white,
+  },
+  smallText: {
+    backgroundColor: clr.black,
+    color: clr.white,
+    padding: 14,
+    fontSize: 14,
+    width: '90%',
+    marginBottom: 2,
+    textAlign: 'center',
+    marginRight: 5,
+  },
+  picker: {
+    width: 200,
+    height: 40,
+    // backgroundColor: clr.deepOrange,
+    color: clr.white,
+  }, 
+  pickerView: {
+    width: 202,
+    borderWidth: 1,
+    borderColor: clr.lighterGrey,
+    marginLeft: 10,
+  },
+  pickerItem: {
     color: clr.white,
   },
 });
