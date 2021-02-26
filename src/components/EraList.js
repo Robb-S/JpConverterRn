@@ -18,7 +18,7 @@ import {Picker} from '@react-native-picker/picker';
  * onPress for radio buttons: setEraCode, ixPos in store, setEraCode in parent component
  */
 export default function EraList({cvtype, yc, setConverter})  {
-  console.log('** at start of EraList component **');
+  // console.log('** at start of EraList component **');
   let radioProps = []; let nowPos = null;
   const nowEra = yc.getNowEra();
   const defaultNowPos = 0; // for first button in modern list - should be now era
@@ -32,26 +32,26 @@ export default function EraList({cvtype, yc, setConverter})  {
    * Reset local version of convCode and radio index.  Activated when component is loaded.
    */
   React.useEffect(() => {
-    console.log('****** radio buttons : ' + radioProps.length);
-    console.log('** Activating initial useEffect setup when EraList component is loaded');
+    // console.log('****** radio buttons : ' + radioProps.length);
+    // console.log('** Activating initial useEffect setup when EraList component is loaded');
     [radioProps, nowPos] = yc.eraTypeToRadioProps(eraType); // NOT state
     setConvCodeLocal(nowEra);
     setConverter(nowEra); // passed back to calling component
     setRadioIndex(nowPos);
     setStRadioProps(radioProps);
-    console.log('****** radio buttons : ' + radioProps.length);
+    // console.log('****** radio buttons : ' + radioProps.length);
   }, []); 
   // }, [cvtype, initialRadioIx]); 
 
   React.useEffect(() => {
-    console.log('Era type was reset, using effect.');
-    console.log('****** radio buttons : ' + radioProps.length);
+    // console.log('Era type was reset, using effect.');
+    // console.log('****** radio buttons : ' + radioProps.length);
     [radioProps, nowPos] = yc.eraTypeToRadioProps(eraType); // NOT state
-    console.log('****** radio buttons : ' + radioProps.length);
+    // console.log('****** radio buttons : ' + radioProps.length);
   }, [eraType]);
 
   const onPressProc = (newConvCode, index) => { // value is the chosen convCode
-    console.log('** onPressProc for radio buttons **');
+    // console.log('** onPressProc for radio buttons **');
     setRadioIndex(index);
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
@@ -65,7 +65,7 @@ export default function EraList({cvtype, yc, setConverter})  {
   }
 
   const toggleEraType = () => {
-    console.log('*** inside toggleEraType ***');
+    // console.log('*** inside toggleEraType ***');
     const newEraType = eraType==='modern' ? 'all' : 'modern';
     setEraType (newEraType);
     setConvCodeLocal(nowEra);

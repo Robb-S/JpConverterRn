@@ -36,7 +36,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       if (isNumericConv(cvtype)) {
         if (changeType!=='toggle') { // if toggling, don't reset, stay at same index
           setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
-          console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
+          // console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
         }
       } 
     }
@@ -128,7 +128,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         />
       </View>
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
-      <Text style={styles.instructionsText}>{instructions} *{changeType}*</Text>
+      <Text style={styles.instructionsText}>{instructions}</Text>
 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>

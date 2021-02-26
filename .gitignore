@@ -16,3 +16,4 @@ newtemp/
 .gitignore
 package.json
 yarn.lock
+src/zzextras/*

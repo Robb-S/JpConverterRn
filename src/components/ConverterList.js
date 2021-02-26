@@ -21,7 +21,7 @@ export default function ConverterList({cvtype, cvs, setConverter, changeType})  
       const newConvCode = cvs.radioIndexToConvCode(cvtype, radioIndex);
       setConvCodeLocal(newConvCode);
       setConverter(newConvCode);
-      console.log('** toggling action for new convCode ' + newConvCode);
+      // console.log('** toggling action for new convCode ' + newConvCode);
     } else {
       setConvCodeLocal(initialConvCode);
       setRadioIndex(initialRadioIx);
