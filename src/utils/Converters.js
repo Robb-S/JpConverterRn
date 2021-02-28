@@ -1,4 +1,5 @@
 import Converter from './Converter';
+import {cv} from './modes';
 
 /**
  * This class is a collection of Converter objects, along with methods for retrieval, 
@@ -12,7 +13,7 @@ class Converters {
   constructor () {
     this.convDict = {}; // key = convCode, value = converter object
     this.clearConvTypeDicts(); // set these to empty dicts
-    this.validConvTypes = ['frommetric', 'tometric', 'fromjpmeasure', 'tojpmeasure'];
+    this.validConvTypes = [cv.FROMMETRIC, cv.TOMETRIC, cv.FROMJPMEASURE, cv.TOJPMEASURE];
     this.tempConvCodes = ['c2f', 'f2c']; // these can use negative numbers
     this.minimumCentigrade = -274;
     this.minimumFahrenheit = -460;
@@ -221,13 +222,13 @@ class Converters {
     return rpArray;
   }
 
-  getInitFromValue(cvtype) { // TODO: remove
-    if (['tojpyear', 'tozodiac'].includes(cvtype)) {
-      return this.currYear.toString();
-    } else {
-      return '1';
-    }
-  }
+  // getInitFromValue(cvtype) { // TODO: remove
+  //   if (['tojpyear', 'tozodiac'].includes(cvtype)) {
+  //     return this.currYear.toString();
+  //   } else {
+  //     return '1';
+  //   }
+  // }
 
   loadBaseConverters() { // this can alternatively be done from external file
     // console.log('*** loadBaseConverters'); 

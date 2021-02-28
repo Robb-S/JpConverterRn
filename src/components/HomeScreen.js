@@ -168,8 +168,6 @@ const HomeScreen = ({navigation}) => {
     try {
       const stLastPos = await(AsyncStorage.getItem('lastPos'));
       if (stLastPos!=null) {
-        // console.log('retrieving')
-        // console.log(stLastPos);
         const { stScreenNum, stDirArray, stCurrDirection } = JSON.parse(stLastPos);
         setScreenNum(stScreenNum);
         setDirArray(stDirArray);

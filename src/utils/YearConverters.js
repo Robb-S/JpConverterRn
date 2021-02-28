@@ -11,6 +11,7 @@ import { eq } from 'react-native-reanimated';
 class YearConverters {
   constructor () {
     this.nowYear = new Date().getFullYear();
+    this.validConvTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];
     this.minYear = 100000;          // set this later
     this.modernEraStart = 1868      // beginning of Meiji era
     this.loadJYears()               // load data and prepare indexes
@@ -18,6 +19,12 @@ class YearConverters {
     this.loadZYears();
     // this.initRadioPosNowEraModern = null;     // used for setting initial position of radio buttons
     // this.initRadioPosNowEraHistoric = null;
+  }
+  /**
+   * Returns true if valid conversion type
+   */
+  isValidConvType(convType) {
+    return this.validConvTypes.includes(convType);
   }
   /**
    * Load JYears data initially.  This can be extended further back into historical eras, and it can be

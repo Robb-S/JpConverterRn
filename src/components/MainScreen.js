@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, TextInput } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions, TextInput, Pressable } from 'react-native';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
 import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
@@ -55,12 +55,17 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   // cvtype (conversion type, e.g. 'frommetric'), is now available
   const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
+  const isYearConv = (cvtype) => { return yc.isValidConvType(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   // showXxx variables control conditional rendering
-  const showConvRadio = (!([cv.TOZODIAC, cv.TOJPYEAR, cv.FROMJPYEAR].includes(cvtype)));
+  const showConvRadio = isNumericConv(cvtype);
+  const showNumericInput = isNumericConv(cvtype);
+  const showYearInput = isYearConv(cvtype);
   const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
   const showToggle = (cvtype !== cv.TOZODIAC);
   const showZodiac = ([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype));
+  const showIncrementers = [cv.TOJPYEAR].includes(cvtype) ? 
+    yc.isValidIYear(fromValue) : !(isNaN(parseInt(fromValue)));
   let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
   eq = ['',''];
   hint = '';
@@ -101,7 +106,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   }
   const resultPanelText = `${eq[0]} \n${eq[1]} `;
   const instructions = getInstructions(cvtype);
-  const onChangeTextProc = (text) => {
+  const onChangeTextProc = (text) => { // handle TEXT input
     let isValid = true;
     if (isNumericConv(cvtype)) {
       if (cvs.isTempConv(convCode)) { // temperature conversion
@@ -114,9 +119,22 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
     }
     if (isValid) { setFromValue(text); }
   }
+  const addAYear = () => {
+    if (!isNaN(parseInt(fromValue))) {
+      const newYearInt = parseInt(fromValue) + 1;
+      setFromValue(newYearInt.toString());
+    }
+  }
+  const subtractAYear = () => {
+    if (!isNaN(parseInt(fromValue))) {
+      const newYearInt = parseInt(fromValue) - 1;
+      if (newYearInt>0) {setFromValue(newYearInt.toString());}
+    }
+  }
 
   return (
     <View style={[styles.container, bgStyle]}>
+      {showNumericInput && 
       <View style={[styles.inputTextArea, bgStyle2]}>
         <TextInput style={styles.inputTextText}
           onChangeText={onChangeTextProc}
@@ -124,9 +142,35 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           keyboardType={'numeric'}
           maxLength={maxInputTextLength}
           returnKeyType={'done'}
-          placeholder={hint}          
         />
       </View>
+      }
+      {showYearInput && 
+      <View style={[styles.inputYearArea, bgStyle2]}>
+        <TextInput style={styles.inputYearText}
+          onChangeText={onChangeTextProc}
+          value={fromValue}
+          keyboardType={'numeric'}
+          maxLength={maxInputTextLength}
+          returnKeyType={'done'}
+          placeholder={hint}          
+        />
+        { showIncrementers &&
+        <View style={[styles.inputIcon, bgStyle2]}>
+          <Pressable onPress = {() => { subtractAYear(); }}>
+            <Text>minus</Text>
+          </Pressable>
+        </View>
+        }
+        { showIncrementers &&
+        <View style={[styles.inputIcon, bgStyle2]}>
+          <Pressable onPress = {() => { addAYear(); }}>
+            <Text>plus</Text>
+          </Pressable>
+        </View>      
+        }
+      </View>
+      }
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
       <Text style={styles.instructionsText}>{instructions}</Text>
 
@@ -170,9 +214,24 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     // height: 50,
   },
+  inputYearArea: {
+    flexDirection: 'row',
+    marginTop: 3,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    // height: 50,
+  },
   inputTextText: {
     fontSize: 20,
   },
+  inputYearText: {
+    fontSize: 20,
+    flex: 6,
+  },
+  inputIcon: {
+    flex: 1,
+  },  
   resultPanel: {
     color: clr.white,
     paddingTop: 13,

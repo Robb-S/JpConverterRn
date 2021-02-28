@@ -17,3 +17,5 @@ newtemp/
 package.json
 yarn.lock
 src/zzextras/*
+android/*
+src/android/*
