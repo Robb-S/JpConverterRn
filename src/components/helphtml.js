@@ -1,5 +1,5 @@
 
-export const HelpHtml3 =
+export const HelpHtml =
 `
 <html><head>
 <meta name="HandHeldFriendly" content="true" />
@@ -8,14 +8,15 @@ export const HelpHtml3 =
 body {
     margin: 0;
     padding: 4px;
-    background-color: #ffffff; /* Background color */
     background-color: #000000; /* Background color */
-    color: #333333;            /* Foreground color used for text */
+    background-color: #ffffff; /* Background color */
     color: #e9e9e9;            /* Foreground color used for text */
+    color: #333333;            /* Foreground color used for text */
     font: 17px/1.3 Helvetica;
 }
 h3 {
     background-color: #2e7d32;  /* darker green */
+    color: #ffffff;
     padding: 8px 5px 8px 12px;
 }
 div.note {
