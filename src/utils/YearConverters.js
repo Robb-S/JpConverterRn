@@ -1,6 +1,4 @@
-import {cv} from './modes';
 import {decodeHtmlCharCodes} from './helpers';
-import { eq } from 'react-native-reanimated';
 /**
  * Container for era objects, zodiac objects
  * prop: yDict (eraCode: OneEra), eraCodeAllList (alpha sorted), 
@@ -11,7 +9,6 @@ import { eq } from 'react-native-reanimated';
 class YearConverters {
   constructor () {
     this.nowYear = new Date().getFullYear();
-    this.validConvTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];
     this.minYear = 100000;          // set this later
     this.modernEraStart = 1868      // beginning of Meiji era
     this.loadJYears()               // load data and prepare indexes

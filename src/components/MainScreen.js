@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import { Text, StyleSheet, View, useWindowDimensions, TextInput, Pressable } from 'react-native';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
-import { cv, getInstructions, getDispName, getBgStyles } from '../utils/modes';
+import { cv, getInstructions, getDispName, getBgStyles, getBgColor } from '../utils/modes';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
 import EraList from './EraList';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
-// import { Formik } from "formik"; 
-// import * as Yup from "yup";
+const validYrTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];
 
 function LoadingScreen() { // show this during async loading of last screen used data
   return (
@@ -55,20 +55,21 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   // cvtype (conversion type, e.g. 'frommetric'), is now available
   const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
-  const isYearConv = (cvtype) => { return yc.isValidConvType(cvtype); }
+  const isYearConv = (cvtype) => { return validYrTypes.includes(cvtype); }
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
-  // showXxx variables control conditional rendering
-  const showConvRadio = isNumericConv(cvtype);
-  const showNumericInput = isNumericConv(cvtype);
-  const showYearInput = isYearConv(cvtype);
-  const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));
-  const showToggle = (cvtype !== cv.TOZODIAC);
-  const showZodiac = ([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype));
-  const showIncrementers = [cv.TOJPYEAR].includes(cvtype) ? 
+  const bgColor = getBgColor(cvtype);
+  // show-xx variables control conditional rendering
+  const showConvRadio = isNumericConv(cvtype);      // radio buttons for regular conversions
+  const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));  // radio buttons for jp eras
+  const showNumericInput = isNumericConv(cvtype);   // TextInput for regular conversions
+  const showYearInput = isYearConv(cvtype);         // TextInput for years (Jp or int'l)
+  const showToggle = (cvtype !== cv.TOZODIAC);      // toggle to switch direction
+  const showZodiac = ([cv.TOZODIAC, cv.TOJPYEAR].includes(cvtype)); // zodiac panel
+  const showIncrementers = [cv.TOJPYEAR].includes(cvtype) ?         // +/- year value
     yc.isValidIYear(fromValue) : !(isNaN(parseInt(fromValue)));
-  let eq, kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength, hint;
-  eq = ['',''];
-  hint = '';
+  let kanjiJ, kanjiJZ, caption1, caption2, maxInputTextLength;
+  let eq = ['',''];
+  let hint = '';
   const fromInt = isNaN(fromValue) ? 0 : parseInt(fromValue);  // make it zero if fromValue is blank
   const fromNum = isNaN(fromValue) ? 0 : parseFloat(fromValue); 
   if (cvtype===cv.TOZODIAC) { // any year AD 1-9999
@@ -131,7 +132,19 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       if (newYearInt>0) {setFromValue(newYearInt.toString());}
     }
   }
-
+  /**
+   * Display elements for this component:
+   * 1a) TextInput for regular measurement conversions
+   * 1b) TextInput for year conversions w/ minus and plus buttons to decrement/increment the year
+   *      (hide buttons when year is blank or invalid)
+   * 2) Result panel - two-line text to show results of numeric or year conversion
+   * 3) Instructions - help for one type of conversion
+   * 4) Toggle zone - show current conversion type (e.g. "To Metric") w/ button to switch direction when 
+   *      appropriate (i.e. all except for Zodiac)
+   * 5a) Radio buttons to choose conversion code (e.g. miles to kilometers)
+   * 5b) Radio buttons or dropdown list to show Japanese eras to convert from (if FROMJPYEAR, e.g. Taisho)
+   * 6) ZodiacKanjiScreen show zodiac kanji (for TOJPYEAR and TOZODIAC only)
+   */
   return (
     <View style={[styles.container, bgStyle]}>
       {showNumericInput && 
@@ -158,14 +171,14 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         { showIncrementers &&
         <View style={[styles.inputIcon, bgStyle2]}>
           <Pressable onPress = {() => { subtractAYear(); }}>
-            <Text>minus</Text>
+          <Icon name='minus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
         </View>
         }
         { showIncrementers &&
         <View style={[styles.inputIcon, bgStyle2]}>
           <Pressable onPress = {() => { addAYear(); }}>
-            <Text>plus</Text>
+          <Icon name='plus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
         </View>      
         }
@@ -210,27 +223,28 @@ const styles = StyleSheet.create({
   inputTextArea: {
     marginTop: 3,
     paddingLeft: 10,
-    paddingBottom: 10,
-    paddingTop: 10,
     // height: 50,
   },
   inputYearArea: {
     flexDirection: 'row',
     marginTop: 3,
     paddingLeft: 10,
-    paddingBottom: 10,
-    paddingTop: 10,
     // height: 50,
   },
   inputTextText: {
     fontSize: 20,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   inputYearText: {
     fontSize: 20,
     flex: 6,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   inputIcon: {
     flex: 1,
+    alignSelf: 'center',
   },  
   resultPanel: {
     color: clr.white,

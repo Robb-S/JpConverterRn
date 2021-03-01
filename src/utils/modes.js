@@ -52,6 +52,18 @@ export function getBgStyles(cvtype) {
   return [{ backgroundColor: bgcol1 },{ backgroundColor: bgcol2 }];
 }
 
+/**
+ * Return simple primary background color based on cvtype/screen number.
+ */
+export function getBgColor(cvtype) {
+  const [screenNum, dirBoolean] = fromCvType(cvtype); // direction not used
+  if (screenNum==null) return clr.black;
+  const cvcatID = navOrder[screenNum];
+  const bgcol1 = cvcats[cvcatID].backgroundColor1;
+  return bgcol1;
+}
+
+
 export function getInstructions(cvtype) {
   const [screenNum, dirBoolean] = fromCvType(cvtype);
   if (screenNum==null) return null;
