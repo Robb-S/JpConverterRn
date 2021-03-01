@@ -17,7 +17,7 @@ import {Picker} from '@react-native-picker/picker';
  * On change of eraType: get new radiobuttons and ix
  * onPress for radio buttons: setEraCode, ixPos in store, setEraCode in parent component
  */
-export default function EraList({cvtype, yc, setConverter})  {
+export default function EraList({yc, setConverter, setFromValue})  {
   // console.log('** at start of EraList component **');
   let radioProps = []; let nowPos = null;
   const nowEra = yc.getNowEra();
@@ -50,16 +50,15 @@ export default function EraList({cvtype, yc, setConverter})  {
     // console.log('****** radio buttons : ' + radioProps.length);
   }, [eraType]);
 
-  const onPressProc = (newConvCode, index) => { // value is the chosen convCode
-    // console.log('** onPressProc for radio buttons **');
+  const onPressProc = async (newConvCode, index) => { // value is the chosen convCode
+    await setFromValue('');  // set to blank to avoid momentary flash of wrong value when switching eras
     setRadioIndex(index);
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
   }
 
-  const onDropdownSelect = (newConvCode, itemIndex) => { // value is the chosen eraCode
-    // console.log('** onDropdownSel for picker **');
-    // setRadioIndex(index);
+  const onDropdownSelect = async (newConvCode, itemIndex) => { // value is the chosen eraCode
+    await setFromValue('');  // set to blank to avoid momentary flash of wrong value when switching eras
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
   }

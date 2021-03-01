@@ -133,6 +133,14 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
     }
   }
   /**
+   * Reset fromValue to blank, to avoid brief flash of wrong results when toggling
+   */
+  const toggleLocal = async () => {
+    await setFromValue('');
+    toggleDirection();
+  }
+
+  /**
    * Display elements for this component:
    * 1a) TextInput for regular measurement conversions
    * 1b) TextInput for year conversions w/ minus and plus buttons to decrement/increment the year
@@ -191,7 +199,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
         {showToggle && 
         <View style={styles.toggleButtonZone} >
-          <TinyBtn onPress={() => toggleDirection()} 
+          <TinyBtn onPress={() => toggleLocal()} 
             text={'Switch direction'} color={clr.lightBlue} />        
         </View>
         }
@@ -202,7 +210,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       }
 
       {showEraRadio &&
-      <EraList cvtype={cvtype} yc={yc} setConverter={setConverter} />
+      <EraList yc={yc} setConverter={setConverter} setFromValue={setFromValue} />
       }
 
       {showZodiac &&
