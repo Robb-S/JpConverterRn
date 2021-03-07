@@ -33,44 +33,49 @@ div.note p {
 
 <h3>General navigation</h3>
 <p>
-Swipe the screen right or left to switch between different types of conversion, or use the navigation drawer by swiping from the left edge.
+Swipe the screen right or left to switch between different types of conversion, press the "forward" button at the top right-hand corner of the screen, or use the menu drawer by swiping from the left edge.  You can also access the menu drawer by pressing the menu button (three horizontal lines) in the upper left corner of the screen.
+</p><p>
+You can toggle conversion direction (e.g Japanese measurements to international units or vice versa) by pressing the up and down arrows in the top right-hand area of the screen.
+</p>
+</div><div class="note">
+<h3>Metric conversion</h3>
+<p>
+The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  
+</p><p>
+Choose the units you wish to convert from the drop-down list at the bottom of the screen.  Press the button labeled "switch direction" if you want to change the direction of conversion to start with non-metric units. 
+</p><p>
+After you have selected the units, press the lighter-colored bar near the top of the screen to access a numeric keyboard, with which you can enter the number of units to convert.  
+</p>
+</div><div class="note">
+<h3>Traditional Japanese measurements</h3>
+<p>
+Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
+</p><p>
+'Tsubo' units are used for measuring land, and 'jo' units measure room sizes.  One jo is very roughly the size of one standard tatami mat.
+</p><p>
+'Go' and 'shaku' units are commonly used for measuring sake - 1 go (ichigo) is a standard serving of sake, and 4 go is a medium-size bottle.  There are ten shaku in one go, so 5 shaku is around half a standard serving size.  (Fluid oz refers to US measures.)
+</p><p>
+As described above, first choose the units you wish to convert, then enter an amount in the input area near the top of the screen.  Press the "switch direction" button to change conversion direction.
+</p>
+</div><div class="note">
+<h3>Converting to Japanese era years</h3>
+
+<p>
+To convert from the international (Gregorian) calendar to Japanese eras, enter the international year (1688 to present) in the input area near the top of the screen.  
 </p>
 
-</div><div class="note">
-<h3>Metric conversion</h3>
+<h3>Converting from Japanese era years</h3>
 <p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
+To convert from Japanese eras to international years, first pick the Japanese era from the list at the bottom of the page, for modern-era years (starting from 1868), or press the button to switch to historical eras (starting in 1688), then choose from the drop-down list.
 </p><p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  Choose the units you wish to convert from the drop-down list.
-</p>
-
-</div><div class="note">
-<h3>Metric conversion</h3>
-<p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
-</p><p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  Choose the units you wish to convert from the drop-down list.
+After you have chosen the era, please enter the year within that era in the input area near the top of the screen.  Valid years will be shown as a hint when the input area is empty.  You can use the plus and minus-sign buttons to shift years one at a time.
 </p>
 </div><div class="note">
-<h3>Metric conversion</h3>
+<h3>Finding zodiac signs</h3>
 <p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
+Enter the year of your birth to find your animal sign in the Chinese zodiac. (The first kanji represents the ordinary animal name, and the second one represents the zodiac sign.)
 </p><p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  Choose the units you wish to convert from the drop-down list.
-</p>
-</div><div class="note">
-<h3>Metric conversion</h3>
-<p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
-</p><p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  Choose the units you wish to convert from the drop-down list.
-</p>
-</div><div class="note">
-<h3>Metric conversion</h3>
-<p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
-</p><p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  Choose the units you wish to convert from the drop-down list.
+Note that in Japan the Chinese zodiac year begins on January 1 each year.
 </p>
 
 </div>

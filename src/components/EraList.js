@@ -43,14 +43,11 @@ export default function EraList({yc, setConverter, setFromValue})  {
   }, []); 
   // }, [cvtype, initialRadioIx]); 
 
-  React.useEffect(() => {
-    // console.log('Era type was reset, using effect.');
-    // console.log('****** radio buttons : ' + radioProps.length);
-    [radioProps, nowPos] = yc.eraTypeToRadioProps(eraType); // NOT state
-    // console.log('****** radio buttons : ' + radioProps.length);
+  React.useEffect(() => {  // get list of eras at start or when eraType changes
+    [radioProps, nowPos] = yc.eraTypeToRadioProps(eraType); // NOT state, just a pair array
   }, [eraType]);
 
-  const onPressProc = async (newConvCode, index) => { // value is the chosen convCode
+  const onPressProc = async (newConvCode, index) => { // value is the chosen eraCode
     await setFromValue('');  // set to blank to avoid momentary flash of wrong value when switching eras
     setRadioIndex(index);
     setConvCodeLocal(newConvCode);
@@ -66,11 +63,11 @@ export default function EraList({yc, setConverter, setFromValue})  {
   const toggleEraType = () => {
     // console.log('*** inside toggleEraType ***');
     const newEraType = eraType==='modern' ? 'all' : 'modern';
-    setEraType (newEraType);
+    setEraType(newEraType);
     setConvCodeLocal(nowEra);
-    setConverter(nowEra);
+    setConverter(nowEra); // in parent component
     [radioProps, nowPos] = yc.eraTypeToRadioProps(newEraType);
-    setRadioIndex(nowPos);
+    setRadioIndex(nowPos);        // always switch to current era
     setStRadioProps(radioProps);
   }
 
