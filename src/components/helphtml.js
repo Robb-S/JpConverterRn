@@ -49,8 +49,6 @@ After you have selected the units, press the lighter-colored bar near the top of
 </div><div class="note">
 <h3>Traditional Japanese measurements</h3>
 <p>
-Press the "CONVERT TO METRIC" text to toggle back and forth between conversion modes, or use the left-hand navigation drawer.
-</p><p>
 'Tsubo' units are used for measuring land, and 'jo' units measure room sizes.  One jo is very roughly the size of one standard tatami mat.
 </p><p>
 'Go' and 'shaku' units are commonly used for measuring sake - 1 go (ichigo) is a standard serving of sake, and 4 go is a medium-size bottle.  There are ten shaku in one go, so 5 shaku is around half a standard serving size.  (Fluid oz refers to US measures.)
