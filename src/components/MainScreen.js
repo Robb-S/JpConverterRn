@@ -8,7 +8,7 @@ import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
 import ConverterList from './ConverterList';
-import EraList from './EraList';
+import EraList2 from './EraList2';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
 const validYrTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];
 
@@ -210,7 +210,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       }
 
       {showEraRadio &&
-      <EraList yc={yc} setConverter={setConverter} setFromValue={setFromValue} />
+      <EraList2 yc={yc} setConverter={setConverter} setFromValue={setFromValue} />
       }
 
       {showZodiac &&
