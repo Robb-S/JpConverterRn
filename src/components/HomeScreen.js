@@ -218,8 +218,7 @@ const HomeScreen = ({navigation}) => {
       ref={drawer}
       drawerWidth={300}
       drawerPosition={"left"}
-      renderNavigationView={() => DrawerView(drawer, navigation, setMode, 
-        screenNum, currDirection)}
+      renderNavigationView={() => DrawerView(drawer, navigation, setMode)}
     >
     <View style={[styles.container, bgStyle]}>
     <SwipeGesture gestureStyle={styles.swipeGestureContainer} 
