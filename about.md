@@ -1,4 +1,4 @@
-# JpConverter Android app - technical details
+# JpConverter Android app - developer notes
 
 ## A tool for Japanese measures and the Japanese calendar
 

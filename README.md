@@ -22,6 +22,6 @@ There is also a Windows executable version of this app available for immediate d
 
 ## Technical details
 
-While the original version of this app was written in Java, this replacement is written in JavaScript using React Native.  See the ["About" page](./about.md) for more technical details.
+While the original version of this app was written in Java, this replacement is written in JavaScript using React Native.  See the ["Developer notes" page](./about.md) for more technical details if you're interested in that sort of thing.
 
 
