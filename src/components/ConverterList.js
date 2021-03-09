@@ -81,4 +81,8 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 0,
   },
+  showBorder: {
+    borderWidth: 0,
+    borderColor: clr.lighterGrey,    
+  }
 });

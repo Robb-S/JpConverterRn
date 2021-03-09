@@ -194,41 +194,18 @@ class Converters {
    * needed by react-native-simple-radio-button API.
    */
   convTypeToRadioProps(convType) {
-    if (['tojpyear', 'fromjpyear'].includes(convType)) { // TODO: REMOVE
-    return [
-      {label: 'jpyears 1', value: 'jpyears1' },
-      {label: 'jpyears 2', value: 'jpyears2' },
-      {label: 'jpyears 3', value: 'jpyears3' },
-      {label: 'jpyears 4', value: 'jpyears4' },
-      {label: 'jpyears 5', value: 'jpyears5' },       
-      {label: 'jpyears 6', value: 'jpyears6' },   
-      {label: 'jpyears 7', value: 'jpyears7' },   
-      {label: 'jpyears 8', value: 'jpyears8' },   
-      ];
-    }
-    if (['tozodiac', 'dummy'].includes(convType)) { // TODO: REMOVE
-      return [
-        {label: 'zodiac 1', value: 'zodiac1' },
-      ];
-    }
     const rpArray = [];
     if (this.validConvTypes.includes(convType)) {
       const cInfoTupleArray = this.convTypeToConvInfo(convType);
+      let radioIx = 0;
       for (const [convCode, convDesc] of cInfoTupleArray) {
-        const oneRadioPropObj = {label: convDesc, value: convCode};
+        const oneRadioPropObj = {label: convDesc, value: convCode, ixValue: radioIx};
         rpArray.push(oneRadioPropObj);
+        radioIx += 1;
       }
     }
     return rpArray;
   }
-
-  // getInitFromValue(cvtype) { // TODO: remove
-  //   if (['tojpyear', 'tozodiac'].includes(cvtype)) {
-  //     return this.currYear.toString();
-  //   } else {
-  //     return '1';
-  //   }
-  // }
 
   loadBaseConverters() { // this can alternatively be done from external file
     // console.log('*** loadBaseConverters'); 
@@ -237,14 +214,14 @@ class Converters {
       ["km2mi", "kilometers to miles", "kilometers", "kilometer", "miles", 0.621371, 2, "frommetric"],
       ["m2ft", "meters to feet", "meters", "meter", "feet", 3.28084, 3, "frommetric"],
       ["cm2in","centimeters to inches", "centimeters", "centimeter", "inches", 0.393701, 3, "frommetric"],
-      ["sqm2sqft","square meters to square feet","square meters","square meter", "square feet", 10.7640, 3, "frommetric"],
+      ["sqm2sqft","sq meters to sq feet","square meters","square meter", "square feet", 10.7640, 3, "frommetric"],
       ["kg2lb","kilograms to pounds", "kilograms","kilogram", "pounds", 2.2046, 3, "frommetric"],
       ["ml2oz","milliliters to fluid ounces", "milliliters", "milliliter", "fluid oz", 0.033814, 3, "frommetric"],
       ["f2c","°F to °C", "°F", "","°C", 0.0, 1, "tometric"],
       ["mi2km","miles to kilometers","miles", "mile", "km", 1.60934, 2, "tometric"],
       ["ft2m","feet to meters","feet","foot", "meters", 0.3048, 3, "tometric"],
       ["in2cm","inches to centimeters", "inches", "inch", "cm", 2.54, 3, "tometric"],
-      ["sqft2sqm","square feet to square meters","square feet", "square foot", "sq meters", 0.0929, 3, "tometric"],
+      ["sqft2sqm","sq feet to sq meters","square feet", "square foot", "sq meters", 0.0929, 3, "tometric"],
       ["lb2kg","pounds to kilograms", "pounds","pound", "kilograms", 0.45359, 3, "tometric"],
       ["oz2ml","fluid ounces to milliliters","fluid oz","","milliliters", 29.5735, 3, "tometric"],
       ["sqm2jo", "square meters to jo", "square meters", "square meter", "jo", 0.605, 2, "tojpmeasure", "畳"],

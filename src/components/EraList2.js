@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import RadioButtonRN from 'radio-buttons-react-native';
+// import RadioButtonRN from 'radio-buttons-react-native';
+import RadioButtonRN from '../utils/radio-buttons-react-native/RadioButtonRN';
 import { clr } from '../utils/colors';
 import TinyBtn from './TinyBtn';
 import {Picker} from '@react-native-picker/picker';
@@ -110,6 +111,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           box={false}
           style={styles.radioGroup}
           textStyle={styles.radioText}
+          boxStyle={styles.oneBox}
         />
         }
       </ScrollView>
@@ -161,6 +163,10 @@ const styles = StyleSheet.create({
   radioGroup: {    
     marginLeft: 5,
     marginBottom: 10,
-    width: 200,   /* set this to allow swiping from right side of window */
-  }
+    /* width: 200,   /* set this to allow swiping from right side of window */
+  },
+  oneBox: {
+    borderWidth: 0,
+    borderColor: clr.black,
+  },
 });

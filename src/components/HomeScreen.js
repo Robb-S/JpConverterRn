@@ -149,11 +149,11 @@ const HomeScreen = ({navigation}) => {
    * Keep conversion type but toggle direction, store to state and async storage.
    */
   const toggleDirection = async function () { // // switch conversion direction only
+    await setChangeType('toggle'); // make sure toggle is set before showing radio buttons
     const newDirArray = toggleArrayIx(dirArray, screenNum);
     const newCurrDirection = newDirArray[screenNum];
     updateData(screenNum, newDirArray, newCurrDirection); // screenNum is unchanged
     setMainHeaderTitle(screenNum, newCurrDirection);
-    setChangeType('toggle');
   }
   /**
    * Read last-used position and direction from async storage when starting up.

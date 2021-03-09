@@ -7,6 +7,7 @@ import { cv, getInstructions, getDispName, getBgStyles, getBgColor } from '../ut
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
+import ConverterList2 from './ConverterList2';
 import ConverterList from './ConverterList';
 import EraList2 from './EraList2';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
@@ -206,7 +207,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       </View>
       
       {showConvRadio &&
-      <ConverterList cvtype={cvtype} cvs={cvs} setConverter={setConverter} changeType={changeType} />
+      <ConverterList2 cvtype={cvtype} cvs={cvs} setConverter={setConverter} changeType={changeType} />
       }
 
       {showEraRadio &&
