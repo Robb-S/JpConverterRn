@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import RadioButtonRN from 'radio-buttons-react-native';
+import RadioButtonRN from '../utils/radio-buttons-react-native/RadioButtonRN';
 import { clr } from '../utils/colors';
 
 export default function ConverterList2({cvtype, cvs, setConverter, changeType})  {  
@@ -72,6 +72,5 @@ const styles = StyleSheet.create({
   radioGroup: {    
     marginLeft: 5,
     marginBottom: 10,
-    width: 200,   /* set this to allow swiping from right side of window */
   },
 });

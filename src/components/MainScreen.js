@@ -8,7 +8,7 @@ import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
 import ConverterList2 from './ConverterList2';
-import ConverterList from './ConverterList';
+// import ConverterList from './ConverterList';
 import EraList2 from './EraList2';
 import ZodiacKanjiScreen from './ZodiacKanjiScreen';
 const validYrTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];

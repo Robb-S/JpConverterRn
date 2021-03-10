@@ -113,6 +113,10 @@ class RadioButtonRN extends React.Component {
         });
     }
 
+    /**
+     * Changed position of TouchableOpacity from container "box" to cover only the icon and the
+     * text of the radio buttons, to allow swiping from the rest of the screen. 
+     */
 	render() {
 		let { activeIndex, fadeAnim, animations } = this.state;
         let { boxStyle, style, circleSize, textStyle, data, icon, activeColor, deactiveColor, boxActiveBgColor, boxDeactiveBgColor, box, textColor } = this.props;
@@ -122,7 +126,7 @@ class RadioButtonRN extends React.Component {
             {
                 data.map((item, index) => {
                     return (
-                        <TouchableOpacity
+                        <View
                             key={index}
                             style={[ box ? styles.productBox : styles.productBoxLess, 
                                 box && {
@@ -130,10 +134,9 @@ class RadioButtonRN extends React.Component {
                                     borderColor: activeIndex === index ? activeColor : deactiveColor,
                                 }
                             , boxStyle]}
-                            activeOpacity={0.9}
-                            onPress={() => this._changeRadio(item, index)}
+                            activeOpacity={0.9}                            
                         >
-                            <View style={styles.leftProductBox}>
+                            <TouchableOpacity style={styles.leftProductBox} onPress={() => this._changeRadio(item, index)}>
                                 <View style={[ icon ? styles.icon : styles.circle, {
                                     borderColor: activeIndex === index ? activeColor : deactiveColor,
                                     width: circleSize + 8,
@@ -165,16 +168,17 @@ class RadioButtonRN extends React.Component {
                                         </Animated.View>
                                     </Animated.View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
 
-                            <View style={[styles.centerProductBox]}>
+                            <TouchableOpacity style={[styles.centerProductBox]} 
+                                onPress={() => this._changeRadio(item, index)}>
                                 <Text style={[{
                                     color: textColor
                                 }, textStyle]}>
                                     {item.label}
                                 </Text>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
                     )
                 })
             }
@@ -197,7 +201,6 @@ const styles = StyleSheet.create({
     productBoxLess: {
         flexDirection: 'row',
         marginTop: 10,
-        // maxWidth: '40%',
     },
     leftProductBox: {
         // flex: 1,
@@ -209,7 +212,6 @@ const styles = StyleSheet.create({
         // flex: 6,
         justifyContent: 'flex-start',
         // alignItems: 'flex-start',
-        // width: 180,
         paddingHorizontal: 4
     },
     circle: {
