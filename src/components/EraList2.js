@@ -103,7 +103,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           data={stRadioProps}
           selectedBtn={onPressProc}
           initial={radioIndex+1}
-          animationTypes={['zoomin', 'pulse']}
+          animationTypes={['zoomIn', 'pulse']}
           circleSize={18}
           activeColor={clr.white}
           deactiveColor={clr.darkGrey}
