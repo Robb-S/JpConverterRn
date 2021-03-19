@@ -64,6 +64,20 @@ const DrawerView = (drawer, navigation, setMode) => {
         onPress={() => { goToScreen(cv.ZODIAC, cv.TOJPVAL);} }
       />
       <DrSubhead text={'More'} />
+      <DrButton text={'Other useful apps'}
+        iconName={'apps'}
+        onPress={() => {
+          drawer.current.closeDrawer();
+          navigation.navigate('Other useful apps');
+        }}
+      />
+      <DrButton text={'Web resources'}
+        iconName={'web'}
+        onPress={() => {
+          drawer.current.closeDrawer();
+          navigation.navigate('Web resources');
+        }}
+      />
       <DrButton text={'Help'}
         iconName={'help-circle-outline'}
         onPress={() => {

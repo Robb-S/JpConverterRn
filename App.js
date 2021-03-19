@@ -7,6 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/components/HomeScreen';
 import HelpScreen from './src/components/HelpScreen';
+import WebScreen from './src/components/WebScreen';
+import OtherScreen from './src/components/OtherScreen';
 import TestScreen from './src/components/TestScreen';
 import { clr } from './src/utils/colors';
 
@@ -31,6 +33,8 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home" >
         <Stack.Screen name="Home" component={HomeScreen}  options={soptions} />
         <Stack.Screen name="Help" component={HelpScreen}  options={soptions} />
+        <Stack.Screen name="Other useful apps" component={OtherScreen}  options={soptions} />
+        <Stack.Screen name="Web resources" component={WebScreen}  options={soptions} />
         <Stack.Screen name="Test" component={TestScreen}  options={soptions} />
       </Stack.Navigator>
     </NavigationContainer>
