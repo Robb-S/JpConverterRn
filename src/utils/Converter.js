@@ -13,7 +13,7 @@ class Converter {
     this.convDisplay = convDisplay;          // eg "miles to kilometers"
     this.unit1 = unit1;                      // eg "miles"
     if ((unit1single.length)>0) {this.unit1single = unit1single;} // e.g. "mile" (if blank then same as unit1)
-    else {this.unit1single = this.unit1;}    
+    else {this.unit1single = this.unit1;}
     this.unit2 = unit2;                      // eg "kilometers"
     this.convFactor = convFactor;            // eg 1.60934
     this.sigDigits = sigDigits;              // eg 2 (digits after decimal point)
@@ -26,11 +26,11 @@ class Converter {
   /**
    * Return conversion result as floating point.  Mostly used internally.
    */
-  getAmt2Float(amt1) { 
+  getAmt2Float(amt1) {
     if (this.convCode==='f2c') { return ((( amt1 - 32.0) * 5.0) / 9.0); }
     else if (this.convCode==='c2f') {return ((( amt1 * 9.0) / 5.0) + 32.0); }
     else { return (amt1 * this.convFactor); }
-  }              
+  }
   /**
    * Return result as string, with x significant digits after decimal point.
    */
@@ -76,15 +76,15 @@ class Converter {
   }
 
   // get properties next
-  getConvCode() {return this.convCode}
-  getConvDisplay() {return this.convDisplay}
-  getUnit1() {return this.unit1}
-  getUnit1Single() {return this.unit1single}
-  getUnit2() {return this.unit2}
-  getConvFactor() {return this.convFactor}
-  getSigDigits() {return this.sigDigits}
-  getConvType() {return this.convType}
-  getUnitKanji() {return this.unitKanji}
+  getConvCode() {return this.convCode;}
+  getConvDisplay() {return this.convDisplay;}
+  getUnit1() {return this.unit1;}
+  getUnit1Single() {return this.unit1single;}
+  getUnit2() {return this.unit2;}
+  getConvFactor() {return this.convFactor;}
+  getSigDigits() {return this.sigDigits;}
+  getConvType() {return this.convType;}
+  getUnitKanji() {return this.unitKanji;}
 }
 
 export default Converter;
