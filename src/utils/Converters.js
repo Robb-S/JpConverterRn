@@ -40,7 +40,7 @@ class Converters {
   isTooCold(convCode, amt1) {
     if (!(this.isTempConv(convCode))) return false;
     if ((convCode === 'c2f') && (amt1<this.minimumCentigrade)) return true;
-    if ((convCode == 'f2c') && (amt1<this.minimumFahrenheit)) return true;
+    if ((convCode === 'f2c') && (amt1<this.minimumFahrenheit)) return true;
     return false;
   }
   /**
