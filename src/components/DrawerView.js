@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { clr } from '../utils/colors';
 import { catToSnum, cv } from '../utils/modes';
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DrButton = ({text, iconName, onPress}) => {
   return (
@@ -13,7 +13,7 @@ const DrButton = ({text, iconName, onPress}) => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 const DrSubhead = ({text, topBorder='true'}) => {
   let substyle
   if (topBorder)substyle = styles2.drSubhead
@@ -23,55 +23,55 @@ const DrSubhead = ({text, topBorder='true'}) => {
       <Text style={styles2.drSubheadText}>{text}</Text>
     </View>
   );
-}
+};
 
 const DrawerView = (drawer, navigation, setMode) => {
   // const cvid = getCvType(screenNum, currDirection);
   const goToScreen = (cvCat, dir) => {
     drawer.current.closeDrawer();
     setMode(catToSnum(cvCat), dir);
-  }
+  };
   return (
     <ScrollView style={[styles2.drawerContainer]}>
       <DrSubhead text={'Measurements'} topBorder={false} />
       <DrButton text={'To metric'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.METRIC, cv.TOJPVAL)} }
+        onPress={() => { goToScreen(cv.METRIC, cv.TOJPVAL);} }
       />
       <DrButton text={'From metric'} 
-        iconName={'calculator'}    
-        onPress={() => { goToScreen(cv.METRIC, cv.FROMJPVAL)} }
+        iconName={'calculator'}
+        onPress={() => { goToScreen(cv.METRIC, cv.FROMJPVAL);} }
       />
       <DrButton text={'To Japanese measures'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.JPMEASURE, cv.TOJPVAL)} }
+        onPress={() => { goToScreen(cv.JPMEASURE, cv.TOJPVAL);} }
       />
       <DrButton text={'From Japanese measures'} 
         iconName={'calculator'}
-        onPress={() => { goToScreen(cv.JPMEASURE, cv.FROMJPVAL)} }
+        onPress={() => { goToScreen(cv.JPMEASURE, cv.FROMJPVAL);} }
       />
       <DrSubhead text={'Calendar'} />
       <DrButton text={'To Japanese years'} 
         iconName={'calendar-month'}
-        onPress={() => { goToScreen(cv.JPYEAR, cv.TOJPVAL)} }
+        onPress={() => { goToScreen(cv.JPYEAR, cv.TOJPVAL);} }
       />
       <DrButton text={'From Japanese years'} 
         iconName={'calendar-month'}
-        onPress={() => { goToScreen(cv.JPYEAR, cv.FROMJPVAL)} }
+        onPress={() => { goToScreen(cv.JPYEAR, cv.FROMJPVAL);} }
       />
       <DrButton text={'Zodiac years'} 
         iconName={'rabbit'}
-        onPress={() => { goToScreen(cv.ZODIAC, cv.TOJPVAL)} }
+        onPress={() => { goToScreen(cv.ZODIAC, cv.TOJPVAL);} }
       />
-      <DrSubhead text={"More"} />
-      <DrButton text={"Help"}
+      <DrSubhead text={'More'} />
+      <DrButton text={'Help'}
         iconName={'help-circle-outline'}
         onPress={() => {
           drawer.current.closeDrawer();
           navigation.navigate('Help');
         }}
       />
-      {/* <DrButton text={"Test"}
+      {/* <DrButton text={'Test'}
         iconName={'cow'}
         onPress={() => {
           drawer.current.closeDrawer();
@@ -127,4 +127,4 @@ const styles2 = StyleSheet.create({
   },
 });
 
-export default DrawerView
+export default DrawerView;

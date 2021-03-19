@@ -25,7 +25,7 @@ import { clr } from '../utils/colors';
 import { cv, getBgStyles, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2'
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {toggleArrayIx, assignArrayIx} from '../utils/helpers';
 import DrawerView from './DrawerView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -37,35 +37,35 @@ const HomeScreen = ({navigation}) => {
    * Set header title to match current conversion type, or generic app name as default 
    */
   const setMainHeaderTitle = (sNum, cDirection) => {
-    let currTitle = "JP Converter";
+    let currTitle = 'JP Converter';
     if (sNum!==null) {currTitle = getDispName(getCvType(sNum, cDirection))}
     navigation.setOptions({
       title: capitalize(currTitle),
     });
-  }
+  };
   /**
    * Set header title to generic app name when the drawer is open.
    */
   const setDrawerHeaderTitle = () => {
-    const drawerTitle = "JP Converter";
+    const drawerTitle = 'JP Converter';
     navigation.setOptions({
       title: drawerTitle,
     });
-  }
+  };
   // handle drawer open/close, since toggle method doesn't exist for DrawerLayoutAndroid.
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const onDrawerOpen = () => {
     setDrawerOpen(true);
     setDrawerHeaderTitle();
-  }
+  };
   const onDrawerClose = () => {
     setDrawerOpen(false);
     setMainHeaderTitle(screenNum, currDirection);
-  }
+  };
   const toggleDrawer = () => {
     if (isDrawerOpen)drawer.current.closeDrawer();
     else drawer.current.openDrawer();
-  }
+  };
   const drawer = useRef(null);
   /**
    * Add hamburger icon to left side of header, to open and close drawer.
@@ -114,28 +114,28 @@ const HomeScreen = ({navigation}) => {
   const onSwipePerformed = (action) => {
     if (action==='left') incrementScreenNum();
     if (action==='right') decrementScreenNum();
-  }
-  const minScrNum = 0; 
+  };
+  const minScrNum = 0;
   const maxScrNum = 3;
   /**
    * Change screen number to display next screen (next conversion type) in sequence after swiping.
    * Loop back to beginning after reaching the end.  (This looping is not possible using ordinary 
    * React Native tab navigation.)  Using simulated modulo function for clearer code.
    */
-  const incrementScreenNum = () => { 
+  const incrementScreenNum = () => {
     const newScreenNum = (screenNum===maxScrNum) ? minScrNum : screenNum+1;
     const newCurrDirection = dirArray[newScreenNum];
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
     setChangeType('swipe');
-  }
+  };
   const decrementScreenNum = () => { // display previous screen/category
     const newScreenNum = (screenNum===minScrNum) ? maxScrNum : screenNum-1;
     const newCurrDirection = dirArray[newScreenNum];
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
     setChangeType('swipe');
-  }
+  };
   /**
    * Set new conversion type and direction, store to state and async storage, from drawer buttons.
    */
@@ -144,7 +144,7 @@ const HomeScreen = ({navigation}) => {
     updateData(newScreenNum, newDirArray, newCurrDirection);
     setMainHeaderTitle(newScreenNum, newCurrDirection);
     setChangeType('menu');
-  }
+  };
   /**
    * Keep conversion type but toggle direction, store to state and async storage.
    */
@@ -154,7 +154,7 @@ const HomeScreen = ({navigation}) => {
     const newCurrDirection = newDirArray[screenNum];
     updateData(screenNum, newDirArray, newCurrDirection); // screenNum is unchanged
     setMainHeaderTitle(screenNum, newCurrDirection);
-  }
+  };
   /**
    * Read last-used position and direction from async storage when starting up.
    */
@@ -196,10 +196,9 @@ const HomeScreen = ({navigation}) => {
       stScreenNum: newScreenNum,
       stDirArray: newDirArray,
       stCurrDirection: newCurrDirection,
-    }
+    };
     await AsyncStorage.setItem('lastPos', JSON.stringify(stLastPos));
-  }
-  // const bgStyle = getBgStyle(getCvType(screenNum, currDirection));
+  };
   const [bgStyle] = getBgStyles(getCvType(screenNum, currDirection));
 
   /**
@@ -217,13 +216,13 @@ const HomeScreen = ({navigation}) => {
       onDrawerClose={onDrawerClose}
       ref={drawer}
       drawerWidth={300}
-      drawerPosition={"left"}
+      drawerPosition={'left'}
       renderNavigationView={() => DrawerView(drawer, navigation, setMode)}
     >
     <View style={[styles.container, bgStyle]}>
     <SwipeGesture gestureStyle={styles.swipeGestureContainer} 
       onSwipePerformed={onSwipePerformed}>
-      <MainScreen 
+      <MainScreen
         cvtype={getCvType(screenNum, currDirection)}
         toggleDirection={toggleDirection} 
         changeType={changeType}
@@ -258,4 +257,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen
+export default HomeScreen;

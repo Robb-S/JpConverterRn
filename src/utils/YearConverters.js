@@ -28,40 +28,40 @@ class YearConverters {
    * adapted to load from an external file.
    */
   loadJYears() {
-    this.yDict = {} // this will hold all the OneEra objects, indexed by eraCode
+    this.yDict = {}; // this will hold all the OneEra objects, indexed by eraCode
     this.jYearTuples = [         // utf-8 and html encoding
-      ["reiwa", "Reiwa", "令和", 2019, 0],
-      ["heisei", "Heisei", "平成", 1989, 2019],
-      ["showa", "Sh&#333;wa", "昭和", 1926, 1989],
-      ["taisho", "Taish&#333;", "大正", 1912, 1926],
-      ["meiji", "Meiji", "明治", 1868, 1912],
-      ["keio", "Kei&#333;", "慶応", 1865, 1868],
-      ["genji", "Genji", "元治", 1864, 1865],
-      ["bunkyu", "Bunky&#363;", "文久", 1861, 1864],
-      ["manen", "Man'en", "万延", 1860, 1861],
-      ["ansei", "Ansei", "安政", 1854, 1860],
-      ["kaei", "Kaei", "嘉永", 1848, 1854],
-      ["koka", "K&#333;ka", "弘化", 1844, 1848],
-      ["tenpo", "Tenp&#333;", "天保", 1830, 1844],
-      ["bunsei", "Bunsei", "文政", 1818, 1830],
-      ["bunka", "Bunka", "文化", 1804, 1818],
-      ["kyowa", "Ky&#333;wa", "享和", 1801, 1804],
-      ["kansei", "Kansei", "寛政", 1789, 1801],
-      ["tenmei", "Tenmei", "天明", 1781, 1789],
-      ["anei", "An'ei", "安永", 1772, 1781],
-      ["meiwa", "Meiwa", "明和", 1764, 1772],
-      ["horeki", "H&#333;reki", "宝暦", 1751, 1764],
-      ["kanen", "Kan'en", "寛延", 1748, 1751],
-      ["enkyo2", "Enky&#333;", "延享", 1744, 1748],
-      ["kanpo", "Kanp&#333;", "寛保", 1741, 1744],
-      ["genbun", "Genbun", "元文", 1736, 1741],
-      ["kyoho", "Ky&#333;h&#333;", "享保", 1716, 1736],
-      ["shotoku", "Sh&#333;toku", "正徳", 1711, 1716],
-      ["hoei", "H&#333;ei", "宝永", 1704, 1711],
-      ["genroku", "Genroku", "延享", 1688, 1704],
-    ] // (source: http://www.meijigakuin.ac.jp/~watson/ref/nengo-utf8.html and Nelson)
+      ['reiwa', 'Reiwa', '令和', 2019, 0],
+      ['heisei', 'Heisei', '平成', 1989, 2019],
+      ['showa', 'Sh&#333;wa', '昭和', 1926, 1989],
+      ['taisho', 'Taish&#333;', '大正', 1912, 1926],
+      ['meiji', 'Meiji', '明治', 1868, 1912],
+      ['keio', 'Kei&#333;', '慶応', 1865, 1868],
+      ['genji', 'Genji', '元治', 1864, 1865],
+      ['bunkyu', 'Bunky&#363;', '文久', 1861, 1864],
+      ['manen', "Man'en", '万延', 1860, 1861],
+      ['ansei', 'Ansei', '安政', 1854, 1860],
+      ['kaei', 'Kaei', '嘉永', 1848, 1854],
+      ['koka', 'K&#333;ka', '弘化', 1844, 1848],
+      ['tenpo', 'Tenp&#333;', '天保', 1830, 1844],
+      ['bunsei', 'Bunsei', '文政', 1818, 1830],
+      ['bunka', 'Bunka', '文化', 1804, 1818],
+      ['kyowa', 'Ky&#333;wa', '享和', 1801, 1804],
+      ['kansei', 'Kansei', '寛政', 1789, 1801],
+      ['tenmei', 'Tenmei', '天明', 1781, 1789],
+      ['anei', "An'ei", '安永', 1772, 1781],
+      ['meiwa', 'Meiwa', '明和', 1764, 1772],
+      ['horeki', 'H&#333;reki', '宝暦', 1751, 1764],
+      ['kanen', "Kan'en", '寛延', 1748, 1751],
+      ['enkyo2', 'Enky&#333;', '延享', 1744, 1748],
+      ['kanpo', 'Kanp&#333;', '寛保', 1741, 1744],
+      ['genbun', 'Genbun', '元文', 1736, 1741],
+      ['kyoho', 'Ky&#333;h&#333;', '享保', 1716, 1736],
+      ['shotoku', 'Sh&#333;toku', '正徳', 1711, 1716],
+      ['hoei', 'H&#333;ei', '宝永', 1704, 1711],
+      ['genroku', 'Genroku', '延享', 1688, 1704],
+    ]; // (source: http://www.meijigakuin.ac.jp/~watson/ref/nengo-utf8.html and Nelson)
     this.nowEraCode = '';
-    const startYears = this.jYearTuples.map((jYearTuple) => {return jYearTuple[3];}) // get all starting years
+    const startYears = this.jYearTuples.map((jYearTuple) => {return jYearTuple[3];}); // get all starting years
     this.minYear = Math.min(...startYears); // find the minimum (earliest) starting year in use
     let tempEraCodeAllList = [];            // include historical years
     let tempEraCodeModernList = [];         // just since Meiji restoration
@@ -77,9 +77,9 @@ class YearConverters {
     }
     this.eraCodeAllListSorted = [...tempEraCodeAllList.sort()];  // alpha sort list of all eras
     // next sort array of tuples in reverse order by startYear, then add only eraCodes to new list
-    tempEraCodeModernList.sort(function(a, b){return b[1]-a[1]})
+    tempEraCodeModernList.sort(function(a, b){return b[1]-a[1];});
     this.eraCodeModernListSorted = tempEraCodeModernList.map((oneTuple) => {return oneTuple[0]});
-    this.maxYear = this.yDict[this.nowEraCode].getStartYear() + 98  // year 99 of current era
+    this.maxYear = this.yDict[this.nowEraCode].getStartYear() + 98; // year 99 of current era
   }
 
   getNowYear() {return this.nowYear; }
@@ -106,7 +106,7 @@ class YearConverters {
    */
   getHint(eraCode) {
     if (!this.isValidEraCode(eraCode)) return ('');
-    const numYears = (this.isNowEra(eraCode)) ? 
+    const numYears = (this.isNowEra(eraCode)) ?
       (this.getNowYear() - this.getStartYear(eraCode) + 1) : this.getNumYears(eraCode);
     return '(1-' + numYears + ')';
   }
@@ -120,7 +120,7 @@ class YearConverters {
     const listToUse = (eraType==='modern') ? this.eraCodeModernListSorted : this.eraCodeAllListSorted;
     for (const eraCode of listToUse) {
       let oneTuple = [this.getEName(eraCode)+ ' ' + this.getJName(eraCode), eraCode];
-      theEras.push(oneTuple)
+      theEras.push(oneTuple);
     }
     return theEras;
   }
@@ -155,17 +155,17 @@ class YearConverters {
     // console.log('** iYearToJYear ' + iYear + ' **');
     const jYears1 = []; // fill with tuple(s) of (startYear, eraCode) for matching era(s), then sort it
     const jYears2 = []; // fill this with tuple(s) of (eName, jName, eraYear)
-    if ((iYear<this.minYear) || (iYear>this.maxYear+1)) {return jYears2} // return blank if out of range
-    for (const [eraCode, oneEra] of Object.entries(this.yDict)) {      
+    if ((iYear<this.minYear) || (iYear>this.maxYear+1)) {return jYears2;} // return blank if out of range
+    for (const [eraCode, oneEra] of Object.entries(this.yDict)) {
       // console.log( 'iYear for ' + oneEra.getEraCode());
       if (oneEra.isIYearInEra(iYear)) {
         jYears1.push([oneEra.getStartYear(), eraCode]);
       }
     }
-    jYears1.sort(function(a, b){return a[0]-b[0]});   // sort in order by start year
+    jYears1.sort(function(a, b){return a[0]-b[0];});   // sort in order by start year
     for (const [startYear, eraCode] of jYears1) {
-      jYears2.push([this.yDict[eraCode].getEName(), this.yDict[eraCode].getJName(), 
-        this.yDict[eraCode].iYearToEraYear(iYear)]); 
+      jYears2.push([this.yDict[eraCode].getEName(), this.yDict[eraCode].getJName(),
+        this.yDict[eraCode].iYearToEraYear(iYear)]);
     }
     // console.log(jYears2);
     return jYears2;
@@ -231,18 +231,18 @@ class YearConverters {
   loadZYears() {
     this.zFromYearDict = {};   // look up years (mod 12) to get zodiac data
     const zodTuples = [ // yearmod (mod 12), eName, jName (animal), jName (kanji for zodiac sign)
-      [0, "monkey", "猿", "申"],     
-      [1, "rooster", "鳥", "酉"],
-      [2, "dog", "犬", "戌"],
-      [3, "boar", "猪", "亥"],
-      [4, "rat", "鼠", "子"],
-      [5, "ox", "牛", "丑"],
-      [6, "tiger", "虎", "寅"],
-      [7, "rabbit", "兎", "卯"],
-      [8, "dragon", "龍", "辰"],
-      [9, "snake", "蛇", "巳"],
-      [10, "horse", "馬", "午"],
-      [11, "sheep", "羊", "未"],
+      [0, 'monkey', '猿', '申'],
+      [1, 'rooster', '鳥', '酉'],
+      [2, 'dog', '犬', '戌'],
+      [3, 'boar', '猪', '亥'],
+      [4, 'rat', '鼠', '子'],
+      [5, 'ox', '牛', '丑'],
+      [6, 'tiger', '虎', '寅'],
+      [7, 'rabbit', '兎', '卯'],
+      [8, 'dragon', '龍', '辰'],
+      [9, 'snake', '蛇', '巳'],
+      [10, 'horse', '馬', '午'],
+      [11, 'sheep', '羊', '未'],
     ];
     for (const zodTuple of zodTuples) { // use yearMod as index, overwrite if it already exists
       this.zFromYearDict[zodTuple[0]] = new ZodiacYear(...zodTuple);
@@ -288,7 +288,7 @@ export class OneEra { // TODO: don't export, use locally only
   }
   getEraCode() {return this.eraCode;}
   getEName() {return decodeHtmlCharCodes(this.eName);}
-  getENameRaw() {return this.eName};
+  getENameRaw() {return this.eName;}
   getJName() { return this.jName; }
   getStartYear() {return this.startYear;}
   getEndYear() {return this.endYear;}

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     height: 50,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   wideBtnText: {
     color: clr.white,

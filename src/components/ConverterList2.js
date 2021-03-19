@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import RadioButtonRN from '../utils/radio-buttons-react-native/RadioButtonRN';
 import { clr } from '../utils/colors';
 
-export default function ConverterList2({cvtype, cvs, setConverter, changeType})  {  
+export default function ConverterList2({cvtype, cvs, setConverter, changeType})  {
   const initialConvCode = cvs.getFirstConvCodeFromConvType(cvtype);
   // console.log('** converterList cvtype: ' + cvtype + ' convCode: ' + initialConvCode);
   const initialRadioIx = 0;
@@ -27,14 +27,14 @@ export default function ConverterList2({cvtype, cvs, setConverter, changeType}) 
       setConvCodeLocal(initialConvCode);
       setRadioIndex(initialRadioIx);
     }
-  }, [cvtype]); 
+  }, [cvtype]);
  
   const onPressProc = async (radioObj) => { // radioObj.value = newConvCode, radioObj.ixValue = zero-based ix
     const newConvCode = radioObj.value;
-    setRadioIndex(radioObj.ixValue); 
+    setRadioIndex(radioObj.ixValue);
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
-  }
+  };
 
   return (
     <ScrollView style={styles.converterList}>
@@ -51,7 +51,7 @@ export default function ConverterList2({cvtype, cvs, setConverter, changeType}) 
         textStyle={styles.radioText}
       />
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

@@ -2,20 +2,20 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { clr } from '../utils/colors';
 
-export default function ZodiacKanjiScreen({kanjiJ, kanjiJZ, 
+export default function ZodiacKanjiScreen({kanjiJ, kanjiJZ,
   caption1='', caption2=''}) {
   return (
     <View style={stylesZ.zodiacZone}>
       <View style={stylesZ.zodiacPart}>
         <Text style={stylesZ.zodiac1}>{kanjiJ}</Text>
-        <Text style={stylesZ.zodiacCaption}>{caption1}</Text>   
+        <Text style={stylesZ.zodiacCaption}>{caption1}</Text>
       </View>
       <View style={stylesZ.zodiacPart}>
         <Text style={stylesZ.zodiac2}>{kanjiJZ}</Text>
-        <Text style={stylesZ.zodiacCaption}>{caption2}</Text>   
+        <Text style={stylesZ.zodiacCaption}>{caption2}</Text>
       </View>
     </View>
-  )
+  );
 }
 
 const stylesZ = StyleSheet.create({

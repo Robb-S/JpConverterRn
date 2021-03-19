@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Text, StyleSheet, View, useWindowDimensions, TextInput, Pressable } from 'react-native';
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
 import { cv, getInstructions, getDispName, getBgStyles, getBgColor } from '../utils/modes';
@@ -16,7 +16,7 @@ const validYrTypes = [cv.FROMJPYEAR, cv.TOJPYEAR, cv.TOZODIAC];
 function LoadingScreen() { // show this during async loading of last screen used data
   return (
     <View style={[styles.container, styles.loading]}><Text>Loading...</Text></View>
-  )
+  );
 }
 
 export default function MainScreen({cvtype, toggleDirection, changeType}) {
@@ -39,7 +39,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           setConvCode(cvs.getFirstConvCodeFromConvType(cvtype));
           // console.log('useEffect to reset convCode: ' + cvs.getFirstConvCodeFromConvType(cvtype));
         }
-      } 
+      }
     }
   }, [cvs, cvtype]);
 
@@ -97,7 +97,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       kanjiJZ = yc.getZodJZName(fromInt);
       const eName = yc.getZodEName(fromInt);
       caption1 = eName;
-      caption2 = eName + ' zodiac sign';  
+      caption2 = eName + ' zodiac sign';
     }
   } else if (cvtype===cv.FROMJPYEAR) { // 1- or 2-digit Japanese year
     maxInputTextLength = 2;
@@ -120,26 +120,26 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       if (!(/^\d+$/.test(text)) && text!=='') isValid=false; // years have to be numbers only
     }
     if (isValid) { setFromValue(text); }
-  }
+  };
   const addAYear = () => {
     if (!isNaN(parseInt(fromValue))) {
       const newYearInt = parseInt(fromValue) + 1;
       setFromValue(newYearInt.toString());
     }
-  }
+  };
   const subtractAYear = () => {
     if (!isNaN(parseInt(fromValue))) {
       const newYearInt = parseInt(fromValue) - 1;
       if (newYearInt>0) {setFromValue(newYearInt.toString());}
     }
-  }
+  };
   /**
    * Reset fromValue to blank, to avoid brief flash of wrong results when toggling
    */
   const toggleLocal = async () => {
     await setFromValue('');
     toggleDirection();
-  }
+  };
 
   /**
    * Display elements for this component:
@@ -156,7 +156,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
    */
   return (
     <View style={[styles.container, bgStyle]}>
-      {showNumericInput && 
+      {showNumericInput &&
       <View style={[styles.inputTextArea, bgStyle2]}>
         <TextInput style={styles.inputTextText}
           onChangeText={onChangeTextProc}
@@ -167,7 +167,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         />
       </View>
       }
-      {showYearInput && 
+      {showYearInput &&
       <View style={[styles.inputYearArea, bgStyle2]}>
         <TextInput style={styles.inputYearText}
           onChangeText={onChangeTextProc}
@@ -175,7 +175,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           keyboardType={'numeric'}
           maxLength={maxInputTextLength}
           returnKeyType={'done'}
-          placeholder={hint}          
+          placeholder={hint}
         />
         { showIncrementers &&
         <View style={[styles.inputIcon, bgStyle2]}>
@@ -189,7 +189,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           <Pressable onPress = {() => { addAYear(); }}>
           <Icon name='plus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
-        </View>      
+        </View>
         }
       </View>
       }
@@ -201,7 +201,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         {showToggle && 
         <View style={styles.toggleButtonZone} >
           <TinyBtn onPress={() => toggleLocal()} 
-            text={'Switch direction'} color={clr.lightBlue} />        
+            text={'Switch direction'} color={clr.lightBlue} />
         </View>
         }
       </View>
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   inputIcon: {
     flex: 1,
     alignSelf: 'center',
-  },  
+  },
   resultPanel: {
     color: clr.white,
     paddingTop: 13,

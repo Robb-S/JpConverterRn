@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import SwipeGesture from '../utils/swipe-gesture2'
+import SwipeGesture from '../utils/swipe-gesture2';
 import { clr } from '../utils/colors';
 import NarrowBtn from './NarrowBtn';
 import Converter from '../utils/Converter';
@@ -11,14 +11,14 @@ import {OneEra} from '../utils/YearConverters';
 const TestScreen = ({navigation}) => {
   let testVal1, testVal2, testVal3, testVal4, testVal5;
   const yc = new YearConverters();
-  const era = new OneEra("showa", "Sh&#333;wa", "昭和", 1926, 1989);
+  const era = new OneEra('showa', 'Sh&#333;wa', '昭和', 1926, 1989);
   const radioProps = yc.eraTypeToRadioProps('modern');
   // console.log(radioProps);
   const dummy2 = yc.iYearToJYearEq('2199');
 
   testVal1 = '1) ' + radioProps.length;
   testVal2 = '2) ' + yc.getMinYear();
-  testVal3 = '3) ' + 'dummy'
+  testVal3 = '3) ' + 'dummy';
   // testVal4 = '4) ' + radioProps[0].label;
   // testVal5 = '5) ' + yc.getMaxYear();
   testVal4 = '4) ' + dummy2[0];
@@ -35,9 +35,9 @@ const TestScreen = ({navigation}) => {
   // const testVal4 = cvs.getAmt1StringUnits('ft2m', 1);
   // const testVal5 = cvs.getAmt1StringUnits('ft2m', 12);
 
-  const onSwipePerformed = (action) => {    
-    if (action==='left') {navigation.navigate('Home')}
-  }
+  const onSwipePerformed = (action) => {
+    if (action==='left') {navigation.navigate('Home');}
+  };
   
   const numberOfConverters = cvs.numberOfConvertersTotal();
   const maxConvertersPerType = cvs.maxConvertersPerType();
@@ -59,8 +59,8 @@ const TestScreen = ({navigation}) => {
         </View>
       </SwipeGesture>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     height:'100%',
     width:'100%',
-  }
+  },
 });
 
-export default TestScreen
+export default TestScreen;

@@ -25,7 +25,7 @@ export const cv = {
   FROMJPVAL: false,
   TOJPID: 'tojp',
   FROMJPID: 'fromjp',
-}
+};
 
 /* determine order of display for various conversion categories */
 const navOrder = [cv.METRIC, cv.JPMEASURE, cv.JPYEAR, cv.ZODIAC];
@@ -132,65 +132,65 @@ function fromCvType(cvtype) {
  * directions and converstion types
  */
 const cvcats = {
-  "metric" : {
-    dname: "metric units",
+  'metric' : {
+    dname: 'metric units',
     backgroundColor1: clr.medGreen,
     backgroundColor2: clr.lightGreen,
     tojp: {
       cvtype: cv.TOMETRIC,
-      dname: "to metric",
+      dname: 'to metric',
       instructions: defaultInstructions,
     },
     fromjp: {
       cvtype: cv.FROMMETRIC,
-      dname: "from metric",
+      dname: 'from metric',
       instructions: defaultInstructions,
     },
   },
-  "jpmeasure" : {
-    dname: "Japanese measures",
+  'jpmeasure' : {
+    dname: 'Japanese measures',
     backgroundColor1: clr.medIndigo,
     backgroundColor2: clr.lighterIndigo,
     tojp: {
       cvtype: cv.TOJPMEASURE,
-      dname: "to Jp measures",
+      dname: 'to Jp measures',
       instructions: defaultInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPMEASURE,
-      dname: "from Jp measures",
+      dname: 'from Jp measures',
       instructions: defaultInstructions,
     },
   },
-  "jpyear" : {
-    dname: "Japanese years",
+  'jpyear' : {
+    dname: 'Japanese years',
     backgroundColor1: clr.deepOrange,
     backgroundColor2: clr.lighterDeepOrange,
     tojp: {
       cvtype: cv.TOJPYEAR,
-      dname: "to Jp years",
+      dname: 'to Jp years',
       instructions: tojpyearInstructions,
     },
     fromjp: {
       cvtype: cv.FROMJPYEAR,
-      dname: "from Jp years",
+      dname: 'from Jp years',
       instructions: fromjpyearInstructions,
     },
   },
-  "zodiac" : {
-    dname: "zodiac years",
+  'zodiac' : {
+    dname: 'zodiac years',
     backgroundColor1: clr.red,
     backgroundColor2: clr.lighterRed,
     tojp: {
       cvtype: cv.TOZODIAC,
-      dname: "zodiac years",
+      dname: 'zodiac years',
       instructions: zodiacInstructions,
     },
     fromjp: {
-      cvtype: "dummy",
-      dname: "dummy",
+      cvtype: 'dummy',
+      dname: 'dummy',
       instructions: defaultInstructions,
     },
   },
-}
+};
 

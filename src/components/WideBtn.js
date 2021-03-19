@@ -8,7 +8,7 @@ export default function WideBtn ({ onPress, text, bgColor=clr.blue }) {
       style={[styles.wideButton, {backgroundColor: bgColor}]}>
       <Text style={styles.wideBtnText}>{text}</Text>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     height: 50,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   wideBtnText: {
     color: clr.white,

@@ -8,7 +8,7 @@ export default function TinyBtn ({ onPress, text, bgColor='transparent', color=c
       style={[styles.tinyButton, {backgroundColor: bgColor}]}>
       <Text style={[styles.tinyBtnText, {color: color}]}>{text}</Text>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-})
+});

@@ -4,7 +4,7 @@ import {HelpHtml} from './helphtml.js';
 
 const HelpScreen = () => {
   return (
-    <WebView 
+    <WebView
     originWhitelist={['*']}
     source={ {html: HelpHtml } }
     />
