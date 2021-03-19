@@ -15,8 +15,8 @@ const DrButton = ({text, iconName, onPress}) => {
   );
 };
 const DrSubhead = ({text, topBorder='true'}) => {
-  let substyle
-  if (topBorder)substyle = styles2.drSubhead
+  let substyle;
+  if (topBorder) {substyle = styles2.drSubhead;}
   else substyle = [styles2.drSubhead, styles2.noTopBorder];
   return (
     <View style={substyle}>
@@ -34,32 +34,32 @@ const DrawerView = (drawer, navigation, setMode) => {
   return (
     <ScrollView style={[styles2.drawerContainer]}>
       <DrSubhead text={'Measurements'} topBorder={false} />
-      <DrButton text={'To metric'} 
+      <DrButton text={'To metric'}
         iconName={'calculator'}
         onPress={() => { goToScreen(cv.METRIC, cv.TOJPVAL);} }
       />
-      <DrButton text={'From metric'} 
+      <DrButton text={'From metric'}
         iconName={'calculator'}
         onPress={() => { goToScreen(cv.METRIC, cv.FROMJPVAL);} }
       />
-      <DrButton text={'To Japanese measures'} 
+      <DrButton text={'To Japanese measures'}
         iconName={'calculator'}
         onPress={() => { goToScreen(cv.JPMEASURE, cv.TOJPVAL);} }
       />
-      <DrButton text={'From Japanese measures'} 
+      <DrButton text={'From Japanese measures'}
         iconName={'calculator'}
         onPress={() => { goToScreen(cv.JPMEASURE, cv.FROMJPVAL);} }
       />
       <DrSubhead text={'Calendar'} />
-      <DrButton text={'To Japanese years'} 
+      <DrButton text={'To Japanese years'}
         iconName={'calendar-month'}
         onPress={() => { goToScreen(cv.JPYEAR, cv.TOJPVAL);} }
       />
-      <DrButton text={'From Japanese years'} 
+      <DrButton text={'From Japanese years'}
         iconName={'calendar-month'}
         onPress={() => { goToScreen(cv.JPYEAR, cv.FROMJPVAL);} }
       />
-      <DrButton text={'Zodiac years'} 
+      <DrButton text={'Zodiac years'}
         iconName={'rabbit'}
         onPress={() => { goToScreen(cv.ZODIAC, cv.TOJPVAL);} }
       />

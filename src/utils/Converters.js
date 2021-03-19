@@ -74,7 +74,8 @@ class Converters {
     if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
     if ((this.convTypeToConvCodesDict.hasOwnProperty(convType))) {
       return this.convTypeToConvCodesDict[convType];
-    } else {return []; }
+    }
+    return [];
   }
 
   /**
@@ -85,7 +86,8 @@ class Converters {
     if (Object.keys(this.convTypeToConvCodesDict).length===0) { this.makeConvTypeToConvDicts(); }
     if ((this.convTypeToConvInfoDict.hasOwnProperty(convType))) {
       return this.convTypeToConvInfoDict[convType];
-    } else {return []; }
+    }
+    return [];
   }
 
   /**
@@ -110,8 +112,8 @@ class Converters {
    */
   getMinAmt(convCode) {
     if (convCode==='c2f') {return this.minimumCentigrade;}
-    else if (convCode==='f2c') {return this.minimumFahrenheit;}
-    else {return 0;}
+    if (convCode==='f2c') {return this.minimumFahrenheit;}
+    return 0;
   }
 
   /**
@@ -128,7 +130,7 @@ class Converters {
       } else if (amt1Num<this.getMinAmt(convCode)) {
         result[1] = this.isTooCold(convCode, amt1Num) ? 'is below absolute zero':'is out of range';
       }
-    } 
+    }
     catch (error) {}
     return result;
   }
@@ -172,19 +174,12 @@ class Converters {
   }
 
   getFirstConvCodeFromConvType(convType) { // temp uses radioProps
-    // console.log('** getFirstConvCodeFromConvType');
     const radioProps = this.convTypeToRadioProps(convType);
-    // console.log('** called convTypeToRadioProps');
-    // console.log('convType: ' + convType);
-    // console.log(radioProps);
     return radioProps[0].value;
   }
 
   radioIndexToConvCode(convType, radioIndex) {
     const radioProps = this.convTypeToRadioProps(convType);
-    // console.log('** called convTypeToRadioProps');
-    // console.log('convType: ' + convType);
-    // console.log(radioProps);
     return radioProps[radioIndex].value;
   }
 

@@ -81,7 +81,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           </View>
         </View>
 
-        { showDropdown && 
+        { showDropdown &&
         <View style={styles.pickerView}>
         <Picker
           selectedValue={convCodeLocal}
@@ -98,7 +98,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
         </View>
         }
 
-        { showRadioForm && 
+        { showRadioForm &&
         <RadioButtonRN
           data={stRadioProps}
           selectedBtn={onPressProc}

@@ -200,10 +200,8 @@ class YearConverters {
   jYearToIYear(eraCode, jYear) {
     if (!this.isValidEraCode(eraCode)) {return (-1);} // eraCode not found    
     const maxJYear = this.isNowEra(eraCode) ? 99 : this.yDict[eraCode].getNumYears(); // 99 if now era
-    if (jYear>=1 && jYear<=maxJYear) {
-      return this.yDict[eraCode].getStartYear() + parseInt(jYear) - 1; 
-    }
-    else {return 0;}
+    if (jYear>=1 && jYear<=maxJYear) { return this.yDict[eraCode].getStartYear() + parseInt(jYear) - 1; }
+    return 0;
   }
   /**
    * Return string tuple for display.
@@ -280,11 +278,11 @@ export class OneEra { // TODO: don't export, use locally only
   }
   isIYearInEra(iYear) {
     if (this.endYear===0) {return iYear>=this.startYear;}
-    else {return ((iYear>=this.startYear) && (iYear<=this.endYear));}
+    return ((iYear>=this.startYear) && (iYear<=this.endYear));
   }
   iYearToEraYear(iYear) {
     if (this.isIYearInEra(iYear)) {return iYear-this.startYear+1;}
-    else {return 0;}
+    return 0;
   }
   getEraCode() {return this.eraCode;}
   getEName() {return decodeHtmlCharCodes(this.eName);}
@@ -312,12 +310,9 @@ class ZodiacYear {
  }
 
  function capitalize(ttext) {
-  if (ttext==null) return '';
-  if (ttext.length>0) {
-    return ttext.charAt(0).toUpperCase() + ttext.slice(1);
-  } else {
-    return '';
-  }
+  if (ttext==null) { return ''; }
+  if (ttext.length>0) { return ttext.charAt(0).toUpperCase() + ttext.slice(1); } 
+  return '';  
 }
 
 export default YearConverters;

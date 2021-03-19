@@ -28,8 +28,8 @@ class Converter {
    */
   getAmt2Float(amt1) {
     if (this.convCode==='f2c') { return ((( amt1 - 32.0) * 5.0) / 9.0); }
-    else if (this.convCode==='c2f') {return ((( amt1 * 9.0) / 5.0) + 32.0); }
-    else { return (amt1 * this.convFactor); }
+    if (this.convCode==='c2f') { return ((( amt1 * 9.0) / 5.0) + 32.0); }
+    return (amt1 * this.convFactor);
   }
   /**
    * Return result as string, with x significant digits after decimal point.
@@ -72,7 +72,7 @@ class Converter {
   }
   getCorrectUnits(amt1) { // '1' gets singular, but '1.0' gets plural
     if ((amt1==='1') || (amt1===1)) { return this.unit1single; }
-    else {return this.unit1;}
+    return this.unit1;
   }
 
   // get properties next

@@ -7,7 +7,7 @@ export function toggleArrayIx (array1, ixpos) {
 
 // assign value to position ixpos in array, return new array
 export function assignArrayIx (array1, ixpos, value) {
-  let array2 = [...array1]; 
+  let array2 = [...array1];
   array2[ixpos] = value;
   return array2;
 }
@@ -18,14 +18,11 @@ export function sleep(ms) {
 
 export function capitalize(ttext) {
   if (ttext==null) return '';
-  if (ttext.length>0) {
-    return ttext.charAt(0).toUpperCase() + ttext.slice(1);
-  } else {
-    return '';
-  }
+  if (ttext.length>0) { return ttext.charAt(0).toUpperCase() + ttext.slice(1);} 
+  return '';
 }
 
 export function decodeHtmlCharCodes(str) {
-  return str.replace(/(&#(\d+);)/g, (match, capture, charCode) => 
+  return str.replace(/(&#(\d+);)/g, (match, capture, charCode) =>
   String.fromCharCode(charCode));
 }
