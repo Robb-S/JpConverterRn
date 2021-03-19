@@ -34,7 +34,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
     setConverter(nowEra); // passed back to calling component
     setRadioIndex(nowPos);
     setStRadioProps(radioProps);
-  }, []); 
+  }, []);
   // }, [cvtype, initialRadioIx]); 
 
   React.useEffect(() => {  // get list of eras at start or when eraType changes
@@ -47,13 +47,13 @@ export default function EraList2({yc, setConverter, setFromValue})  {
     // setRadioIndex(index); // other radio button packages needed this
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
-  }
+  };
 
   const onDropdownSelect = async (newConvCode, itemIndex) => { // value is the chosen eraCode
     await setFromValue('');  // set to blank to avoid momentary flash of wrong value when switching eras
     setConvCodeLocal(newConvCode);
     setConverter(newConvCode); // passed back to calling component
-  }
+  };
 
   const toggleEraType = () => {
     const newEraType = eraType==='modern' ? 'all' : 'modern';
@@ -63,10 +63,10 @@ export default function EraList2({yc, setConverter, setFromValue})  {
     [radioProps, nowPos] = yc.eraTypeToRadioProps(newEraType);
     setRadioIndex(nowPos);        // always switch to current era
     setStRadioProps(radioProps);
-  }
+  };
 
   const toggleText = eraType==='modern' ? 'Show historical eras' : 'Show modern eras';
-  const statusText = eraType==='modern' ? 'Modern eras' : 'Historical eras'
+  const statusText = eraType==='modern' ? 'Modern eras' : 'Historical eras';
   const showRadioForm = eraType==='modern';
   const showDropdown = eraType==='all';
 
@@ -76,9 +76,9 @@ export default function EraList2({yc, setConverter, setFromValue})  {
         <View style={styles.toggleZone}>
           <Text style={styles.converterHeader}>{statusText}</Text>
           <View style={styles.toggleButtonZone} >
-            <TinyBtn onPress={() => toggleEraType()} 
-            text={toggleText} color={clr.lightBlue} />        
-          </View>  
+            <TinyBtn onPress={() => toggleEraType()}
+            text={toggleText} color={clr.lightBlue} />
+          </View>
         </View>
 
         { showDropdown && 
@@ -92,7 +92,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           {stRadioProps.map((obj, i) => {
             return (
               <Picker.Item style={styles.pickerItem} key={i} label={obj['label']} value={obj['value']} />
-            )
+            );
           })}
         </Picker>
         </View>
@@ -113,7 +113,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
         />
         }
       </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingTop: 4,
   },
-  radioGroup: {    
+  radioGroup: {
     marginLeft: 5,
     marginBottom: 10,
     /* width: 200,   /* set this to allow swiping from right side of window */

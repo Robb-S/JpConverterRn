@@ -36,5 +36,5 @@ export const clr = {
   lightLgreen: '#aed581',
   lime: '#827717',
   pink: '#ad1457',
-}
+};
 

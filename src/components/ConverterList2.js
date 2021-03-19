@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     paddingTop: 4,
   },
-  radioGroup: {    
+  radioGroup: {
     marginLeft: 5,
     marginBottom: 10,
   },

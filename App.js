@@ -20,6 +20,7 @@ const soptions = {
     marginLeft: -28,
   },
 };
+
 /** 
  * Shell for navigator skeleton.  All conversion functionality and navigation are
  * provided by the Home screen component. 

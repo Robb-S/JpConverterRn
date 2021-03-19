@@ -8,7 +8,7 @@ const HelpScreen = () => {
     originWhitelist={['*']}
     source={ {html: HelpHtml } }
     />
-  )
-}
+  );
+};
 
-export default HelpScreen
+export default HelpScreen;
