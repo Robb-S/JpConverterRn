@@ -1,5 +1,4 @@
-
-export const OtherHtml =
+export const HelpHtml =
 `
 <html><head>
 <meta name="HandHeldFriendly" content="true" />
@@ -15,7 +14,7 @@ body {
     font: 17px/1.3 Helvetica;
 }
 h3 {
-    background-color: #01579b;  /* darker blue */
+    background-color: #2e7d32;  /* darker green */
     color: #ffffff;
     padding: 8px 5px 8px 12px;
 }
@@ -31,7 +30,7 @@ div.note p {
 
 <div class="note">
 
-<h3>Other Useful Apps **** TODO</h3>
+<h3>General navigation</h3>
 <p>
 Swipe the screen right or left to switch between different types of conversion, press the "forward" button at the top right-hand corner of the screen, or use the menu drawer by swiping from the left edge.  You can also access the menu drawer by pressing the menu button (three horizontal lines) in the upper left corner of the screen.
 </p><p>

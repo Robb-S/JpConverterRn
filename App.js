@@ -6,9 +6,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/components/HomeScreen';
-import HelpScreen from './src/components/HelpScreen';
-import WebScreen from './src/components/WebScreen';
-import OtherScreen from './src/components/OtherScreen';
+import HelpScreen from './src/html/HelpScreen';
+import WebScreen from './src/html/WebScreen';
+import OtherScreen from './src/html/OtherScreen';
 import TestScreen from './src/components/TestScreen';
 import { clr } from './src/utils/colors';
 
