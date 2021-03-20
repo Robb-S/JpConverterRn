@@ -7,7 +7,7 @@ export const OtherHtml =
 <style>
 body {
     margin: 0;
-    padding: 4px;
+    padding: 0;
     background-color: #000000; /* Background color */
     background-color: #ffffff; /* Background color */
     color: #e9e9e9;            /* Foreground color used for text */
@@ -19,10 +19,17 @@ h2 {
     color: #ffffff;
     padding: 8px 5px 8px 12px;
 }
-h3 {
-    background-color: #01579b;  /* darker blue */
+h3, h4 {
+    font-size: 18px;
+    padding: 12px 12px 12px 12px;
     color: #ffffff;
-    padding: 8px 5px 8px 12px;
+    background-color: #01579b;  /* darker blue */
+    }
+h4 {
+    padding: 8px 12px 8px 12px;
+}
+li {
+    margin: 0 0 11px 0;
 }
 div.note {
     padding: 0 15px 0 0;
@@ -31,35 +38,83 @@ div.note {
 div.note p {
     margin-bottom: 15px;
 }
+.floatleft {
+    float: left; 
+}
+.floatright {
+    float: right; 
+}
+div.righttext {
+    padding: 0px 10px 10px 30px;
+    margin: 0 0 0 30px;
+}
+    
+div.lefttext {
+    padding: 0px 30px 10px 5px;
+    margin: 0 0 0 14px;
+}
+    
+    div.leftimage {
+    padding: 0 30px 15px 5px;
+}
+    
+    div.rightimage {
+    padding: 0 12px 15px 30px;
+}
+.minibreak {
+    margin-bottom: 12px;
+    clear : both;
+}
+a {
+   color:  #fce5a1;
+}
 </style>
 </head><body>
 
 <div class="note">
 
-<h2>Sushi Dictionary **** TODO</h2>
-<p>
-Swipe the screen right or left to switch between different types of conversion, press the "forward" button at the top right-hand corner of the screen, or use the menu drawer by swiping from the left edge.  You can also access the menu drawer by pressing the menu button (three horizontal lines) in the upper left corner of the screen.
-</p><p>
-You can toggle conversion direction (e.g Japanese measurements to international units or vice versa) by pressing the up and down arrows in the top right-hand area of the screen.
-</p>
-</div><div class="note">
-<h3>Useful content for sushi lovers</h3>
-<p>
-The metric calculator converts between several common metric units (meters, kilograms, degrees centigrade, etc.) and their corresponding imperial units.  (Fluid ounces are US units.)  
-</p><p>
-Choose the units you wish to convert from the drop-down list at the bottom of the screen.  Press the button labeled "switch direction" if you want to change the direction of conversion to start with non-metric units. 
-</p><p>
-After you have selected the units, press the lighter-colored bar near the top of the screen to access a numeric keyboard, with which you can enter the number of units to convert.  
-</p>
-</div><div class="note">
-<h3>Convenient features on your mobile device</h3>
-<p>
-'Tsubo' units are used for measuring land, and 'jo' units measure room sizes.  One jo is very roughly the size of one standard tatami mat.
-</p><p>
-'Go' and 'shaku' units are commonly used for measuring sake - 1 go (ichigo) is a standard serving of sake, and 4 go is a medium-size bottle.  There are ten shaku in one go, so 5 shaku is around half a standard serving size.  (Fluid oz refers to US measures.)
-</p><p>
-As described above, first choose the units you wish to convert, then enter an amount in the input area near the top of the screen.  Press the "switch direction" button to change conversion direction.
-</p>
+<h3>Sushi Dictionary</h3>
+
+<div class="floatright rightimage">
+<img src="http://barkinginu.com/img/sushi_logo_96.png" alt="Sushi Dictionary" />
+</div>
+
+
+<div class="lefttext">
+Sushi Dictionary, a FREE app produced by Japanese-food authority Bento.com, tells you just what you're eating at sushi counters around the world.  
+</div>
+
+<div class="minibreak"></div>
+
+
+<h4>Useful content for sushi lovers</h4>
+<ul><li>
+Browse through all common fish and seafood words, or just sushi items
+</li><li>
+Find common preparation methods for each fish - sashimi, tempura, grilled, etc.  
+</li><li>
+Access definitions and details for more than 130 sushi and fish terms
+</li><li>
+Display Japanese characters, so you can recognize words even on Japanese menus
+</li></ul>
+
+<h4>Convenient features on your mobile device</h4>
+
+<ul><li>
+Image searcher, to see what each type of fish looks like
+</li><li>
+Text-to-speech, so you can hear words in Japanese (Android 4.0.3+)
+</li><li>
+Search engine for English words, Japanese romanized words and kanji
+</li></ul>
+
+
+<div class="floatleft leftimage playstorelogo"><a href="https://play.google.com/store/apps/details?id=com.jingumae.sushidictionary">
+<img src="http://barkinginu.com/img/googleplay01.png" alt="Google Play Store" /></a>
+</div>
+
+<div class="minibreak"></div>
+
 </div>
 
 </body></html>
