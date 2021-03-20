@@ -171,28 +171,27 @@ class YearConverters {
     return jYears2;
   }
 
-   /** 
-   * Converting from International year, return two-line display (array of two strings) 
-   * showing Japanese era year or years. 
-   */
+  /** 
+  * Converting from International year, return two-line display (array of two strings) 
+  * showing Japanese era year or years. 
+  */
   iYearToJYearEq(iYear) {
     const jYears = this.iYearToJYear(iYear); // get array of 0, 1 or 2 tuples
-    let eq = ['',''];
-    if (jYears.length===0) { // out of range
-       eq = [ iYear.toString() , ''];
-     } else if (jYears.length===1) { // one era to display
-       const [eName1, jName1, jYear1] = jYears[0];
-       eq[0] = iYear.toString() + ' is';
-       eq[1] = eName1 + ' ' + jName1 + ' ' + jYear1;
-     } else { // length===2, so it spans two eras
+    if (jYears.length === 0) { return [iYear.toString(), '']; }  // out of range  
+    if (jYears.length === 1) { // one era to display
+      const [eName1, jName1, jYear1] = jYears[0];
+      return [`${iYear.toString()} is`, `${eName1} ${jName1} ${jYear1}`];
+    }
+    if (jYears.length === 2) { // length===2, so it spans two eras
       const [eName1, jName1, jYear1] = jYears[0];
       const [eName2, jName2, jYear2] = jYears[1];
-      eq[0] = iYear.toString() + ' is ' +  eName1 + ' ' + jName1 + ' ' + jYear1;
-      eq[1] = 'and ' +  eName2 + ' ' + jName2 + ' ' + jYear2;
-     }
-    return eq;
+      return [
+        `${iYear.toString()} is ${eName1} ${jName1} ${jYear1}`,
+        `and ${eName2} ${jName2} ${jYear2}`,
+      ];
+    }
   }
-
+  
   /**
    * Return international year, or 0 if out of range, or -1 if bad eraCode.
    * jYear parameter could be a string, so parse it.
