@@ -231,14 +231,14 @@ const styles = StyleSheet.create({
     backgroundColor: clr.medGrey,
   },
   inputTextArea: {
-    marginTop: 3,
+    marginTop: 0,
     paddingLeft: 10,
     backgroundColor: clr.white,
     // height: 50,
   },
   inputYearArea: {
     flexDirection: 'row',
-    marginTop: 3,
+    marginTop: 0,
     paddingLeft: 10,
     backgroundColor: clr.white,
     // height: 50,

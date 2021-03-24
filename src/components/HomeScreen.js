@@ -22,7 +22,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
-import { cv, getBgStyles, getDispName, getCvType } from '../utils/modes';
+import { cv, getBgStyles, getBgColors, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
 import SwipeGesture from '../utils/swipe-gesture2';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -37,8 +37,7 @@ const HomeScreen = ({navigation}) => {
    * Set header title to match current conversion type, or generic app name as default 
    */
   const setMainHeaderTitle = (sNum, cDirection) => {
-    let currTitle = 'JP Converter';
-    if (sNum!==null) {currTitle = getDispName(getCvType(sNum, cDirection))}
+    const currTitle = (sNum!==null) ? getDispName(getCvType(sNum, cDirection)) : 'JP Converter';
     navigation.setOptions({
       title: capitalize(currTitle),
     });
@@ -73,7 +72,7 @@ const HomeScreen = ({navigation}) => {
   React.useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Icon name='menu' size={32} onPress={toggleDrawer} />
+        <Icon name='menu' size={32} onPress={toggleDrawer} color={clr.white} />
       ),
     });
   }, [navigation, isDrawerOpen, screenNum]);  // isDrawerOpen is necessary, otherwise won't close drawer
@@ -92,21 +91,27 @@ const HomeScreen = ({navigation}) => {
    * button in header, but hide it when it's not appropriate.
    */
   React.useEffect(() => {
+    const [bgColor, bgColor2, bgColor3] = getBgColors(getCvType(screenNum, currDirection));
+    if (!isDrawerOpen) {setMainHeaderTitle(screenNum, currDirection);}
     navigation.setOptions({
+      headerStyle: {
+        backgroundColor: bgColor3,
+      },
+      headerTintColor: clr.white,
       headerRight: () => (
         <View style={styles.horizontal}>
           {(showToggle) && (!isDrawerOpen) &&
-            <Icon name='arrow-up-down-bold-outline' size={28} color={clr.medGrey}
+            <Icon name='arrow-up-down-bold-outline' size={28} color={clr.lighterGrey}
               style={styles.iconPadRight} onPress={toggleDirection} />
           }
           {(!isDrawerOpen) &&
-            <Icon name='arrow-right-bold-box-outline' size={32} color={clr.medGrey}
+            <Icon name='arrow-right-bold-box-outline' size={32} color={clr.lighterGrey}
               style={styles.iconPadRight} onPress={incrementScreenNum} />
           }
         </View>
       ),
     });
-  }, [navigation, screenNum, currDirection, isDrawerOpen]); 
+  }, [navigation, screenNum, currDirection, isDrawerOpen]);
 
   /**
    * Switch to new conversion screen by swiping. 
@@ -220,18 +225,18 @@ const HomeScreen = ({navigation}) => {
       renderNavigationView={() => DrawerView(drawer, navigation, setMode)}
     >
     <View style={[styles.container, bgStyle]}>
-    <SwipeGesture gestureStyle={styles.swipeGestureContainer} 
+    <SwipeGesture gestureStyle={styles.swipeGestureContainer}
       onSwipePerformed={onSwipePerformed}>
       <MainScreen
         cvtype={getCvType(screenNum, currDirection)}
-        toggleDirection={toggleDirection} 
+        toggleDirection={toggleDirection}
         changeType={changeType}
         />
     </SwipeGesture>
     </View>
     </DrawerLayoutAndroid>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

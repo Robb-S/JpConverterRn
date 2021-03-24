@@ -61,7 +61,8 @@ export function getBgColors(cvtype) {
   const cvcatID = navOrder[screenNum];
   const bgcol1 = cvcats[cvcatID].backgroundColor1;
   const bgcol2 = cvcats[cvcatID].backgroundColor2;
-  return [bgcol1, bgcol2];
+  const bgcol3 = cvcats[cvcatID].backgroundColor3;
+  return [bgcol1, bgcol2, bgcol3];
 }
 
 
@@ -137,6 +138,7 @@ const cvcats = {
     dname: 'metric units',
     backgroundColor1: clr.medGreen,
     backgroundColor2: clr.lightGreen,
+    backgroundColor3: clr.darkerGreen,
     tojp: {
       cvtype: cv.TOMETRIC,
       dname: 'to metric',
@@ -151,7 +153,8 @@ const cvcats = {
   'jpmeasure' : {
     dname: 'Japanese measures',
     backgroundColor1: clr.medIndigo,
-    backgroundColor2: clr.lighterIndigo,
+    backgroundColor2: clr.lightIndigo,
+    backgroundColor3: clr.darkerIndigo,
     tojp: {
       cvtype: cv.TOJPMEASURE,
       dname: 'to Jp measures',
@@ -166,7 +169,8 @@ const cvcats = {
   'jpyear' : {
     dname: 'Japanese years',
     backgroundColor1: clr.deepOrange,
-    backgroundColor2: clr.lighterDeepOrange,
+    backgroundColor2: clr.lightDeepOrange,
+    backgroundColor3: clr.darkerDeepOrange,
     tojp: {
       cvtype: cv.TOJPYEAR,
       dname: 'to Jp years',
@@ -181,7 +185,8 @@ const cvcats = {
   'zodiac' : {
     dname: 'zodiac years',
     backgroundColor1: clr.red,
-    backgroundColor2: clr.lighterRed,
+    backgroundColor2: clr.lightRed,
+    backgroundColor3: clr.darkerRed,
     tojp: {
       cvtype: cv.TOZODIAC,
       dname: 'zodiac years',

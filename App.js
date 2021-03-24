@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 
 const soptions = {
   headerStyle: {
-    backgroundColor: clr.lighterGrey,
+    backgroundColor: clr.black,
   },
   headerTitleStyle: {
     marginLeft: -28,
