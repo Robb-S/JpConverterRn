@@ -157,7 +157,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   return (
     <View style={[styles.container, bgStyle]}>
       {showNumericInput &&
-      <View style={[styles.inputTextArea, bgStyle2]}>
+      <View style={[styles.inputTextArea, styles.bgStyleWhite]}>
         <TextInput style={styles.inputTextText}
           onChangeText={onChangeTextProc}
           value={fromValue}
@@ -168,7 +168,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       </View>
       }
       {showYearInput &&
-      <View style={[styles.inputYearArea, bgStyle2]}>
+      <View style={[styles.inputYearArea, styles.bgStyleWhite]}>
         <TextInput style={styles.inputYearText}
           onChangeText={onChangeTextProc}
           value={fromValue}
@@ -178,14 +178,14 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           placeholder={hint}
         />
         { showIncrementers &&
-        <View style={[styles.inputIcon, bgStyle2]}>
+        <View style={[styles.inputIcon, styles.bgStyleWhite]}>
           <Pressable onPress = {() => { subtractAYear(); }}>
           <Icon name='minus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
         </View>
         }
         { showIncrementers &&
-        <View style={[styles.inputIcon, bgStyle2]}>
+        <View style={[styles.inputIcon, styles.bgStyleWhite]}>
           <Pressable onPress = {() => { addAYear(); }}>
           <Icon name='plus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
@@ -194,14 +194,14 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       </View>
       }
       <Text style={styles.resultPanel}>{resultPanelText}</Text>
-      <Text style={styles.instructionsText}>{instructions}</Text>
+      <Text style={[styles.instructionsText,bgStyle2]}>{instructions}</Text>
 
       <View style={styles.toggleZone}>
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
-        {showToggle && 
+        {showToggle &&
         <View style={styles.toggleButtonZone} >
-          <TinyBtn onPress={() => toggleLocal()} 
-            text={'Switch direction'} color={clr.lightBlue} />
+          <TinyBtn onPress={() => toggleLocal()}
+            text={'Switch direction'} color={clr.white} />
         </View>
         }
       </View>
@@ -306,12 +306,16 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   instructionsText: {
-    backgroundColor: clr.lightGrey,
+    backgroundColor: clr.white,
+    color: clr.black,
     fontSize: 15,
     paddingTop: 12,
     paddingLeft: 10,
     paddingBottom: 12,
     marginBottom: 10,
+  },
+  bgStyleWhite: {
+    backgroundColor: clr.white,
   },
   loading: {
     backgroundColor: clr.black,
