@@ -138,37 +138,37 @@ class Converters {
   // simple pass-through routines next
   getEquationString(convCode, amt1, eqstring=' = ') {
     let result = '';
-    try {result = this.convDict[convCode].getEquationString(amt1, eqstring);} 
+    try {result = this.convDict[convCode].getEquationString(amt1, eqstring);}
     catch (error) {}
     return result;
   }
   getAmt2StringUnits(convCode, amt1) {
     let result = '';
-    try {result = this.convDict[convCode].getAmt2StringUnits(amt1);} 
+    try {result = this.convDict[convCode].getAmt2StringUnits(amt1);}
     catch (error) {}
     return result;
   }
   getAmt2String(convCode, amt1) {
     let result = '';
-    try {result = this.convDict[convCode].getAmt2String(amt1);} 
+    try {result = this.convDict[convCode].getAmt2String(amt1);}
     catch (error) {}
     return result;
   }
   getAmt2Float(convCode, amt1) {
     let result = '';
-    try {result = this.convDict[convCode].getAmt2Float(amt1);} 
+    try {result = this.convDict[convCode].getAmt2Float(amt1);}
     catch (error) {}
     return result;
   }
   getAmt1StringUnits(convCode, amt1) {
     let result = '';
-    try {result = this.convDict[convCode].getAmt1StringUnits(amt1);} 
+    try {result = this.convDict[convCode].getAmt1StringUnits(amt1);}
     catch (error) {}
     return result;
   }
   getUnitKanji(convCode) {
     let result = '';
-    try {result = this.convDict[convCode].getUnitKanji();} 
+    try {result = this.convDict[convCode].getUnitKanji();}
     catch (error) {}
     return result;
   }
