@@ -15,7 +15,7 @@ import {Picker} from '@react-native-picker/picker';
  * On change of eraType: get new radiobuttons and ix
  * onPress for radio buttons: setEraCode, ixPos in store, setEraCode in parent component
  */
-export default function EraList2({yc, setConverter, setFromValue})  {
+export default function EraList2({yc, setConverter, setFromValue, bgColor})  {
   // console.log('** at start of EraList component **');
   let radioProps = []; let nowPos = null;
   const nowEra = yc.getNowEra();
@@ -77,7 +77,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           <Text style={styles.converterHeader}>{statusText}</Text>
           <View style={styles.toggleButtonZone} >
             <TinyBtn onPress={() => toggleEraType()}
-            text={toggleText} color={clr.white} />
+            color={bgColor} bgColor={clr.white} text={toggleText} />
           </View>
         </View>
 

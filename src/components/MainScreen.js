@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, useWindowDimensions, TextInput, Pressable } fro
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
-import { cv, getInstructions, getDispName, getBgStyles, getBgColor } from '../utils/modes';
+import { cv, getInstructions, getDispName, getBgStyles, getBgColors } from '../utils/modes';
 import TinyBtn from './TinyBtn';
 import Converters from '../utils/Converters';
 import YearConverters from '../utils/YearConverters';
@@ -31,7 +31,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
     const gotyc = new YearConverters();
     setCvs(gotcvs);
     setYc(gotyc);
-  }, []); 
+  }, []);
   React.useEffect(() => { // after swipe (not toggle), change numeric CONVCODE to first on list
     if (cvs && cvtype) {
       if (isNumericConv(cvtype)) {
@@ -58,7 +58,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); };
   const isYearConv = (cvtype) => { return validYrTypes.includes(cvtype); };
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
-  const bgColor = getBgColor(cvtype);
+  const [bgColor, bgColor2] = getBgColors(cvtype);
   // show-xx variables control conditional rendering
   const showConvRadio = isNumericConv(cvtype);      // radio buttons for regular conversions
   const showEraRadio = ([cv.FROMJPYEAR].includes(cvtype));  // radio buttons for jp eras
@@ -158,7 +158,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   return (
     <View style={[styles.container, bgStyle]}>
       {showNumericInput &&
-      <View style={[styles.inputTextArea, styles.bgStyleWhite]}>
+      <View style={[styles.inputTextArea]}>
         <TextInput style={styles.inputTextText}
           onChangeText={onChangeTextProc}
           value={fromValue}
@@ -169,7 +169,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       </View>
       }
       {showYearInput &&
-      <View style={[styles.inputYearArea, styles.bgStyleWhite]}>
+      <View style={styles.inputYearArea}>
         <TextInput style={styles.inputYearText}
           onChangeText={onChangeTextProc}
           value={fromValue}
@@ -179,14 +179,14 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
           placeholder={hint}
         />
         { showIncrementers &&
-        <View style={[styles.inputIcon, styles.bgStyleWhite]}>
+        <View style={styles.inputIcon}>
           <Pressable onPress = {() => { subtractAYear(); }}>
           <Icon name='minus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
         </View>
         }
         { showIncrementers &&
-        <View style={[styles.inputIcon, styles.bgStyleWhite]}>
+        <View style={styles.inputIcon}>
           <Pressable onPress = {() => { addAYear(); }}>
           <Icon name='plus-box' size={32} color={bgColor} style={{height:32, width:32}}/>
           </Pressable>
@@ -201,8 +201,8 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
         {showToggle &&
         <View style={styles.toggleButtonZone} >
-          <TinyBtn onPress={() => toggleLocal()}
-            text={'Switch direction'} color={clr.white} />
+          <TinyBtn onPress={() => toggleLocal()} 
+            text={'Switch direction'} color={bgColor} bgColor={clr.white} />
         </View>
         }
       </View>
@@ -212,7 +212,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       }
 
       {showEraRadio &&
-      <EraList2 yc={yc} setConverter={setConverter} setFromValue={setFromValue} />
+      <EraList2 yc={yc} setConverter={setConverter} setFromValue={setFromValue} bgColor={bgColor} />
       }
 
       {showZodiac &&
@@ -220,7 +220,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       }
 
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -233,24 +233,28 @@ const styles = StyleSheet.create({
   inputTextArea: {
     marginTop: 3,
     paddingLeft: 10,
+    backgroundColor: clr.white,
     // height: 50,
   },
   inputYearArea: {
     flexDirection: 'row',
     marginTop: 3,
     paddingLeft: 10,
+    backgroundColor: clr.white,
     // height: 50,
   },
   inputTextText: {
     fontSize: 20,
     paddingBottom: 10,
     paddingTop: 10,
+    color: clr.darkGrey,
   },
   inputYearText: {
     fontSize: 20,
     flex: 6,
     paddingBottom: 10,
     paddingTop: 10,
+    color: clr.darkGrey,
   },
   inputIcon: {
     flex: 1,
@@ -285,6 +289,11 @@ const styles = StyleSheet.create({
   toggleButtonZone: {
     paddingRight: 10,
     paddingTop: 1,
+  },
+  toggleButtonBorder: {
+    borderColor: clr.medGrey,
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
   mainText: {
     // backgroundColor: clr.white,

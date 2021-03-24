@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { clr } from '../utils/colors';
 
-export default function TinyBtn ({ onPress, text, bgColor='transparent', color=clr.white }) {
+export default function TinyBtn ({ onPress, text, bgColor='transparent', color=clr.white, moreStyle='' }) {
   return(
     <TouchableOpacity onPress={onPress}
-      style={[styles.tinyButton, {backgroundColor: bgColor}]}>
+      style={[styles.tinyButton, {backgroundColor: bgColor}, moreStyle]}>
       <Text style={[styles.tinyBtnText, {color: color}]}>{text}</Text>
     </TouchableOpacity>
   );

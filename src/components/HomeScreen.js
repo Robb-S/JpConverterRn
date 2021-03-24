@@ -24,7 +24,7 @@ import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
 import { clr } from '../utils/colors';
 import { cv, getBgStyles, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
-import SwipeGesture from '../utils/swipe-gesture2'
+import SwipeGesture from '../utils/swipe-gesture2';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {toggleArrayIx, assignArrayIx} from '../utils/helpers';
 import DrawerView from './DrawerView';
