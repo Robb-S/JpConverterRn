@@ -20,7 +20,7 @@
  */
 
 import React, {useRef, useState, useEffect} from 'react';
-import { StyleSheet, View, DrawerLayoutAndroid } from 'react-native';
+import { StyleSheet, View, DrawerLayoutAndroid, Keyboard } from 'react-native';
 import { clr } from '../utils/colors';
 import { cv, getBgStyles, getBgColors, getDispName, getCvType } from '../utils/modes';
 import MainScreen from './MainScreen';
@@ -54,10 +54,12 @@ const HomeScreen = ({navigation}) => {
   // handle drawer open/close, since toggle method doesn't exist for DrawerLayoutAndroid.
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const onDrawerOpen = () => {
+    Keyboard.dismiss();
     setDrawerOpen(true);
     setDrawerHeaderTitle();
   };
   const onDrawerClose = () => {
+    Keyboard.dismiss();
     setDrawerOpen(false);
     setMainHeaderTitle(screenNum, currDirection);
   };
@@ -133,6 +135,7 @@ const HomeScreen = ({navigation}) => {
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
     setChangeType('swipe');
+    Keyboard.dismiss();
   };
   const decrementScreenNum = () => { // display previous screen/category
     const newScreenNum = (screenNum===minScrNum) ? maxScrNum : screenNum-1;
@@ -140,6 +143,7 @@ const HomeScreen = ({navigation}) => {
     updateData(newScreenNum, dirArray, newCurrDirection); // dirArray is unchanged
     setMainHeaderTitle(newScreenNum, newCurrDirection);
     setChangeType('swipe');
+    Keyboard.dismiss();
   };
   /**
    * Set new conversion type and direction, store to state and async storage, from drawer buttons.
@@ -159,6 +163,7 @@ const HomeScreen = ({navigation}) => {
     const newCurrDirection = newDirArray[screenNum];
     updateData(screenNum, newDirArray, newCurrDirection); // screenNum is unchanged
     setMainHeaderTitle(screenNum, newCurrDirection);
+    Keyboard.dismiss();
   };
   /**
    * Read last-used position and direction from async storage when starting up.

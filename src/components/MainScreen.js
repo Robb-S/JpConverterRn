@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, StyleSheet, View, useWindowDimensions, TextInput, Pressable } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Keyboard, TextInput, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { clr } from '../utils/colors';
 import { capitalize } from '../utils/helpers';
@@ -138,6 +138,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
    * Reset fromValue to blank, to avoid brief flash of wrong results when toggling
    */
   const toggleLocal = async () => {
+    Keyboard.dismiss();
     await setFromValue('');
     toggleDirection();
   };
@@ -156,7 +157,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
    * 6) ZodiacKanjiScreen show zodiac kanji (for TOJPYEAR and TOZODIAC only)
    */
   return (
-    <View style={[styles.container, bgStyle]}>
+    <ScrollView style={[styles.container, bgStyle]} keyboardShouldPersistTaps='handled'>
       {showNumericInput &&
       <View style={[styles.inputTextArea]}>
         <TextInput style={styles.inputTextText}
@@ -201,7 +202,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
         <Text style={styles.converterHeader}>{capitalize(getDispName(cvtype))}</Text>
         {showToggle &&
         <View style={styles.toggleButtonZone} >
-          <TinyBtn onPress={() => toggleLocal()} 
+          <TinyBtn onPress={() => toggleLocal()}
             text={'Switch direction'} color={bgColor} bgColor={clr.white} />
         </View>
         }
@@ -219,7 +220,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
       <ZodiacKanjiScreen kanjiJ={kanjiJ} kanjiJZ={kanjiJZ} caption1={caption1} caption2={caption2} />
       }
 
-    </View>
+    </ScrollView>
   );
 }
 
