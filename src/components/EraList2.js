@@ -77,7 +77,7 @@ export default function EraList2({yc, setConverter, setFromValue})  {
           <Text style={styles.converterHeader}>{statusText}</Text>
           <View style={styles.toggleButtonZone} >
             <TinyBtn onPress={() => toggleEraType()}
-            text={toggleText} color={clr.lightBlue} />
+            text={toggleText} color={clr.white} />
           </View>
         </View>
 
