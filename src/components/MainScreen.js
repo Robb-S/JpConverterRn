@@ -54,9 +54,9 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
 
   if (cvtype==null) { return (<LoadingScreen />) } // if cvtype not yet available
   // cvtype (conversion type, e.g. 'frommetric'), is now available
-  const setConverter = (newConverter) => { setConvCode(newConverter); } // used by child component
-  const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); }
-  const isYearConv = (cvtype) => { return validYrTypes.includes(cvtype); }
+  const setConverter = (newConverter) => { setConvCode(newConverter); }; // used by child component
+  const isNumericConv = (cvtype) => { return cvs.isValidConvType(cvtype); };
+  const isYearConv = (cvtype) => { return validYrTypes.includes(cvtype); };
   const [bgStyle, bgStyle2]=getBgStyles(cvtype);
   const bgColor = getBgColor(cvtype);
   // show-xx variables control conditional rendering
@@ -89,6 +89,7 @@ export default function MainScreen({cvtype, toggleDirection, changeType}) {
   } else if (isNumericConv(cvtype)) { // all numeric conversions
     maxInputTextLength = 12;
     if (!(isNaN(fromNum)||isNaN(fromValue))) { eq = cvs.getEquationArray(convCode, fromValue);}
+    if (fromValue.length===0) { eq = ['convert ' + cvs.getConvDisplay(convCode),'']; }
   } else if (cvtype===cv.TOJPYEAR) {  // international year after Meiji restoration
     maxInputTextLength = 4;
     if (yc.isValidIYear(fromValue)) { // show nothing unless it's a valid year (post-Meiji)

@@ -136,6 +136,12 @@ class Converters {
   }
 
   // simple pass-through routines next
+  getConvDisplay(convCode) {
+    let result = '';
+    try {result = this.convDict[convCode].convDisplay;}
+    catch (error) {}
+    return result;
+  }
   getEquationString(convCode, amt1, eqstring=' = ') {
     let result = '';
     try {result = this.convDict[convCode].getEquationString(amt1, eqstring);}
