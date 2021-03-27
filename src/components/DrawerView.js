@@ -71,13 +71,13 @@ const DrawerView = (drawer, navigation, setMode) => {
           navigation.navigate('Help');
         }}
       />
-      <DrButton text={'Other useful apps'}
+      {/* <DrButton text={'Other useful apps'}
         iconName={'apps'}
         onPress={() => {
           drawer.current.closeDrawer();
           navigation.navigate('Other useful apps');
         }}
-      />
+      /> */}
       {/* <DrButton text={'Web resources'}
         iconName={'web'}
         onPress={() => {
