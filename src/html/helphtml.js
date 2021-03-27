@@ -15,6 +15,7 @@ body {
 }
 h3 {
     background-color: #2e7d32;  /* darker green */
+    background-color: #666666;  /* medium-dark grey */
     color: #ffffff;
     padding: 8px 5px 8px 12px;
 }
