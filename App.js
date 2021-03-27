@@ -18,6 +18,8 @@ const soptions = {
   headerStyle: {
     backgroundColor: clr.black,
   },
+  headerTintColor: clr.white,
+  headerMode: 'screen',
   headerTitleStyle: {
     marginLeft: -28,
   },
