@@ -39,7 +39,7 @@ const HomeScreen = ({navigation}) => {
   const setMainHeaderTitle = (sNum, cDirection) => {
     const currTitle = (sNum!==null) ? getDispName(getCvType(sNum, cDirection)) : 'JP Converter';
     navigation.setOptions({
-      title: capitalize(currTitle),
+      headerTitle: capitalize(currTitle),
     });
   };
   /**
@@ -48,7 +48,7 @@ const HomeScreen = ({navigation}) => {
   const setDrawerHeaderTitle = () => {
     const drawerTitle = 'JP Converter';
     navigation.setOptions({
-      title: drawerTitle,
+      headerTitle: drawerTitle,
     });
   };
   // handle drawer open/close, since toggle method doesn't exist for DrawerLayoutAndroid.
