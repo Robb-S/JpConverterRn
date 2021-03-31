@@ -14,7 +14,7 @@ Designed specifically for foreigners living in Japan, this simple Android app pr
 
 An earlier version of this app is available in an Android version in the Play Store: https://play.google.com/store/apps/details?id=com.jingumae.jpconverter
 
-This current version will be ready for release soon.
+This current version will be ready for release soon; it is currently (March 2021) in closed testing.
 
 There is also a Windows executable version of this app available for immediate download: https://github.com/Robb-S/JpConverter
 
